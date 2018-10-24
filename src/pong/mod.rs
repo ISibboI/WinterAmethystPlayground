@@ -1,4 +1,4 @@
-mod paddle;
+pub mod paddle;
 
 use amethyst::assets::{AssetStorage, Loader};
 use amethyst::core::cgmath::Vector3;
@@ -11,9 +11,14 @@ use amethyst::renderer::{
 use amethyst::GameData;
 use amethyst::SimpleState;
 use amethyst::StateData;
+use components::gravity_affected::GravityAffected;
+use components::velocity::Velocity;
+use entities::snowflake::Snowflake;
 use pong::paddle::Paddle;
 use pong::paddle::Side;
 use pong::paddle::PADDLE_WIDTH;
+use resources::SpriteSheets;
+use gfx::format::SurfaceType;
 
 pub const ARENA_WIDTH: f32 = 100.0;
 pub const ARENA_HEIGHT: f32 = 100.0;
@@ -27,7 +32,14 @@ impl<'a, 'b> SimpleState<'a, 'b> for Pong {
         // Load the spritesheet necessary to render the graphics.
         let sprite_sheet_handle = load_sprite_sheet(world);
 
+        world.add_resource(SpriteSheets {
+            pong: Some(sprite_sheet_handle.clone()),
+        });
+
         world.register::<Paddle>();
+        world.register::<Snowflake>();
+        world.register::<GravityAffected>();
+        world.register::<Velocity>();
 
         initialise_paddles(world, sprite_sheet_handle);
         initialize_camera(world);
@@ -60,7 +72,7 @@ fn initialise_paddles(world: &mut World, sprite_sheet: SpriteSheetHandle) {
     };
 
     let sprite_render_right = SpriteRender {
-        sprite_sheet: sprite_sheet,
+        sprite_sheet,
         sprite_number: 0,
         flip_horizontal: true,
         flip_vertical: false,
@@ -101,7 +113,7 @@ fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
         loader.load(
             "texture/pong_spritesheet.png",
             PngFormat,
-            TextureMetadata::srgb_scale(),
+            TextureMetadata::srgb_scale().with_format(SurfaceType::R8_G8_B8_A8),
             (),
             &texture_storage,
         )
