@@ -11,16 +11,17 @@ use rand::distributions::Distribution;
 use rand::distributions::Standard;
 use rand::distributions::Uniform;
 use resources::SpriteSheets;
+use amethyst::core::timing::Time;
 
 pub struct MovementSystem;
 
 impl<'s> System<'s> for MovementSystem {
-    type SystemData = (ReadStorage<'s, Velocity>, WriteStorage<'s, Transform>);
+    type SystemData = (ReadStorage<'s, Velocity>, WriteStorage<'s, Transform>, Read<'s, Time>);
 
-    fn run(&mut self, (velocities, mut transforms): <Self as System<'s>>::SystemData) {
+    fn run(&mut self, (velocities, mut transforms, time): <Self as System<'s>>::SystemData) {
         for (velocity, mut transform) in (&velocities, &mut transforms).join() {
-            transform.translation.x += velocity.velocity.x / 60.0;
-            transform.translation.y += velocity.velocity.y / 60.0;
+            transform.translation.x += velocity.velocity.x * time.delta_seconds();
+            transform.translation.y += velocity.velocity.y * time.delta_seconds();
         }
     }
 }

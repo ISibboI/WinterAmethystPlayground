@@ -19,6 +19,7 @@ use pong::paddle::Side;
 use pong::paddle::PADDLE_WIDTH;
 use resources::SpriteSheets;
 use gfx::format::SurfaceType;
+use components::wind_affected::WindAffected;
 
 pub const ARENA_WIDTH: f32 = 100.0;
 pub const ARENA_HEIGHT: f32 = 100.0;
@@ -40,6 +41,7 @@ impl<'a, 'b> SimpleState<'a, 'b> for Pong {
         world.register::<Snowflake>();
         world.register::<GravityAffected>();
         world.register::<Velocity>();
+        world.register::<WindAffected>();
 
         initialise_paddles(world, sprite_sheet_handle);
         initialize_camera(world);
@@ -113,7 +115,7 @@ fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
         loader.load(
             "texture/pong_spritesheet.png",
             PngFormat,
-            TextureMetadata::srgb_scale().with_format(SurfaceType::R8_G8_B8_A8),
+            TextureMetadata::srgb_scale(),
             (),
             &texture_storage,
         )

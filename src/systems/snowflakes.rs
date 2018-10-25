@@ -1,7 +1,7 @@
 use amethyst::core::Transform;
 use amethyst::ecs::{Entities, Join, LazyUpdate, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
-use amethyst::renderer::{SpriteRender, SpriteSheetHandle};
+use amethyst::renderer::{SpriteRender, SpriteSheetHandle, Transparent};
 use components::gravity_affected::GravityAffected;
 use components::velocity::Velocity;
 use entities::snowflake::Snowflake;
@@ -11,6 +11,7 @@ use rand::distributions::Distribution;
 use rand::distributions::Standard;
 use rand::distributions::Uniform;
 use resources::SpriteSheets;
+use components::wind_affected::WindAffected;
 
 pub struct SnowflakeSystem {
     snowflake_count: usize,
@@ -33,7 +34,7 @@ impl<'s> System<'s> for SnowflakeSystem {
             }
         }
 
-        if self.snowflake_count < 100 {
+        if self.snowflake_count < 10000 {
             let snowflake = entities.create();
             updater.insert(snowflake, Snowflake::new());
 
@@ -55,6 +56,8 @@ impl<'s> System<'s> for SnowflakeSystem {
             updater.insert(snowflake, sprite_render);
             updater.insert(snowflake, GravityAffected::new(2.0));
             updater.insert(snowflake, Velocity::new(0.0, 0.0));
+            updater.insert(snowflake, Transparent);
+            updater.insert(snowflake, WindAffected::new(1.0));
             self.snowflake_count += 1;
         }
     }
