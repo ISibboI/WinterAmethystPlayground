@@ -21,9 +21,9 @@ use resources::SpriteSheets;
 pub const ARENA_WIDTH: f32 = 100.0;
 pub const ARENA_HEIGHT: f32 = 100.0;
 
-pub struct Pong;
+pub struct GameState;
 
-impl<'a, 'b> SimpleState<'a, 'b> for Pong {
+impl<'a, 'b> SimpleState<'a, 'b> for GameState {
     fn on_start(&mut self, data: StateData<GameData>) {
         let world = data.world;
 

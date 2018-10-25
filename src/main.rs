@@ -17,7 +17,7 @@ use amethyst::{
         ALPHA,
     },
 };
-use states::game::Pong;
+use states::game::GameState;
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
@@ -56,7 +56,7 @@ fn main() -> amethyst::Result<()> {
             "movement_system",
             &["gravity_system"],
         );
-    let mut game = Application::new("./", Pong, game_data)?;
+    let mut game = Application::new("./", GameState, game_data)?;
     game.run();
 
     Ok(())
