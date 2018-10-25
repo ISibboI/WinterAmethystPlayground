@@ -1,5 +1,4 @@
-use amethyst::ecs::Component;
-use amethyst::ecs::DenseVecStorage;
+use amethyst::ecs::{Component, DenseVecStorage};
 
 pub struct GravityAffected {
     pub terminal_velocity: f32,

@@ -40,26 +40,27 @@ fn main() -> amethyst::Result<()> {
 
     let game_data = GameDataBuilder::default()
         .with_bundle(TransformBundle::new())?
-        .with_bundle(
-            RenderBundle::new(pipe, Some(config))
-                .with_sprite_sheet_processor()
-                .with_sprite_visibility_sorting(&["transform_system"]),
-        )?
+        .with(systems::SnowflakeSystem::new(), "snowflake_system", &[])
         .with_bundle(input_bundle)?
         .with(
             systems::WindSystem::default(),
             "wind_system",
-            &["transform_system"],
+            &["snowflake_system"],
         )
-        .with(systems::SnowflakeSystem::new(), "snowflake_system", &[])
-        .with(systems::GravitySystem, "gravity_system", &[])
+        .with(systems::GravitySystem, "gravity_system", &["snowflake_system"])
         .with(systems::ControlSystem, "control_system", &["input_system"])
         .with(
             systems::MovementSystem,
             "movement_system",
             &["gravity_system", "control_system"],
         )
-        .with(systems::WorldCollisionSystem, "world_collision_system", &["movement_system"]);
+        .with(systems::WorldCollisionSystem, "world_collision_system", &["movement_system"])
+        .with(systems::AnimationSystem, "animation_system", &["movement_system"])
+        .with_bundle(
+            RenderBundle::new(pipe, Some(config))
+                .with_sprite_sheet_processor()
+                .with_sprite_visibility_sorting(&["world_collision_system"]),
+        )?;
     let mut game = Application::new("./", GameState, game_data)?;
     game.run();
 

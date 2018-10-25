@@ -8,7 +8,7 @@ use amethyst::renderer::{
 use amethyst::GameData;
 use amethyst::SimpleState;
 use amethyst::StateData;
-use components::{GravityAffected, Velocity, WindAffected, WorldCollisionAffected};
+use components::*;
 use entities::Player;
 use entities::Snowflake;
 use resources::GameSpriteSheets;
@@ -32,6 +32,7 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         world.register::<WindAffected>();
         world.register::<Player>();
         world.register::<WorldCollisionAffected>();
+        world.register::<Animated>();
 
         initialize_player(world);
         initialize_camera(world);
@@ -54,13 +55,14 @@ fn initialize_player(world: &mut World) {
 
     world
         .create_entity()
-        .with(Player::new(100.0, 150.0))
+        .with(Player::new(40.0, 100.0))
         .with(GravityAffected::new(100.0))
         .with(Velocity::default())
         .with(transform.clone())
         .with(sprite_render)
         .with(WorldCollisionAffected::new(36.0 * transform.scale.x, 51.0 * transform.scale.y))
         .with(Transparent)
+        .with(Animated::default())
         .build();
 }
 

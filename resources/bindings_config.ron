@@ -1,6 +1,6 @@
 (
     axes: {
-        "move": Emulated(pos: Key(A), neg: Key(D)),
+        "move": Emulated(pos: Key(D), neg: Key(A)),
     },
     actions: {
         "jump": [Key(Space), Key(W)],

@@ -16,7 +16,7 @@ impl<'s> System<'s> for ControlSystem {
     type SystemData = (ReadStorage<'s, Player>, ReadStorage<'s, WorldCollisionAffected>, WriteStorage<'s, Velocity>, Read<'s, InputHandler<String, String>>);
 
     fn run(&mut self, (players, world_collision_affecteds, mut velocities, input_handler): <Self as System<'s>>::SystemData) {
-        let movement = -input_handler.axis_value("move").unwrap() as f32;
+        let movement = input_handler.axis_value("move").unwrap() as f32;
         let jump = input_handler.action_is_down("jump").unwrap();
 
         for (player, world_collision_affected, mut velocity) in (&players, &world_collision_affecteds, &mut velocities).join() {
