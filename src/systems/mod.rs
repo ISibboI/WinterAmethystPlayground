@@ -8,4 +8,4 @@ pub use self::gravity::GravitySystem;
 pub use self::movement::MovementSystem;
 pub use self::paddle::PaddleSystem;
 pub use self::snowflakes::SnowflakeSystem;
-//pub use self::wind::WindSystem;
+pub use self::wind::WindSystem;

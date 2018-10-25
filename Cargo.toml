@@ -5,7 +5,7 @@ authors = []
 
 [dependencies]
 rand = "0.5"
-#noise = "0.5"
+noise = "0.5"
 
 [dependencies.amethyst]
 version = "0.9.0"

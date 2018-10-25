@@ -13,10 +13,10 @@ use components::gravity_affected::GravityAffected;
 use components::velocity::Velocity;
 use components::wind_affected::WindAffected;
 use entities::snowflake::Snowflake;
+use resources::GameSpriteSheets;
 use states::paddle::Paddle;
 use states::paddle::Side;
 use states::paddle::PADDLE_WIDTH;
-use resources::GameSpriteSheets;
 
 pub const ARENA_WIDTH: f32 = 100.0;
 pub const ARENA_HEIGHT: f32 = 100.0;

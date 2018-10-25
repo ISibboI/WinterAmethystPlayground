@@ -1,3 +1,4 @@
+use amethyst::core::Time;
 use amethyst::core::Transform;
 use amethyst::ecs::{Entities, Join, LazyUpdate, Read, ReadStorage, System};
 use amethyst::renderer::{SpriteRender, Transparent};
@@ -5,12 +6,11 @@ use components::gravity_affected::GravityAffected;
 use components::velocity::Velocity;
 use components::wind_affected::WindAffected;
 use entities::snowflake::Snowflake;
-use states::game::ARENA_HEIGHT;
-use states::game::ARENA_WIDTH;
 use rand::distributions::Distribution;
 use rand::distributions::Uniform;
 use resources::GameSpriteSheets;
-use amethyst::core::Time;
+use states::game::ARENA_HEIGHT;
+use states::game::ARENA_WIDTH;
 
 const MAX_SNOWFLAKE_COUNT: usize = 200;
 const SNOWFLAKE_RATE: f32 = 10.0;
@@ -22,7 +22,10 @@ pub struct SnowflakeSystem {
 
 impl SnowflakeSystem {
     pub fn new() -> Self {
-        Self { snowflake_count: 0, partial_snowflake: 0.0 }
+        Self {
+            snowflake_count: 0,
+            partial_snowflake: 0.0,
+        }
     }
 }
 
@@ -61,7 +64,12 @@ impl<'s> System<'s> for SnowflakeSystem {
 }
 
 impl<'s> SnowflakeSystem {
-    fn spawn_snowflake(&mut self, entities: &Entities<'s>, updater: &Read<'s, LazyUpdate>, sprite_sheets: &Read<'s, GameSpriteSheets>) {
+    fn spawn_snowflake(
+        &mut self,
+        entities: &Entities<'s>,
+        updater: &Read<'s, LazyUpdate>,
+        sprite_sheets: &Read<'s, GameSpriteSheets>,
+    ) {
         let snowflake = entities.create();
         updater.insert(snowflake, Snowflake::new());
 
@@ -88,7 +96,16 @@ impl<'s> SnowflakeSystem {
         updater.insert(snowflake, GravityAffected::new(terminal_velocity));
         updater.insert(snowflake, Velocity::new(0.0, 1.0 - terminal_velocity));
         updater.insert(snowflake, Transparent);
-        updater.insert(snowflake, WindAffected::new(1.0));
+
+        let air_resistance_distribution = Uniform::new_inclusive(0.5, 2.0);
+        let time_offset_distribution = Uniform::new_inclusive(-5.0, 5.0);
+        updater.insert(
+            snowflake,
+            WindAffected::new(
+                air_resistance_distribution.sample(rng),
+                time_offset_distribution.sample(rng),
+            ),
+        );
         self.snowflake_count += 1;
     }
 }

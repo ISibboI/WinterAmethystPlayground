@@ -1,8 +1,8 @@
 use amethyst::core::Transform;
 use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
-use states::paddle::{Paddle, Side, PADDLE_HEIGHT};
 use states::game::ARENA_HEIGHT;
+use states::paddle::{Paddle, Side, PADDLE_HEIGHT};
 
 pub struct PaddleSystem;
 

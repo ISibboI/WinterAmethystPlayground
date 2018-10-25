@@ -1,11 +1,11 @@
 extern crate amethyst;
+extern crate noise;
 extern crate rand;
-//extern crate noise;
 
 mod components;
 mod entities;
-mod states;
 mod resources;
+mod states;
 mod systems;
 
 use amethyst::{
@@ -13,8 +13,7 @@ use amethyst::{
     input::InputBundle,
     prelude::*,
     renderer::{
-        ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage,
-        ALPHA,
+        ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage, ALPHA,
     },
 };
 use states::game::GameState;
@@ -47,7 +46,11 @@ fn main() -> amethyst::Result<()> {
                 .with_sprite_visibility_sorting(&["transform_system"]),
         )?
         .with_bundle(input_bundle)?
-        //.with(systems::WindSystem, "wind_system", &["transform_system"])
+        .with(
+            systems::WindSystem::default(),
+            "wind_system",
+            &["transform_system"],
+        )
         .with(systems::PaddleSystem, "paddle_system", &["input_system"])
         .with(systems::SnowflakeSystem::new(), "snowflake_system", &[])
         .with(systems::GravitySystem, "gravity_system", &[])
