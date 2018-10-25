@@ -14,7 +14,6 @@ impl<'s> System<'s> for AnimationSystem {
     fn run(&mut self, (mut animateds, velocities, world_collision_affecteds, mut sprite_renders, time, input_handler): <Self as System<'s>>::SystemData) {
         for (mut animated, velocity, world_collision_affected, mut sprite_render) in (&mut animateds, &velocities, &world_collision_affecteds, &mut sprite_renders).join() {
             let move_axis = input_handler.axis_value("move").unwrap();
-            let velocity = velocity.velocity.x;
             if !world_collision_affected.on_ground {
                 sprite_render.sprite_number = 1;
                 animated.time = 0.0;

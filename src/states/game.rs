@@ -55,7 +55,7 @@ fn initialize_player(world: &mut World) {
 
     world
         .create_entity()
-        .with(Player::new(40.0, 100.0))
+        .with(Player::new(100.0, 150.0))
         .with(GravityAffected::new(100.0))
         .with(Velocity::default())
         .with(transform.clone())

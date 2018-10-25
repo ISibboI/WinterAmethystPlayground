@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70d7339f-d4d6-4af0-a38b-7f9b7fe2e334" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/animated.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/systems/animation.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/bindings_config.ron" beforeDir="false" afterPath="$PROJECT_DIR$/resources/bindings_config.ron" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/gravity_affected.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/gravity_affected.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/states/game.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/states/game.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/systems/control.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/control.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/systems/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/animation.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/animation.rs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -48,15 +40,15 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="ron" value="512" />
-          <entry key="rs" value="15941" />
+          <entry key="rs" value="15957" />
           <entry key="toml" value="112" />
-          <entry key="txt" value="224" />
+          <entry key="txt" value="239" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="736" />
-          <entry key="Rust" value="15941" />
+          <entry key="PLAIN_TEXT" value="751" />
+          <entry key="Rust" value="15957" />
           <entry key="TOML file" value="112" />
         </counts>
       </usages-collector>
@@ -87,7 +79,7 @@
         <entry file="file://$PROJECT_DIR$/src/states/game.rs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="348">
-              <caret line="57" column="34" selection-start-line="57" selection-start-column="34" selection-end-line="57" selection-end-column="34" />
+              <caret line="57" column="28" selection-start-line="57" selection-start-column="28" selection-end-line="57" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -96,7 +88,7 @@
         <entry file="file://$PROJECT_DIR$/src/systems/animation.rs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="70">
-              <caret line="15" column="69" selection-start-line="15" selection-start-column="69" selection-end-line="15" selection-end-column="69" />
+              <caret line="15" column="70" selection-start-line="15" selection-start-column="70" selection-end-line="15" selection-end-column="70" />
             </state>
           </provider>
         </entry>
@@ -141,14 +133,14 @@
         <option value="$PROJECT_DIR$/src/systems/mod.rs" />
         <option value="$PROJECT_DIR$/src/components/animated.rs" />
         <option value="$PROJECT_DIR$/src/main.rs" />
-        <option value="$PROJECT_DIR$/src/states/game.rs" />
         <option value="$PROJECT_DIR$/resources/bindings_config.ron" />
         <option value="$PROJECT_DIR$/src/systems/control.rs" />
+        <option value="$PROJECT_DIR$/src/states/game.rs" />
         <option value="$PROJECT_DIR$/src/systems/animation.rs" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="580" />
     <option name="y" value="227" />
     <option name="width" value="1400" />
@@ -328,11 +320,18 @@
       <option name="project" value="LOCAL" />
       <updated>1540497114126</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Animated Santa.">
+      <created>1540499177476</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1540499177476</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="35" width="2560" height="1405" extended-state="6" />
+    <frame x="0" y="35" width="2560" height="1405" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26358476" />
@@ -369,7 +368,8 @@
     <MESSAGE value="Snowflakes vary in size" />
     <MESSAGE value="Added wind to snow." />
     <MESSAGE value="Added santa." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added santa." />
+    <MESSAGE value="Animated Santa." />
+    <option name="LAST_COMMIT_MESSAGE" value="Animated Santa." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/texture/pong_spritesheet.ron">
@@ -654,13 +654,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/systems/gravity.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/systems/snowflakes.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1247">
@@ -693,13 +686,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/states/game.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="57" column="34" selection-start-line="57" selection-start-column="34" selection-end-line="57" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/systems/control.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="174">
@@ -714,10 +700,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/states/game.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="57" column="28" selection-start-line="57" selection-start-column="28" selection-end-line="57" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/systems/gravity.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/systems/animation.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="70">
-          <caret line="15" column="69" selection-start-line="15" selection-start-column="69" selection-end-line="15" selection-end-column="69" />
+          <caret line="15" column="70" selection-start-line="15" selection-start-column="70" selection-end-line="15" selection-end-column="70" />
         </state>
       </provider>
     </entry>
