@@ -4,6 +4,7 @@ use amethyst::input::InputHandler;
 use amethyst::renderer::{SpriteRender, SpriteSheetHandle, Transparent};
 use components::gravity_affected::GravityAffected;
 use components::velocity::Velocity;
+use components::wind_affected::WindAffected;
 use entities::snowflake::Snowflake;
 use pong::ARENA_HEIGHT;
 use pong::ARENA_WIDTH;
@@ -11,7 +12,6 @@ use rand::distributions::Distribution;
 use rand::distributions::Standard;
 use rand::distributions::Uniform;
 use resources::SpriteSheets;
-use components::wind_affected::WindAffected;
 
 pub struct SnowflakeSystem {
     snowflake_count: usize,
@@ -24,9 +24,18 @@ impl SnowflakeSystem {
 }
 
 impl<'s> System<'s> for SnowflakeSystem {
-    type SystemData = (Entities<'s>, Read<'s, LazyUpdate>, Read<'s, SpriteSheets>, ReadStorage<'s, Snowflake>, ReadStorage<'s, Transform>);
+    type SystemData = (
+        Entities<'s>,
+        Read<'s, LazyUpdate>,
+        Read<'s, SpriteSheets>,
+        ReadStorage<'s, Snowflake>,
+        ReadStorage<'s, Transform>,
+    );
 
-    fn run(&mut self, (entities, updater, sprite_sheets, snowflakes, transforms): <Self as System<'s>>::SystemData) {
+    fn run(
+        &mut self,
+        (entities, updater, sprite_sheets, snowflakes, transforms): <Self as System<'s>>::SystemData,
+    ) {
         for (entity, _, transform) in (&entities, &snowflakes, &transforms).join() {
             if transform.translation.y < -3.0 {
                 entities.delete(entity).expect("Could not delete snowflake");

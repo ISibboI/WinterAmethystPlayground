@@ -1,3 +1,4 @@
+use amethyst::core::timing::Time;
 use amethyst::core::Transform;
 use amethyst::ecs::{Entities, Join, LazyUpdate, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
@@ -11,12 +12,15 @@ use rand::distributions::Distribution;
 use rand::distributions::Standard;
 use rand::distributions::Uniform;
 use resources::SpriteSheets;
-use amethyst::core::timing::Time;
 
 pub struct MovementSystem;
 
 impl<'s> System<'s> for MovementSystem {
-    type SystemData = (ReadStorage<'s, Velocity>, WriteStorage<'s, Transform>, Read<'s, Time>);
+    type SystemData = (
+        ReadStorage<'s, Velocity>,
+        WriteStorage<'s, Transform>,
+        Read<'s, Time>,
+    );
 
     fn run(&mut self, (velocities, mut transforms, time): <Self as System<'s>>::SystemData) {
         for (velocity, mut transform) in (&velocities, &mut transforms).join() {

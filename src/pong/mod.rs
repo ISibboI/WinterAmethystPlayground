@@ -13,13 +13,13 @@ use amethyst::SimpleState;
 use amethyst::StateData;
 use components::gravity_affected::GravityAffected;
 use components::velocity::Velocity;
+use components::wind_affected::WindAffected;
 use entities::snowflake::Snowflake;
+use gfx::format::SurfaceType;
 use pong::paddle::Paddle;
 use pong::paddle::Side;
 use pong::paddle::PADDLE_WIDTH;
 use resources::SpriteSheets;
-use gfx::format::SurfaceType;
-use components::wind_affected::WindAffected;
 
 pub const ARENA_WIDTH: f32 = 100.0;
 pub const ARENA_HEIGHT: f32 = 100.0;
