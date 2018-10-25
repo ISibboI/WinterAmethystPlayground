@@ -2,15 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70d7339f-d4d6-4af0-a38b-7f9b7fe2e334" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/world_collision_affected.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/entities/player.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/systems/control.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/systems/world_collision.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/bindings_config.ron" beforeDir="false" afterPath="$PROJECT_DIR$/resources/bindings_config.ron" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/display_config.ron" beforeDir="false" afterPath="$PROJECT_DIR$/resources/display_config.ron" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/velocity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/velocity.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/wind_affected.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/wind_affected.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/resources.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/states/game.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/states/game.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/states/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/states/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/states/paddle.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/gravity.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/gravity.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/systems/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/systems/paddle.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/paddle.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/movement.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/movement.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/paddle.rs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/systems/snowflakes.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/snowflakes.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/systems/wind.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/wind.rs" afterDir="false" />
     </list>
@@ -24,39 +35,40 @@
     <session id="528614178">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.13" value="1" />
           <entry key="project.open.time.8" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="ron" value="4" />
-          <entry key="rs" value="70" />
+          <entry key="ron" value="7" />
+          <entry key="rs" value="128" />
           <entry key="toml" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="4" />
-          <entry key="Rust" value="70" />
+          <entry key="PLAIN_TEXT" value="7" />
+          <entry key="Rust" value="128" />
           <entry key="TOML file" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="ron" value="392" />
-          <entry key="rs" value="9671" />
+          <entry key="ron" value="510" />
+          <entry key="rs" value="14408" />
           <entry key="toml" value="112" />
-          <entry key="txt" value="166" />
+          <entry key="txt" value="211" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="558" />
-          <entry key="Rust" value="9671" />
+          <entry key="PLAIN_TEXT" value="721" />
+          <entry key="Rust" value="14408" />
           <entry key="TOML file" value="112" />
         </counts>
       </usages-collector>
@@ -68,17 +80,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="48" column="14" selection-start-line="48" selection-start-column="14" selection-end-line="48" selection-end-column="14" />
+            <state relative-caret-position="229">
+              <caret line="28" column="29" lean-forward="true" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="29" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Cargo.toml">
+        <entry file="file://$PROJECT_DIR$/src/systems/gravity.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            <state relative-caret-position="377">
+              <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
             </state>
           </provider>
         </entry>
@@ -86,17 +98,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/systems/snowflakes.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="15" column="30" lean-forward="true" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/systems/wind.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="29" column="27" lean-forward="true" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
+            <state relative-caret-position="-1015">
+              <caret line="43" column="69" selection-start-line="43" selection-start-column="69" selection-end-line="43" selection-end-column="69" />
             </state>
           </provider>
         </entry>
@@ -104,8 +107,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/states/game.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="385">
-              <caret line="119" column="23" selection-start-line="119" selection-start-column="23" selection-end-line="119" selection-end-column="23" />
+            <state relative-caret-position="406">
+              <caret line="62" column="8" selection-start-line="62" selection-start-column="8" selection-end-line="62" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/texture/santa_spritesheet.ron">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="29">
+              <caret line="1" column="25" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/systems/control.rs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="116">
+              <caret line="10" column="43" lean-forward="true" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -118,34 +139,40 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/display_config.ron" />
         <option value="$PROJECT_DIR$/resources/pong_spritesheet.ron" />
         <option value="$PROJECT_DIR$/src/pong.rs" />
         <option value="$PROJECT_DIR$/src/pong/paddle.rs" />
-        <option value="$PROJECT_DIR$/resources/bindings_config.ron" />
         <option value="$PROJECT_DIR$/src/systems.rs" />
         <option value="$PROJECT_DIR$/texture/pong_spritesheet.ron" />
         <option value="$PROJECT_DIR$/src/entities.rs" />
         <option value="$PROJECT_DIR$/src/components.rs" />
-        <option value="$PROJECT_DIR$/src/components/velocity.rs" />
         <option value="$PROJECT_DIR$/src/components/gravity_affected.rs" />
-        <option value="$PROJECT_DIR$/src/components/mod.rs" />
         <option value="$PROJECT_DIR$/src/pong/mod.rs" />
         <option value="$PROJECT_DIR$/texture/snowflake_spritesheet.ron" />
-        <option value="$PROJECT_DIR$/src/states/mod.rs" />
         <option value="$PROJECT_DIR$/src/systems/paddle.rs" />
-        <option value="$PROJECT_DIR$/src/systems/movement.rs" />
         <option value="$PROJECT_DIR$/src/states/paddle.rs" />
         <option value="$PROJECT_DIR$/src/entities/snowflake.rs" />
-        <option value="$PROJECT_DIR$/src/states/game.rs" />
+        <option value="$PROJECT_DIR$/Cargo.toml" />
+        <option value="$PROJECT_DIR$/src/entities/mod.rs" />
+        <option value="$PROJECT_DIR$/src/components/velocity.rs" />
+        <option value="$PROJECT_DIR$/src/components/mod.rs" />
+        <option value="$PROJECT_DIR$/src/components/wind_affected.rs" />
+        <option value="$PROJECT_DIR$/src/components/world_collision_affected.rs" />
+        <option value="$PROJECT_DIR$/resources/bindings_config.ron" />
+        <option value="$PROJECT_DIR$/src/entities/player.rs" />
+        <option value="$PROJECT_DIR$/src/systems/world_collision.rs" />
+        <option value="$PROJECT_DIR$/src/systems/movement.rs" />
+        <option value="$PROJECT_DIR$/src/systems/snowflakes.rs" />
+        <option value="$PROJECT_DIR$/src/systems/wind.rs" />
+        <option value="$PROJECT_DIR$/src/systems/control.rs" />
+        <option value="$PROJECT_DIR$/src/systems/mod.rs" />
+        <option value="$PROJECT_DIR$/src/states/mod.rs" />
         <option value="$PROJECT_DIR$/src/resources.rs" />
         <option value="$PROJECT_DIR$/src/systems/gravity.rs" />
-        <option value="$PROJECT_DIR$/Cargo.toml" />
-        <option value="$PROJECT_DIR$/src/systems/mod.rs" />
         <option value="$PROJECT_DIR$/src/main.rs" />
-        <option value="$PROJECT_DIR$/src/components/wind_affected.rs" />
-        <option value="$PROJECT_DIR$/src/systems/wind.rs" />
-        <option value="$PROJECT_DIR$/src/systems/snowflakes.rs" />
+        <option value="$PROJECT_DIR$/src/states/game.rs" />
+        <option value="$PROJECT_DIR$/resources/display_config.ron" />
+        <option value="$PROJECT_DIR$/texture/santa_spritesheet.ron" />
       </list>
     </option>
   </component>
@@ -315,21 +342,28 @@
       <option name="project" value="LOCAL" />
       <updated>1540475096470</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added wind to snow.">
+      <created>1540479532941</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1540479532941</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="35" width="2560" height="1405" extended-state="6" />
+    <frame x="0" y="35" width="2560" height="1405" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25871858" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26358476" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49878347" visible="true" weight="0.32943293" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32943293" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49878347" visible="true" weight="0.32943293" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -354,23 +388,10 @@
     <MESSAGE value="Uncommented wind system as nightly compiler is currently broken." />
     <MESSAGE value="Made snowflakes look nice." />
     <MESSAGE value="Snowflakes vary in size" />
-    <option name="LAST_COMMIT_MESSAGE" value="Snowflakes vary in size" />
+    <MESSAGE value="Added wind to snow." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added wind to snow." />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/bindings_config.ron">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/display_config.ron">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
-          <caret line="2" column="29" selection-start-line="2" selection-start-column="29" selection-end-line="2" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/texture/pong_spritesheet.ron">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="493">
@@ -378,28 +399,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/entities/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="18" selection-start-column="18" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/rand-0.5.5/src/distributions/other.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="232">
           <caret line="166" column="7" selection-start-line="166" selection-start-column="7" selection-end-line="166" selection-end-column="7" />
-          <folding>
-            <element signature="e#5425#5426#0" expanded="true" />
-            <element signature="e#5459#5460#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/velocity.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="9" column="37" selection-start-line="9" selection-start-column="37" selection-end-line="9" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -453,38 +456,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="29">
           <caret line="1" column="35" selection-end-line="16" />
-          <folding>
-            <element signature="e#201#202#0" expanded="true" />
-            <element signature="e#242#243#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
-          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/states/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/systems/movement.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="87">
-          <caret line="3" column="35" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/systems/paddle.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="4" column="16" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -509,65 +480,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/entities/snowflake.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="1" column="44" selection-start-line="1" selection-start-column="44" selection-end-line="1" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/resources.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="13" column="4" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="4" />
-          <folding>
-            <element signature="e#258#259#0" expanded="true" />
-            <element signature="e#299#300#0" expanded="true" />
-            <element signature="e#336#337#0" expanded="true" />
-            <element signature="e#374#375#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/states/game.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="119" column="23" selection-start-line="119" selection-start-column="23" selection-end-line="119" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/systems/gravity.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="18" column="56" selection-start-line="18" selection-start-column="56" selection-end-line="18" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Cargo.toml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/systems/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/noise-0.5.1/src/math.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="232">
           <caret line="18" column="9" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/amethyst_core-0.4.0/src/timing.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-522">
-          <caret line="24" column="26" lean-forward="true" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -585,13 +501,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="48" column="14" selection-start-line="48" selection-start-column="14" selection-end-line="48" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/specs-0.12.3/src/storage/data.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="232">
@@ -599,24 +508,214 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/wind_affected.rs">
+    <entry file="file://$PROJECT_DIR$/Cargo.toml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="9" column="52" selection-start-line="9" selection-start-column="52" selection-end-line="9" selection-end-column="52" />
+        <state relative-caret-position="203">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/systems/snowflakes.rs">
+    <entry file="file://$PROJECT_DIR$/src/entities/snowflake.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="15" column="30" lean-forward="true" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
+        <state relative-caret-position="29">
+          <caret line="1" column="44" selection-start-line="1" selection-start-column="44" selection-end-line="1" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entities/mod.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/velocity.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="17" column="26" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
+          <folding>
+            <element signature="e#328#329#0" expanded="true" />
+            <element signature="e#358#359#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/mod.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="3" column="16" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/specs-0.12.3/src/storage/storages.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1073">
+          <caret line="178" column="11" selection-start-line="178" selection-start-column="11" selection-end-line="178" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/bindings_config.ron">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="5" column="35" selection-start-line="5" selection-start-column="35" selection-end-line="5" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/amethyst_input-0.5.0/src/input_handler.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-15362">
+          <caret line="22" column="11" selection-start-line="22" selection-start-column="11" selection-end-line="22" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entities/player.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="580">
+          <caret line="20" column="23" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
+          <folding>
+            <element signature="e#283#284#0" expanded="true" />
+            <element signature="e#308#309#0" expanded="true" />
+            <element signature="e#351#352#0" expanded="true" />
+            <element signature="e#381#382#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/wind_affected.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="464">
+          <caret line="16" selection-start-line="16" selection-end-line="18" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/systems/movement.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="17" column="71" selection-start-line="17" selection-start-column="71" selection-end-line="17" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/world_collision_affected.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="29">
+          <caret line="2" column="11" selection-start-line="2" selection-start-column="11" selection-end-line="2" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.rustup/toolchains/nightly-2018-10-19-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src/libstd/time.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="162" column="33" lean-forward="true" selection-start-line="162" selection-start-column="33" selection-end-line="162" selection-end-column="33" />
+          <folding>
+            <element signature="e#5454#5455#0" expanded="true" />
+            <element signature="e#5498#5499#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/amethyst_core-0.4.0/src/timing.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-667">
+          <caret line="16" column="12" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/systems/wind.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="29" column="27" lean-forward="true" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
+        <state relative-caret-position="232">
+          <caret line="41" column="16" selection-start-line="41" selection-start-column="16" selection-end-line="41" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/systems/world_collision.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="617">
+          <caret line="23" column="65" selection-start-line="23" selection-start-column="65" selection-end-line="23" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/systems/mod.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="8" column="39" selection-start-line="8" selection-start-column="39" selection-end-line="8" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/systems/paddle.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="4" column="16" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/states/mod.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="13" selection-start-column="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/resources.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+          <folding>
+            <element signature="e#252#253#0" expanded="true" />
+            <element signature="e#294#295#0" expanded="true" />
+            <element signature="e#238#239#0" expanded="true" />
+            <element signature="e#284#285#0" expanded="true" />
+            <element signature="e#453#454#0" expanded="true" />
+            <element signature="e#487#488#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/systems/control.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="10" column="43" lean-forward="true" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/systems/snowflakes.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1015">
+          <caret line="43" column="69" selection-start-line="43" selection-start-column="69" selection-end-line="43" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="28" column="29" lean-forward="true" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/systems/gravity.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="16" column="59" selection-start-line="16" selection-start-column="59" selection-end-line="16" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/display_config.ron">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="29">
+          <caret line="1" column="15" selection-start-line="1" selection-start-column="15" selection-end-line="1" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/states/game.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="62" column="8" selection-start-line="62" selection-start-column="8" selection-end-line="62" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/texture/santa_spritesheet.ron">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="29">
+          <caret line="1" column="25" selection-start-line="1" selection-start-column="25" selection-end-line="1" selection-end-column="25" />
         </state>
       </provider>
     </entry>

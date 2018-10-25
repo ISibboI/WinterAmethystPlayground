@@ -26,7 +26,7 @@ fn main() -> amethyst::Result<()> {
 
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
-            .clear_target([0.01, 0.01, 0.01, 1.0], 1.0)
+            .clear_target([0.1, 0.01, 0.01, 1.0], 1.0)
             .with_pass(DrawSprite::new().with_transparency(
                 ColorMask::all(),
                 ALPHA,
@@ -51,14 +51,15 @@ fn main() -> amethyst::Result<()> {
             "wind_system",
             &["transform_system"],
         )
-        .with(systems::PaddleSystem, "paddle_system", &["input_system"])
         .with(systems::SnowflakeSystem::new(), "snowflake_system", &[])
         .with(systems::GravitySystem, "gravity_system", &[])
+        .with(systems::ControlSystem, "control_system", &["input_system"])
         .with(
             systems::MovementSystem,
             "movement_system",
-            &["gravity_system"],
-        );
+            &["gravity_system", "control_system"],
+        )
+        .with(systems::WorldCollisionSystem, "world_collision_system", &["movement_system"]);
     let mut game = Application::new("./", GameState, game_data)?;
     game.run();
 

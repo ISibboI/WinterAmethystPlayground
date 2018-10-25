@@ -13,6 +13,12 @@ impl Velocity {
     }
 }
 
+impl Default for Velocity {
+    fn default() -> Self {
+        Self::new(0.0, 0.0)
+    }
+}
+
 impl Component for Velocity {
     type Storage = DenseVecStorage<Self>;
 }

@@ -2,10 +2,10 @@ use amethyst::core::Time;
 use amethyst::core::Transform;
 use amethyst::ecs::{Entities, Join, LazyUpdate, Read, ReadStorage, System};
 use amethyst::renderer::{SpriteRender, Transparent};
-use components::gravity_affected::GravityAffected;
-use components::velocity::Velocity;
-use components::wind_affected::WindAffected;
-use entities::snowflake::Snowflake;
+use components::GravityAffected;
+use components::Velocity;
+use components::WindAffected;
+use entities::Snowflake;
 use rand::distributions::Distribution;
 use rand::distributions::Uniform;
 use resources::GameSpriteSheets;
@@ -50,7 +50,7 @@ impl<'s> System<'s> for SnowflakeSystem {
             }
         }
 
-        self.partial_snowflake += time.delta_seconds() * SNOWFLAKE_RATE;
+        self.partial_snowflake += time.fixed_seconds() * SNOWFLAKE_RATE;
         while self.partial_snowflake >= 1.0 {
             if self.snowflake_count >= MAX_SNOWFLAKE_COUNT {
                 self.partial_snowflake = 0.0;

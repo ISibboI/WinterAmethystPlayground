@@ -1,7 +1,7 @@
 use amethyst::core::Time;
 use amethyst::core::Transform;
 use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
-use components::wind_affected::WindAffected;
+use components::WindAffected;
 use noise::{BasicMulti, MultiFractal, NoiseFn, Point3, Seedable};
 
 pub struct WindSystem<T: NoiseFn<Point3<f64>>> {
@@ -39,7 +39,7 @@ impl<'s, T: NoiseFn<Point3<f64>>> System<'s> for WindSystem<T> {
     );
 
     fn run(&mut self, (wind_affecteds, mut transforms, time): <Self as System<'s>>::SystemData) {
-        let z = time.absolute_time_seconds() * self.wind_change_rate as f64;
+        let z = time.frame_number() as f64 * time.fixed_seconds() as f64 * self.wind_change_rate as f64;
 
         for (wind_affected, mut transform) in (&wind_affecteds, &mut transforms).join() {
             let x = self.noise.get([

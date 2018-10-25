@@ -1,7 +1,7 @@
 use amethyst::core::timing::Time;
 use amethyst::core::Transform;
 use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
-use components::velocity::Velocity;
+use components::Velocity;
 
 pub struct MovementSystem;
 
@@ -14,8 +14,8 @@ impl<'s> System<'s> for MovementSystem {
 
     fn run(&mut self, (velocities, mut transforms, time): <Self as System<'s>>::SystemData) {
         for (velocity, mut transform) in (&velocities, &mut transforms).join() {
-            transform.translation.x += velocity.velocity.x * time.delta_seconds();
-            transform.translation.y += velocity.velocity.y * time.delta_seconds();
+            transform.translation.x += velocity.velocity.x * time.fixed_seconds();
+            transform.translation.y += velocity.velocity.y * time.fixed_seconds();
         }
     }
 }

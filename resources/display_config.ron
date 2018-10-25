@@ -1,5 +1,5 @@
 (
-  title: "Pong!",
+  title: "Santa!",
   dimensions: Some((500, 500)),
   max_dimensions: None,
   min_dimensions: None,
