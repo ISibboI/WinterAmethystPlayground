@@ -1,17 +1,7 @@
 use amethyst::core::timing::Time;
 use amethyst::core::Transform;
-use amethyst::ecs::{Entities, Join, LazyUpdate, Read, ReadStorage, System, WriteStorage};
-use amethyst::input::InputHandler;
-use amethyst::renderer::{SpriteRender, SpriteSheetHandle};
-use components::gravity_affected::GravityAffected;
+use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use components::velocity::Velocity;
-use entities::snowflake::Snowflake;
-use pong::ARENA_HEIGHT;
-use pong::ARENA_WIDTH;
-use rand::distributions::Distribution;
-use rand::distributions::Standard;
-use rand::distributions::Uniform;
-use resources::SpriteSheets;
 
 pub struct MovementSystem;
 

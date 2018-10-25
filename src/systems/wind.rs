@@ -1,19 +1,8 @@
-use amethyst::core::Time;
+/*use amethyst::core::Time;
 use amethyst::core::Transform;
 use amethyst::ecs::{Entities, Join, LazyUpdate, Read, ReadStorage, System, WriteStorage};
-use amethyst::input::InputHandler;
-use amethyst::renderer::{SpriteRender, SpriteSheetHandle, Transparent};
-use components::gravity_affected::GravityAffected;
-use components::velocity::Velocity;
 use components::wind_affected::WindAffected;
-use entities::snowflake::Snowflake;
-use pong::ARENA_HEIGHT;
-use pong::ARENA_WIDTH;
-use rand::distributions::Distribution;
-use rand::distributions::Standard;
-use rand::distributions::Uniform;
-use resources::SpriteSheets;
-/*use noise::{Point3, OpenSimplex, Seedable, NoiseFn};
+use noise::{Point3, OpenSimplex, Seedable, NoiseFn};
 
 pub struct WindSystem<T: NoiseFn<Point3<f64>>> {
     noise: T,

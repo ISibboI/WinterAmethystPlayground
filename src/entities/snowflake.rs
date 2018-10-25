@@ -1,9 +1,5 @@
-use amethyst::core::specs::world::Builder;
-use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::Component;
 use amethyst::ecs::prelude::DenseVecStorage;
-use amethyst::prelude::World;
-use amethyst::renderer::{SpriteRender, SpriteSheetHandle};
 
 pub struct Snowflake;
 

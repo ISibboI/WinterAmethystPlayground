@@ -1,11 +1,10 @@
 extern crate amethyst;
-extern crate gfx;
 extern crate rand;
 //extern crate noise;
 
 mod components;
 mod entities;
-mod pong;
+mod states;
 mod resources;
 mod systems;
 
@@ -14,12 +13,11 @@ use amethyst::{
     input::InputBundle,
     prelude::*,
     renderer::{
-        Blend, ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage,
+        ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage,
         ALPHA,
     },
 };
-use pong::Pong;
-use pong::ARENA_WIDTH;
+use states::game::Pong;
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());

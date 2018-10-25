@@ -1,15 +1,13 @@
 use amethyst::core::Transform;
-use amethyst::ecs::{Entities, Join, LazyUpdate, Read, ReadStorage, System, WriteStorage};
-use amethyst::input::InputHandler;
-use amethyst::renderer::{SpriteRender, SpriteSheetHandle, Transparent};
+use amethyst::ecs::{Entities, Join, LazyUpdate, Read, ReadStorage, System};
+use amethyst::renderer::{SpriteRender, Transparent};
 use components::gravity_affected::GravityAffected;
 use components::velocity::Velocity;
 use components::wind_affected::WindAffected;
 use entities::snowflake::Snowflake;
-use pong::ARENA_HEIGHT;
-use pong::ARENA_WIDTH;
+use states::game::ARENA_HEIGHT;
+use states::game::ARENA_WIDTH;
 use rand::distributions::Distribution;
-use rand::distributions::Standard;
 use rand::distributions::Uniform;
 use resources::SpriteSheets;
 

@@ -1,5 +1,3 @@
-pub mod paddle;
-
 use amethyst::assets::{AssetStorage, Loader};
 use amethyst::core::cgmath::Vector3;
 use amethyst::core::transform::Transform;
@@ -15,10 +13,9 @@ use components::gravity_affected::GravityAffected;
 use components::velocity::Velocity;
 use components::wind_affected::WindAffected;
 use entities::snowflake::Snowflake;
-use gfx::format::SurfaceType;
-use pong::paddle::Paddle;
-use pong::paddle::Side;
-use pong::paddle::PADDLE_WIDTH;
+use states::paddle::Paddle;
+use states::paddle::Side;
+use states::paddle::PADDLE_WIDTH;
 use resources::SpriteSheets;
 
 pub const ARENA_WIDTH: f32 = 100.0;
