@@ -66,12 +66,14 @@ impl<'s> SnowflakeSystem {
         updater.insert(snowflake, Snowflake::new());
 
         let mut transform = Transform::default();
-        let mut rng = rand::thread_rng();
+        let rng = &mut rand::thread_rng();
         let translation_distribution = Uniform::new_inclusive(-5.0, ARENA_WIDTH + 5.0);
-        transform.translation.x = translation_distribution.sample(&mut rng);
+        transform.translation.x = translation_distribution.sample(rng);
         transform.translation.y = ARENA_HEIGHT + 10.0;
-        transform.scale.x = 0.25;
-        transform.scale.y = 0.25;
+        let scale_distribution = Uniform::new_inclusive(0.5, 1.2);
+        let scale = scale_distribution.sample(rng);
+        transform.scale.x = 0.25 * scale;
+        transform.scale.y = 0.25 * scale;
         updater.insert(snowflake, transform);
 
         let sprite_render = SpriteRender {
@@ -81,7 +83,7 @@ impl<'s> SnowflakeSystem {
             flip_vertical: false,
         };
         let terminal_velocity_distribution = Uniform::new_inclusive(8.0, 12.0);
-        let terminal_velocity = terminal_velocity_distribution.sample(&mut rng);
+        let terminal_velocity = terminal_velocity_distribution.sample(rng);
         updater.insert(snowflake, sprite_render);
         updater.insert(snowflake, GravityAffected::new(terminal_velocity));
         updater.insert(snowflake, Velocity::new(0.0, 1.0 - terminal_velocity));
