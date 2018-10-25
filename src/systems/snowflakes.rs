@@ -9,15 +9,20 @@ use states::game::ARENA_HEIGHT;
 use states::game::ARENA_WIDTH;
 use rand::distributions::Distribution;
 use rand::distributions::Uniform;
-use resources::SpriteSheets;
+use resources::GameSpriteSheets;
+use amethyst::core::Time;
+
+const MAX_SNOWFLAKE_COUNT: usize = 200;
+const SNOWFLAKE_RATE: f32 = 10.0;
 
 pub struct SnowflakeSystem {
     snowflake_count: usize,
+    partial_snowflake: f32,
 }
 
 impl SnowflakeSystem {
     pub fn new() -> Self {
-        Self { snowflake_count: 0 }
+        Self { snowflake_count: 0, partial_snowflake: 0.0 }
     }
 }
 
@@ -25,14 +30,15 @@ impl<'s> System<'s> for SnowflakeSystem {
     type SystemData = (
         Entities<'s>,
         Read<'s, LazyUpdate>,
-        Read<'s, SpriteSheets>,
+        Read<'s, GameSpriteSheets>,
         ReadStorage<'s, Snowflake>,
         ReadStorage<'s, Transform>,
+        Read<'s, Time>,
     );
 
     fn run(
         &mut self,
-        (entities, updater, sprite_sheets, snowflakes, transforms): <Self as System<'s>>::SystemData,
+        (entities, updater, sprite_sheets, snowflakes, transforms, time): <Self as System<'s>>::SystemData,
     ) {
         for (entity, _, transform) in (&entities, &snowflakes, &transforms).join() {
             if transform.translation.y < -3.0 {
@@ -41,31 +47,46 @@ impl<'s> System<'s> for SnowflakeSystem {
             }
         }
 
-        if self.snowflake_count < 10000 {
-            let snowflake = entities.create();
-            updater.insert(snowflake, Snowflake::new());
+        self.partial_snowflake += time.delta_seconds() * SNOWFLAKE_RATE;
+        while self.partial_snowflake >= 1.0 {
+            if self.snowflake_count >= MAX_SNOWFLAKE_COUNT {
+                self.partial_snowflake = 0.0;
+                break;
+            }
 
-            let mut transform = Transform::default();
-            let mut rng = rand::thread_rng();
-            let translation_distribution = Uniform::new_inclusive(0.0, ARENA_WIDTH);
-            transform.translation.x = translation_distribution.sample(&mut rng);
-            transform.translation.y = ARENA_HEIGHT;
-            transform.scale.x = 0.5;
-            transform.scale.y = 0.5;
-            updater.insert(snowflake, transform);
-
-            let sprite_render = SpriteRender {
-                sprite_sheet: sprite_sheets.pong.clone().unwrap(),
-                sprite_number: 2,
-                flip_horizontal: false,
-                flip_vertical: false,
-            };
-            updater.insert(snowflake, sprite_render);
-            updater.insert(snowflake, GravityAffected::new(2.0));
-            updater.insert(snowflake, Velocity::new(0.0, 0.0));
-            updater.insert(snowflake, Transparent);
-            updater.insert(snowflake, WindAffected::new(1.0));
-            self.snowflake_count += 1;
+            self.spawn_snowflake(&entities, &updater, &sprite_sheets);
+            self.partial_snowflake -= 1.0;
         }
+    }
+}
+
+impl<'s> SnowflakeSystem {
+    fn spawn_snowflake(&mut self, entities: &Entities<'s>, updater: &Read<'s, LazyUpdate>, sprite_sheets: &Read<'s, GameSpriteSheets>) {
+        let snowflake = entities.create();
+        updater.insert(snowflake, Snowflake::new());
+
+        let mut transform = Transform::default();
+        let mut rng = rand::thread_rng();
+        let translation_distribution = Uniform::new_inclusive(-5.0, ARENA_WIDTH + 5.0);
+        transform.translation.x = translation_distribution.sample(&mut rng);
+        transform.translation.y = ARENA_HEIGHT + 10.0;
+        transform.scale.x = 0.25;
+        transform.scale.y = 0.25;
+        updater.insert(snowflake, transform);
+
+        let sprite_render = SpriteRender {
+            sprite_sheet: sprite_sheets.snowflake(),
+            sprite_number: 0,
+            flip_horizontal: false,
+            flip_vertical: false,
+        };
+        let terminal_velocity_distribution = Uniform::new_inclusive(8.0, 12.0);
+        let terminal_velocity = terminal_velocity_distribution.sample(&mut rng);
+        updater.insert(snowflake, sprite_render);
+        updater.insert(snowflake, GravityAffected::new(terminal_velocity));
+        updater.insert(snowflake, Velocity::new(0.0, 1.0 - terminal_velocity));
+        updater.insert(snowflake, Transparent);
+        updater.insert(snowflake, WindAffected::new(1.0));
+        self.snowflake_count += 1;
     }
 }

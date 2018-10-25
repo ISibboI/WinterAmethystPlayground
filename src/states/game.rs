@@ -16,7 +16,7 @@ use entities::snowflake::Snowflake;
 use states::paddle::Paddle;
 use states::paddle::Side;
 use states::paddle::PADDLE_WIDTH;
-use resources::SpriteSheets;
+use resources::GameSpriteSheets;
 
 pub const ARENA_WIDTH: f32 = 100.0;
 pub const ARENA_HEIGHT: f32 = 100.0;
@@ -28,11 +28,8 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         let world = data.world;
 
         // Load the spritesheet necessary to render the graphics.
-        let sprite_sheet_handle = load_sprite_sheet(world);
-
-        world.add_resource(SpriteSheets {
-            pong: Some(sprite_sheet_handle.clone()),
-        });
+        let sprite_sheets = load_sprite_sheets(world);
+        world.add_resource(sprite_sheets.clone());
 
         world.register::<Paddle>();
         world.register::<Snowflake>();
@@ -40,7 +37,7 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         world.register::<Velocity>();
         world.register::<WindAffected>();
 
-        initialise_paddles(world, sprite_sheet_handle);
+        initialise_paddles(world, sprite_sheets.pong());
         initialize_camera(world);
     }
 }
@@ -102,15 +99,21 @@ fn initialise_paddles(world: &mut World, sprite_sheet: SpriteSheetHandle) {
         .build();
 }
 
-fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
-    // Load the sprite sheet necessary to render the graphics.
+fn load_sprite_sheets(world: &mut World) -> GameSpriteSheets {
+    let mut sprite_sheets = GameSpriteSheets::default();
+    sprite_sheets.pong = Some(load_texture(world, "pong", 0));
+    sprite_sheets.snowflake = Some(load_texture(world, "snowflake", 1));
+    sprite_sheets
+}
+
+fn load_texture(world: &mut World, name: &str, texture_id: u64) -> SpriteSheetHandle {
     // The texture is the pixel data
     // `texture_handle` is a cloneable reference to the texture
     let texture_handle = {
         let loader = world.read_resource::<Loader>();
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
         loader.load(
-            "texture/pong_spritesheet.png",
+            format!("texture/{}_spritesheet.png", name),
             PngFormat,
             TextureMetadata::srgb_scale(),
             (),
@@ -120,14 +123,13 @@ fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
 
     // `texture_id` is a application defined ID given to the texture to store in
     // the `World`. This is needed to link the texture to the sprite_sheet.
-    let texture_id = 0;
     let mut material_texture_set = world.write_resource::<MaterialTextureSet>();
     material_texture_set.insert(texture_id, texture_handle);
 
     let loader = world.read_resource::<Loader>();
     let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     loader.load(
-        "texture/pong_spritesheet.ron", // Here we load the associated ron file
+        format!("texture/{}_spritesheet.ron", name), // Here we load the associated ron file
         SpriteSheetFormat,
         texture_id, // We pass it the ID of the texture we want it to use
         (),
