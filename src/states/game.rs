@@ -34,9 +34,26 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         world.register::<WorldCollisionAffected>();
         world.register::<Animated>();
 
+        initialize_background(world);
         initialize_player(world);
         initialize_camera(world);
     }
+}
+
+fn initialize_background(world: &mut World) {
+    let mut transform = Transform::default();
+    transform.translation.x = ARENA_WIDTH / 2.0;
+    transform.translation.y = 4.0;
+    transform.scale *= 0.5;
+
+    let sprite_render = SpriteRender {
+        sprite_sheet: world.read_resource::<GameSpriteSheets>().ground(),
+        sprite_number: 0,
+        flip_horizontal: false,
+        flip_vertical: false
+    };
+
+    world.create_entity().with(transform).with(sprite_render).build();
 }
 
 fn initialize_player(world: &mut World) {
@@ -85,6 +102,7 @@ fn load_sprite_sheets(world: &mut World) -> GameSpriteSheets {
     let mut sprite_sheets = GameSpriteSheets::default();
     sprite_sheets.set_santa(load_texture(world, "santa", 0));
     sprite_sheets.set_snowflake(load_texture(world, "snowflake", 1));
+    sprite_sheets.set_ground(load_texture(world, "ground", 2));
     sprite_sheets
 }
 

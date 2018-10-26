@@ -3,6 +3,8 @@ use amethyst::ecs::{System, Join, WriteStorage};
 use components::{WorldCollisionAffected, Velocity};
 use states::game::ARENA_WIDTH;
 
+const GROUND_HEIGHT: f32 = 4.0;
+
 pub struct WorldCollisionSystem;
 
 impl<'s> System<'s> for WorldCollisionSystem {
@@ -10,9 +12,9 @@ impl<'s> System<'s> for WorldCollisionSystem {
 
     fn run(&mut self, (mut world_collision_affecteds, mut transforms, mut velocities): <Self as System<'s>>::SystemData) {
         for (mut world_collision_affected, mut transform, mut velocity) in (&mut world_collision_affecteds, &mut transforms, &mut velocities).join() {
-            if transform.translation.y < world_collision_affected.height / 2.0 {
+            if transform.translation.y < world_collision_affected.height / 2.0 + GROUND_HEIGHT {
                 world_collision_affected.on_ground = true;
-                transform.translation.y = world_collision_affected.height / 2.0;
+                transform.translation.y = world_collision_affected.height / 2.0 + GROUND_HEIGHT;
                 velocity.velocity.y = 0.0;
             } else {
                 world_collision_affected.on_ground = false;
