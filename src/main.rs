@@ -15,6 +15,7 @@ use amethyst::{
     renderer::{
         ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage, ALPHA,
     },
+    ui::UiBundle,
 };
 use states::game::GameState;
 
@@ -42,6 +43,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(TransformBundle::new())?
         .with(systems::SnowflakeSystem::new(), "snowflake_system", &[])
         .with_bundle(input_bundle)?
+        .with_bundle(UiBundle::<String, String>::new())?
         .with(
             systems::WindSystem::default(),
             "wind_system",

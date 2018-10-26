@@ -44,12 +44,12 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
 fn initialize_background(world: &mut World) {
     let mut transform = Transform::default();
     transform.translation.x = ARENA_WIDTH / 2.0;
-    transform.translation.y = 4.0;
+    transform.translation.y = ARENA_HEIGHT / 2.0;;
     transform.translation.z = -1.0;
     transform.scale *= 0.5;
 
     let sprite_render = SpriteRender {
-        sprite_sheet: world.read_resource::<GameSpriteSheets>().ground(),
+        sprite_sheet: world.read_resource::<GameSpriteSheets>().background(),
         sprite_number: 0,
         flip_horizontal: false,
         flip_vertical: false
@@ -106,6 +106,7 @@ fn load_sprite_sheets(world: &mut World) -> GameSpriteSheets {
     sprite_sheets.set_santa(load_texture(world, "santa", 0));
     sprite_sheets.set_snowflake(load_texture(world, "snowflake", 1));
     sprite_sheets.set_ground(load_texture(world, "ground", 2));
+    sprite_sheets.set_background(load_texture(world, "background", 3));
     sprite_sheets
 }
 
