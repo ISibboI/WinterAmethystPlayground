@@ -43,8 +43,11 @@ impl<'s> System<'s> for SnowflakeSystem {
         &mut self,
         (entities, updater, sprite_sheets, snowflakes, transforms, time): <Self as System<'s>>::SystemData,
     ) {
+        let rng = &mut rand::thread_rng();
+        let deletion_distribution = Uniform::new(0, 15);
+
         for (entity, _, transform) in (&entities, &snowflakes, &transforms).join() {
-            if transform.translation.y < -3.0 {
+            if transform.translation.y < -3.0 || (transform.translation.y < 8.0 && deletion_distribution.sample(rng) == 0) {
                 entities.delete(entity).expect("Could not delete snowflake");
                 self.snowflake_count -= 1;
             }
@@ -80,15 +83,13 @@ impl<'s> SnowflakeSystem {
         transform.translation.x = translation_distribution.sample(rng);
         transform.translation.y = ARENA_HEIGHT + 10.0;
         transform.translation.z = z_distribution.sample(rng);
-        let scale_distribution = Uniform::new_inclusive(0.5, 1.2);
-        let scale = scale_distribution.sample(rng);
-        transform.scale.x = 0.25 * scale;
-        transform.scale.y = 0.25 * scale;
+        transform.scale *= 0.5;
         updater.insert(snowflake, transform);
 
+        let sprite_number_distribution = Uniform::new(1, 7);
         let sprite_render = SpriteRender {
             sprite_sheet: sprite_sheets.snowflake(),
-            sprite_number: 0,
+            sprite_number: sprite_number_distribution.sample(rng),
             flip_horizontal: false,
             flip_vertical: false,
         };

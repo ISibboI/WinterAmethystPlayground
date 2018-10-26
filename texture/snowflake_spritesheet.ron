@@ -1,5 +1,5 @@
 (
-    spritesheet_width: 13.0,
+    spritesheet_width: 27.0,
     spritesheet_height: 13.0,
     sprites: [
         (
@@ -7,6 +7,42 @@
             y: 0.0,
             width: 13.0,
             height: 13.0,
+        ),
+        (
+            x: 13.0,
+            y: 0.0,
+            width: 7.0,
+            height: 7.0,
+                ),
+                (
+            x: 20.0,
+            y: 0.0,
+            width: 7.0,
+            height: 7.0,
+                        ),
+                        (
+            x: 13.0,
+            y: 7.0,
+            width: 4.0,
+            height: 4.0,
+                                ),
+                                (
+            x: 15.0,
+            y: 2.0,
+            width: 3.0,
+            height: 3.0,
+                                        ),
+        (
+            x: 22.0,
+            y: 2.0,
+            width: 3.0,
+            height: 3.0,
+        ),
+        (
+            x: 16.0,
+            y: 3.0,
+            width: 1.0,
+            height: 1.0,
         ),
     ],
 )

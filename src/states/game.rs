@@ -44,6 +44,7 @@ fn initialize_background(world: &mut World) {
     let mut transform = Transform::default();
     transform.translation.x = ARENA_WIDTH / 2.0;
     transform.translation.y = 4.0;
+    transform.translation.z = -1.0;
     transform.scale *= 0.5;
 
     let sprite_render = SpriteRender {
