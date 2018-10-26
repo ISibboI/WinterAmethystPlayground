@@ -76,8 +76,10 @@ impl<'s> SnowflakeSystem {
         let mut transform = Transform::default();
         let rng = &mut rand::thread_rng();
         let translation_distribution = Uniform::new_inclusive(-5.0, ARENA_WIDTH + 5.0);
+        let z_distribution = Uniform::new_inclusive(-0.2, 0.5);
         transform.translation.x = translation_distribution.sample(rng);
         transform.translation.y = ARENA_HEIGHT + 10.0;
+        transform.translation.z = z_distribution.sample(rng);
         let scale_distribution = Uniform::new_inclusive(0.5, 1.2);
         let scale = scale_distribution.sample(rng);
         transform.scale.x = 0.25 * scale;
