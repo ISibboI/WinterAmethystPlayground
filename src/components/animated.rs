@@ -1,12 +1,12 @@
 use amethyst::ecs::{Component, DenseVecStorage};
 
 pub struct Animated {
-    pub time: f32
+    pub time: f32,
 }
 
 impl Default for Animated {
     fn default() -> Self {
-        Self {time: 0.0}
+        Self { time: 0.0 }
     }
 }
 

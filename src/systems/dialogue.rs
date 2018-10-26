@@ -1,8 +1,8 @@
-use amethyst::ecs::{System, Join, Read, ReadStorage, WriteStorage};
-use components::{Animated, WorldCollisionAffected};
+use amethyst::core::Time;
+use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
 use amethyst::renderer::SpriteRender;
-use amethyst::core::Time;
+use components::{Animated, WorldCollisionAffected};
 use std::collections::VecDeque;
 
 pub struct DialogueSystem {

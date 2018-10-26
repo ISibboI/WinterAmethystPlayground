@@ -1,7 +1,7 @@
 use amethyst::core::Time;
 use amethyst::core::Transform;
 use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
-use components::{WindAffected, WindGenerator, Velocity};
+use components::{Velocity, WindAffected, WindGenerator};
 use noise::{BasicMulti, MultiFractal, NoiseFn, Point3, Seedable};
 
 pub struct WindSystem<T: NoiseFn<Point3<f64>>> {
@@ -40,13 +40,19 @@ impl<'s, T: NoiseFn<Point3<f64>>> System<'s> for WindSystem<T> {
         Read<'s, Time>,
     );
 
-    fn run(&mut self, (wind_affecteds, mut transforms, wind_generators, velocities, time): <Self as System<'s>>::SystemData) {
+    fn run(
+        &mut self,
+        (wind_affecteds, mut transforms, wind_generators, velocities, time): <Self as System<'s>>::SystemData,
+    ) {
         let mut generators = Vec::new();
-        for (wind_generator, velocity, transform) in (&wind_generators, &velocities, &transforms).join() {
+        for (wind_generator, velocity, transform) in
+            (&wind_generators, &velocities, &transforms).join()
+        {
             generators.push((wind_generator.clone(), velocity.clone(), transform.clone()));
         }
 
-        let z = time.frame_number() as f64 * time.fixed_seconds() as f64 * self.wind_change_rate as f64;
+        let z =
+            time.frame_number() as f64 * time.fixed_seconds() as f64 * self.wind_change_rate as f64;
 
         for (wind_affected, mut transform) in (&wind_affecteds, &mut transforms).join() {
             let mut x = self.noise.get([

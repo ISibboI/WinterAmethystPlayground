@@ -47,7 +47,9 @@ impl<'s> System<'s> for SnowflakeSystem {
         let deletion_distribution = Uniform::new(0, 15);
 
         for (entity, _, transform) in (&entities, &snowflakes, &transforms).join() {
-            if transform.translation.y < -3.0 || (transform.translation.y < 8.0 && deletion_distribution.sample(rng) == 0) {
+            if transform.translation.y < -3.0
+                || (transform.translation.y < 8.0 && deletion_distribution.sample(rng) == 0)
+            {
                 entities.delete(entity).expect("Could not delete snowflake");
                 self.snowflake_count -= 1;
             }

@@ -52,10 +52,14 @@ fn initialize_background(world: &mut World) {
         sprite_sheet: world.read_resource::<GameSpriteSheets>().background(),
         sprite_number: 0,
         flip_horizontal: false,
-        flip_vertical: false
+        flip_vertical: false,
     };
 
-    world.create_entity().with(transform).with(sprite_render).build();
+    world
+        .create_entity()
+        .with(transform)
+        .with(sprite_render)
+        .build();
 }
 
 fn initialize_player(world: &mut World) {
@@ -79,7 +83,10 @@ fn initialize_player(world: &mut World) {
         .with(Velocity::default())
         .with(transform.clone())
         .with(sprite_render)
-        .with(WorldCollisionAffected::new(36.0 * transform.scale.x, 51.0 * transform.scale.y))
+        .with(WorldCollisionAffected::new(
+            36.0 * transform.scale.x,
+            51.0 * transform.scale.y,
+        ))
         .with(Transparent)
         .with(Animated::default())
         //.with(WindGenerator::new(18.0, 25.5, 0.3))

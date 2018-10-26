@@ -7,10 +7,7 @@ pub struct Player {
 
 impl Player {
     pub fn new(speed: f32, jump_power: f32) -> Self {
-        Self {
-            speed,
-            jump_power,
-        }
+        Self { speed, jump_power }
     }
 
     pub fn speed(&self) -> f32 {
