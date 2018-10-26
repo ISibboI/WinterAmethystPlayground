@@ -33,6 +33,7 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         world.register::<Player>();
         world.register::<WorldCollisionAffected>();
         world.register::<Animated>();
+        world.register::<WindGenerator>();
 
         initialize_background(world);
         initialize_player(world);
@@ -81,6 +82,7 @@ fn initialize_player(world: &mut World) {
         .with(WorldCollisionAffected::new(36.0 * transform.scale.x, 51.0 * transform.scale.y))
         .with(Transparent)
         .with(Animated::default())
+        //.with(WindGenerator::new(18.0, 25.5, 0.3))
         .build();
 }
 
