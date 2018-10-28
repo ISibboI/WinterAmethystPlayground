@@ -1,9 +1,12 @@
 extern crate amethyst;
 extern crate noise;
 extern crate rand;
+#[macro_use]
+extern crate serde_derive;
 
 mod components;
 mod entities;
+mod events;
 mod resources;
 mod states;
 mod systems;
@@ -15,6 +18,7 @@ use amethyst::{
     renderer::{
         ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage, ALPHA,
     },
+    ui::DrawUi,
     ui::UiBundle,
 };
 use states::game::GameState;
@@ -32,7 +36,8 @@ fn main() -> amethyst::Result<()> {
                 ColorMask::all(),
                 ALPHA,
                 Some(DepthMode::LessEqualWrite),
-            )),
+            ))
+            .with_pass(DrawUi::new()),
     );
 
     let binding_path = "./resources/bindings_config.ron";
@@ -44,6 +49,7 @@ fn main() -> amethyst::Result<()> {
         .with(systems::SnowflakeSystem::new(), "snowflake_system", &[])
         .with_bundle(input_bundle)?
         .with_bundle(UiBundle::<String, String>::new())?
+        .with(systems::EventSystem::default(), "event_system", &[])
         .with(
             systems::WindSystem::default(),
             "wind_system",
@@ -73,7 +79,11 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
-                .with_sprite_visibility_sorting(&["world_collision_system"]),
+                .with_sprite_visibility_sorting(&[
+                    "world_collision_system",
+                    "transform_system",
+                    "ui_transform",
+                ]),
         )?;
     let mut game = Application::new("./", GameState, game_data)?;
     game.run();

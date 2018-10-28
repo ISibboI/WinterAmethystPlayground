@@ -1,0 +1,20 @@
+#![enable(implicit_some)]
+Text(
+    transform: (
+        id: "dialogue",
+        x: 0.0,
+        y: 0.0,
+        z: 0.5,
+        width: 500.0,
+        height: 250.0,
+        tab_order: 2,
+        anchor: Middle,
+        transparent: true,
+    ),
+    text: (
+        text: "Blabbcafgrdacgxf blub test do you see me?",
+        font: File("font/square.ttf", Ttf, ()),
+        font_size: 25.,
+        color: (1.0, 1.0, 1.0, 1.0),
+    )
+)

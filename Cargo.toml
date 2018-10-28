@@ -6,6 +6,8 @@ authors = []
 [dependencies]
 rand = "0.5"
 noise = "0.5"
+serde = "1"
+serde_derive = "1"
 
 [dependencies.amethyst]
 version = "0.9.0"

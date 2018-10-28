@@ -5,12 +5,17 @@ use amethyst::renderer::{
     Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
     SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
 };
+use amethyst::shrev::EventChannel;
+use amethyst::ui::UiCreator;
 use amethyst::GameData;
 use amethyst::SimpleState;
 use amethyst::StateData;
 use components::*;
 use entities::Player;
 use entities::Snowflake;
+use events::actions::EventAction;
+use events::Event;
+use resources::dialogue::Dialogue;
 use resources::GameSpriteSheets;
 
 pub const ARENA_WIDTH: f32 = 100.0;
@@ -34,6 +39,11 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         world.register::<WorldCollisionAffected>();
         world.register::<Animated>();
         world.register::<WindGenerator>();
+        world.register::<Event>();
+
+        world.add_resource(EventChannel::<Dialogue>::new());
+
+        world.exec(|mut creator: UiCreator| creator.create("ui/dialogue.ron", ()));
 
         initialize_background(world);
         initialize_player(world);

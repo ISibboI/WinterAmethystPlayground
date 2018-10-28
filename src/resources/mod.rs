@@ -1,5 +1,7 @@
 use amethyst::renderer::SpriteSheetHandle;
 
+pub mod dialogue;
+
 #[derive(Default, Clone)]
 pub struct GameSpriteSheets {
     santa: Option<SpriteSheetHandle>,
