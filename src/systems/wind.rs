@@ -51,22 +51,23 @@ impl<'s, T: NoiseFn<Point3<f64>>> System<'s> for WindSystem<T> {
             generators.push((wind_generator.clone(), velocity.clone(), transform.clone()));
         }
 
-        let z =
-            time.frame_number() as f64 * time.fixed_seconds() as f64 * self.wind_change_rate as f64;
+        let z = time.frame_number() as f64
+            * f64::from(time.fixed_seconds())
+            * f64::from(self.wind_change_rate);
 
         for (wind_affected, mut transform) in (&wind_affecteds, &mut transforms).join() {
             let mut x = self.noise.get([
-                transform.translation.x as f64,
-                transform.translation.y as f64,
-                z + wind_affected.time_offset as f64,
+                f64::from(transform.translation.x),
+                f64::from(transform.translation.y),
+                z + f64::from(wind_affected.time_offset),
             ]) as f32
                 * self.wind_speed
                 * wind_affected.air_resistance
                 * time.fixed_seconds();
             let mut y = self.noise.get([
-                transform.translation.x as f64,
-                transform.translation.y as f64,
-                z + wind_affected.time_offset as f64 + 10000.0,
+                f64::from(transform.translation.x),
+                f64::from(transform.translation.y),
+                z + f64::from(wind_affected.time_offset) + 10000.0,
             ]) as f32
                 * self.wind_speed
                 * wind_affected.air_resistance

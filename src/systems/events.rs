@@ -37,7 +37,6 @@ impl<'s> System<'s> for EventSystem {
                         self.actions.push(event.action.clone());
                     }
                 }
-                trigger => panic!("Unknown trigger: {:?}", trigger),
             }
         }
 
@@ -47,7 +46,6 @@ impl<'s> System<'s> for EventSystem {
             for action in &self.actions {
                 match action.clone() {
                     EventAction::Dialogue(dialogue) => dialogue_actions.single_write(dialogue),
-                    action => panic!("Unknown action: {:?}", action),
                 }
             }
             self.actions.clear();

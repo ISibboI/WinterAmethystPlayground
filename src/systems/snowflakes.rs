@@ -92,7 +92,7 @@ impl<'s> SnowflakeSystem {
 
         let sprite_render = SpriteRender {
             sprite_sheet: sprite_sheets.snowflake(),
-            sprite_number: sprite_number,
+            sprite_number,
             flip_horizontal: false,
             flip_vertical: false,
         };
