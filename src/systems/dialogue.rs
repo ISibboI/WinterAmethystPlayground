@@ -1,17 +1,21 @@
+use amethyst::core::specs::SystemData;
 use amethyst::core::Time;
-use amethyst::ecs::{Entities, Entity, Join, Read, ReadStorage, Resources, System, WriteStorage};
+use amethyst::ecs::{
+    Entities, Entity, Join, Read, ReadStorage, Resources, System, Write, WriteStorage,
+};
 use amethyst::input::InputHandler;
 use amethyst::renderer::SpriteRender;
 use amethyst::shrev::{EventChannel, ReaderId};
-use amethyst::ui::{FontHandle, UiText};
+use amethyst::ui::{FontHandle, UiFinder, UiText};
 use components::{Animated, WorldCollisionAffected};
 use resources::dialogue::Dialogue;
+use resources::Ui;
 use std::collections::VecDeque;
 
 #[derive(Default)]
 pub struct DialogueSystem {
     reader: Option<ReaderId<Dialogue>>,
-    current_dialogue: Option<UiText>,
+    dialogue_text: Option<Entity>,
 }
 
 impl<'s> System<'s> for DialogueSystem {
@@ -20,21 +24,28 @@ impl<'s> System<'s> for DialogueSystem {
         Read<'s, InputHandler<String, String>>,
         Read<'s, EventChannel<Dialogue>>,
         WriteStorage<'s, UiText>,
+        UiFinder<'s>,
     );
 
-    // TODO Make this system handle the positioning of the dialogue box. The dialogue should be created by some kind of event system.
     fn run(
         &mut self,
-        (entities, input_handler, dialogues, mut ui_texts): <Self as System<'s>>::SystemData,
+        (entities, input_handler, dialogues, mut ui_texts, ui_finder): <Self as System<'s>>::SystemData,
     ) {
-        let reader = self.reader.as_mut().unwrap();
-
-        if self.current_dialogue.as_ref().unwrap().text == "" {}
+        if let Some(dialogue_text) = self.dialogue_text {
+            let dialogue_text = &mut ui_texts.get_mut(dialogue_text).unwrap();
+            if dialogue_text.text == "" {
+                let reader = self.reader.as_mut().unwrap();
+                let mut reader = dialogues.read(reader);
+                if let Some(dialogue) = reader.next() {
+                    dialogue_text.text = dialogue.text.clone();
+                }
+            }
+        } else {
+            self.dialogue_text = ui_finder.find("dialogue");
+        }
     }
 
     fn setup(&mut self, res: &mut Resources) {
-        self.reader = Some(res.fetch_mut::<EventChannel<Dialogue>>().register_reader());
-
-        for ui_text in &res.fetch_mut::<UiText>() {}
+        self.reader = Some(Write::<EventChannel<Dialogue>>::fetch(res).register_reader());
     }
 }

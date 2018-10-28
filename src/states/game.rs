@@ -6,7 +6,7 @@ use amethyst::renderer::{
     SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
 };
 use amethyst::shrev::EventChannel;
-use amethyst::ui::UiCreator;
+use amethyst::ui::{UiCreator, UiFinder};
 use amethyst::GameData;
 use amethyst::SimpleState;
 use amethyst::StateData;
@@ -14,9 +14,10 @@ use components::*;
 use entities::Player;
 use entities::Snowflake;
 use events::actions::EventAction;
+use events::triggers::EventTrigger;
 use events::Event;
 use resources::dialogue::Dialogue;
-use resources::GameSpriteSheets;
+use resources::{GameSpriteSheets, Ui};
 
 pub const ARENA_WIDTH: f32 = 100.0;
 pub const ARENA_HEIGHT: f32 = 100.0;
@@ -41,13 +42,19 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         world.register::<WindGenerator>();
         world.register::<Event>();
 
-        world.add_resource(EventChannel::<Dialogue>::new());
-
         world.exec(|mut creator: UiCreator| creator.create("ui/dialogue.ron", ()));
 
         initialize_background(world);
         initialize_player(world);
         initialize_camera(world);
+
+        let event = Event {
+            trigger: EventTrigger::Timed(1.0),
+            action: EventAction::Dialogue(Dialogue {
+                text: "Hello! I'm Santa.".to_owned(),
+            }),
+        };
+        world.create_entity().with(event).build();
     }
 }
 

@@ -1,5 +1,7 @@
 use amethyst::core::Time;
-use amethyst::ecs::{Entities, Join, Read, ReadStorage, System, Write, WriteStorage};
+use amethyst::ecs::{
+    Component, Entities, Join, Read, ReadStorage, Resources, System, Write, WriteStorage,
+};
 use amethyst::input::InputHandler;
 use amethyst::shrev::EventChannel;
 use events::actions::EventAction;

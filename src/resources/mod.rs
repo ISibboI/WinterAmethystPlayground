@@ -1,3 +1,4 @@
+use amethyst::ecs::Entity;
 use amethyst::renderer::SpriteSheetHandle;
 
 pub mod dialogue;
@@ -42,4 +43,9 @@ impl GameSpriteSheets {
     pub fn set_background(&mut self, background: SpriteSheetHandle) {
         self.background = Some(background);
     }
+}
+
+#[derive(Default)]
+pub struct Ui {
+    pub dialogue_text: Option<Entity>,
 }

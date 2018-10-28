@@ -49,6 +49,11 @@ fn main() -> amethyst::Result<()> {
         .with(systems::SnowflakeSystem::new(), "snowflake_system", &[])
         .with_bundle(input_bundle)?
         .with_bundle(UiBundle::<String, String>::new())?
+        .with(
+            systems::DialogueSystem::default(),
+            "dialogue_system",
+            &["ui_transform"],
+        )
         .with(systems::EventSystem::default(), "event_system", &[])
         .with(
             systems::WindSystem::default(),
@@ -79,11 +84,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
-                .with_sprite_visibility_sorting(&[
-                    "world_collision_system",
-                    "transform_system",
-                    "ui_transform",
-                ]),
+                .with_sprite_visibility_sorting(&["world_collision_system", "ui_transform"]),
         )?;
     let mut game = Application::new("./", GameState, game_data)?;
     game.run();
