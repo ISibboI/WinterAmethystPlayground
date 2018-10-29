@@ -1,6 +1,5 @@
 use amethyst::ecs::{Component, DenseVecStorage};
-use events::actions::EventAction;
-use events::triggers::EventTrigger;
+use events::{actions::EventAction, triggers::EventTrigger};
 
 pub mod actions;
 pub mod triggers;

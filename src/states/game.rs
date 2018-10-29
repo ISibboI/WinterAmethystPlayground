@@ -1,23 +1,19 @@
-use amethyst::assets::{AssetStorage, Loader};
-use amethyst::core::transform::Transform;
-use amethyst::prelude::*;
-use amethyst::renderer::{
-    Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
-    SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
+use amethyst::{
+    assets::{AssetStorage, Loader},
+    core::transform::Transform,
+    prelude::*,
+    renderer::{
+        Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
+        SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
+    },
+    shrev::EventChannel,
+    ui::{UiCreator, UiFinder},
+    GameData, SimpleState, StateData,
 };
-use amethyst::shrev::EventChannel;
-use amethyst::ui::{UiCreator, UiFinder};
-use amethyst::GameData;
-use amethyst::SimpleState;
-use amethyst::StateData;
 use components::*;
-use entities::Player;
-use entities::Snowflake;
-use events::actions::EventAction;
-use events::triggers::EventTrigger;
-use events::Event;
-use resources::dialogue::Dialogue;
-use resources::{GameSpriteSheets, Ui};
+use entities::{Player, Snowflake};
+use events::{actions::EventAction, triggers::EventTrigger, Event};
+use resources::{dialogue::Dialogue, GameSpriteSheets, Ui};
 
 pub const ARENA_WIDTH: f32 = 100.0;
 pub const ARENA_HEIGHT: f32 = 100.0;

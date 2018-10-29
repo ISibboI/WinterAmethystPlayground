@@ -1,6 +1,7 @@
-use amethyst::core::timing::Time;
-use amethyst::core::Transform;
-use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
+use amethyst::{
+    core::{timing::Time, Transform},
+    ecs::{Join, Read, ReadStorage, System, WriteStorage},
+};
 use components::Velocity;
 
 pub struct MovementSystem;

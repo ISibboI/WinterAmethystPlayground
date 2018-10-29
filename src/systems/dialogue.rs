@@ -1,15 +1,13 @@
-use amethyst::core::specs::SystemData;
-use amethyst::core::Time;
-use amethyst::ecs::{
-    Entities, Entity, Join, Read, ReadStorage, Resources, System, Write, WriteStorage,
+use amethyst::{
+    core::{specs::SystemData, Time},
+    ecs::{Entities, Entity, Join, Read, ReadStorage, Resources, System, Write, WriteStorage},
+    input::InputHandler,
+    renderer::SpriteRender,
+    shrev::{EventChannel, ReaderId},
+    ui::{FontHandle, UiFinder, UiText},
 };
-use amethyst::input::InputHandler;
-use amethyst::renderer::SpriteRender;
-use amethyst::shrev::{EventChannel, ReaderId};
-use amethyst::ui::{FontHandle, UiFinder, UiText};
 use components::{Animated, WorldCollisionAffected};
-use resources::dialogue::Dialogue;
-use resources::Ui;
+use resources::{dialogue::Dialogue, Ui};
 use std::collections::VecDeque;
 
 #[derive(Default)]

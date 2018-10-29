@@ -1,5 +1,7 @@
-use amethyst::core::cgmath::Vector2;
-use amethyst::ecs::{Component, DenseVecStorage};
+use amethyst::{
+    core::cgmath::Vector2,
+    ecs::{Component, DenseVecStorage},
+};
 
 pub struct Velocity {
     pub velocity: Vector2<f32>,

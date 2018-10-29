@@ -1,5 +1,4 @@
-use amethyst::ecs::prelude::Component;
-use amethyst::ecs::prelude::DenseVecStorage;
+use amethyst::ecs::prelude::{Component, DenseVecStorage};
 
 pub struct Snowflake;
 

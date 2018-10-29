@@ -18,8 +18,7 @@ use amethyst::{
     renderer::{
         ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage, ALPHA,
     },
-    ui::DrawUi,
-    ui::UiBundle,
+    ui::{DrawUi, UiBundle},
 };
 use states::game::GameState;
 

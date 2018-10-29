@@ -1,16 +1,15 @@
-use amethyst::assets::{AssetStorage, Loader};
-use amethyst::core::transform::Transform;
-use amethyst::prelude::*;
-use amethyst::renderer::{
-    Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
-    SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
+use amethyst::{
+    assets::{AssetStorage, Loader},
+    core::transform::Transform,
+    prelude::*,
+    renderer::{
+        Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
+        SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
+    },
+    GameData, SimpleState, StateData,
 };
-use amethyst::GameData;
-use amethyst::SimpleState;
-use amethyst::StateData;
 use components::*;
-use entities::Player;
-use entities::Snowflake;
+use entities::{Player, Snowflake};
 use resources::GameSpriteSheets;
 
 pub const ARENA_WIDTH: f32 = 100.0;

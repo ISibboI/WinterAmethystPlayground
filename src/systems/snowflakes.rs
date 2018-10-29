@@ -1,16 +1,13 @@
-use amethyst::core::Time;
-use amethyst::core::Transform;
-use amethyst::ecs::{Entities, Join, LazyUpdate, Read, ReadStorage, System};
-use amethyst::renderer::{SpriteRender, Transparent};
-use components::GravityAffected;
-use components::Velocity;
-use components::WindAffected;
+use amethyst::{
+    core::{Time, Transform},
+    ecs::{Entities, Join, LazyUpdate, Read, ReadStorage, System},
+    renderer::{SpriteRender, Transparent},
+};
+use components::{GravityAffected, Velocity, WindAffected};
 use entities::Snowflake;
-use rand::distributions::Distribution;
-use rand::distributions::Uniform;
+use rand::distributions::{Distribution, Uniform};
 use resources::GameSpriteSheets;
-use states::game::ARENA_HEIGHT;
-use states::game::ARENA_WIDTH;
+use states::game::{ARENA_HEIGHT, ARENA_WIDTH};
 
 const MAX_SNOWFLAKE_COUNT: usize = 200;
 const SNOWFLAKE_RATE: f32 = 10.0;

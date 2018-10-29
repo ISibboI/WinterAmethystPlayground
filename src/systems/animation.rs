@@ -1,7 +1,9 @@
-use amethyst::core::Time;
-use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
-use amethyst::input::InputHandler;
-use amethyst::renderer::SpriteRender;
+use amethyst::{
+    core::Time,
+    ecs::{Join, Read, ReadStorage, System, WriteStorage},
+    input::InputHandler,
+    renderer::SpriteRender,
+};
 use components::{Animated, WorldCollisionAffected};
 
 const ANIMATION_DELAY: f32 = 0.2;

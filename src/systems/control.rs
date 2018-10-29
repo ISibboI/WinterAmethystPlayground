@@ -1,5 +1,7 @@
-use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
-use amethyst::input::InputHandler;
+use amethyst::{
+    ecs::{Join, Read, ReadStorage, System, WriteStorage},
+    input::InputHandler,
+};
 use components::{Velocity, WorldCollisionAffected};
 use entities::Player;
 

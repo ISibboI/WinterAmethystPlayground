@@ -1,6 +1,7 @@
-use amethyst::core::Time;
-use amethyst::core::Transform;
-use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
+use amethyst::{
+    core::{Time, Transform},
+    ecs::{Join, Read, ReadStorage, System, WriteStorage},
+};
 use components::{Velocity, WindAffected, WindGenerator};
 use noise::{BasicMulti, MultiFractal, NoiseFn, Point3, Seedable};
 

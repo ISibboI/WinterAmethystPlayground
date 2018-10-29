@@ -1,5 +1,7 @@
-use amethyst::core::Transform;
-use amethyst::ecs::{Join, System, WriteStorage};
+use amethyst::{
+    core::Transform,
+    ecs::{Join, System, WriteStorage},
+};
 use components::{Velocity, WorldCollisionAffected};
 use states::game::ARENA_WIDTH;
 

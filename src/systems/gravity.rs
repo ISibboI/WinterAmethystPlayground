@@ -1,7 +1,8 @@
-use amethyst::core::timing::Time;
-use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
-use components::GravityAffected;
-use components::Velocity;
+use amethyst::{
+    core::timing::Time,
+    ecs::{Join, Read, ReadStorage, System, WriteStorage},
+};
+use components::{GravityAffected, Velocity};
 
 pub struct GravitySystem;
 
