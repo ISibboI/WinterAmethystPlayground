@@ -1,5 +1,5 @@
 use amethyst::{
-    assets::{AssetStorage, Loader},
+    assets::{AssetStorage, Loader, RonFormat},
     core::transform::Transform,
     prelude::*,
     renderer::{
@@ -14,6 +14,7 @@ use components::*;
 use entities::{Player, Snowflake};
 use events::{actions::EventAction, triggers::EventTrigger, Event};
 use resources::{dialogue::Dialogue, GameSpriteSheets, Ui};
+//use events::GameEventList;
 
 pub const ARENA_WIDTH: f32 = 100.0;
 pub const ARENA_HEIGHT: f32 = 100.0;
@@ -51,6 +52,8 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
             }),
         };
         world.create_entity().with(event).build();
+
+        //load_events(world);
     }
 }
 
@@ -160,3 +163,9 @@ fn load_texture(world: &mut World, name: &str, texture_id: u64) -> SpriteSheetHa
         &sprite_sheet_store,
     )
 }
+
+/*fn load_events(world: &mut World) {
+    let loader = world.read_resource::<Loader>();
+    let event_store = &world.read_resource();
+    loader.load("events/events.ron", RonFormat, None, (), event_store);
+}*/
