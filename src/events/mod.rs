@@ -9,7 +9,7 @@ pub mod triggers;
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Event {
     pub trigger: EventTrigger,
-    pub action: EventAction,
+    pub actions: Vec<EventAction>,
 }
 
 impl Component for Event {

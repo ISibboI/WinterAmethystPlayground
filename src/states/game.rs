@@ -45,13 +45,20 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         initialize_player(world);
         initialize_camera(world);
 
-        let event = Event {
+        world.create_entity().with(Event {
             trigger: EventTrigger::Timed(1.0),
-            action: EventAction::Dialogue(Dialogue {
-                text: "Hello! I'm Santa.".to_owned(),
-            }),
-        };
-        world.create_entity().with(event).build();
+            actions: vec![
+                EventAction::Dialogue(Dialogue {
+                    text: "Hello! I'm Santa.".to_owned(),
+                }),
+                EventAction::Dialogue(Dialogue {
+                    text: "Help me give all the presents!".to_owned(),
+                }),
+                EventAction::Dialogue(Dialogue {
+                    text: "Don't unwrap them all yourself!".to_owned(),
+                }),
+            ]
+        }).build();
 
         //load_events(world);
     }

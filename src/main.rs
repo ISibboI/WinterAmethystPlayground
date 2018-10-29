@@ -1,3 +1,5 @@
+#![feature(nll)]
+
 extern crate amethyst;
 extern crate noise;
 extern crate rand;

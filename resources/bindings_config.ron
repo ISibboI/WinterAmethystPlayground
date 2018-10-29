@@ -4,5 +4,6 @@
     },
     actions: {
         "jump": [Key(Space), Key(W)],
+        "action": [Key(F)],
     },
 )

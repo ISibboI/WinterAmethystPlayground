@@ -32,7 +32,7 @@ impl<'s> System<'s> for EventSystem {
                 EventTrigger::Timed(time) => {
                     if current_time >= *time {
                         entities.delete(entity).unwrap();
-                        self.actions.push(event.action.clone());
+                        self.actions.extend(event.actions.iter().cloned());
                     }
                 }
             }
