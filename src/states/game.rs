@@ -1,5 +1,5 @@
 use amethyst::{
-    assets::{AssetStorage, Loader, PrefabLoader, RonFormat, ProgressCounter, Completion},
+    assets::{AssetStorage, Completion, Loader, PrefabLoader, ProgressCounter, RonFormat},
     core::transform::Transform,
     ecs::Write,
     prelude::*,
@@ -54,23 +54,37 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
 
         world.exec(
             |(loader, mut store): (PrefabLoader<GameEventPrefab>, Write<GameEvents>)| {
-                store.handle = Some(loader.load("resources/events.ron", RonFormat, (), self.progress.as_mut().unwrap()));
+                store.handle = Some(loader.load(
+                    "resources/events.ron",
+                    RonFormat,
+                    (),
+                    self.progress.as_mut().unwrap(),
+                ));
             },
         );
 
         //load_events(world);
     }
 
-    fn update(&mut self, data: &mut StateData<'_, GameData<'_, '_>>) -> Trans<GameData<'a, 'b>, StateEvent> {
+    fn update(
+        &mut self,
+        data: &mut StateData<'_, GameData<'_, '_>>,
+    ) -> Trans<GameData<'a, 'b>, StateEvent> {
         if !self.initialized {
             self.initialized = match self.progress.as_ref().map(|p| p.complete()) {
                 None | Some(Completion::Loading) => false,
                 _ => {
-                    let event_handle = data.world.read_resource::<GameEvents>().handle.as_ref().unwrap().clone();
+                    let event_handle = data
+                        .world
+                        .read_resource::<GameEvents>()
+                        .handle
+                        .as_ref()
+                        .unwrap()
+                        .clone();
                     data.world.create_entity().with(event_handle).build();
                     println!("GameState initialized");
                     true
-                },
+                }
             }
         }
 
