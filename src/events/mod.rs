@@ -1,6 +1,8 @@
-use amethyst::ecs::{Component, DenseVecStorage};
-//use amethyst::core::specs::storage::UnprotectedStorage;
-use amethyst::assets::Asset;
+use amethyst::{
+    assets::{Handle, Prefab, PrefabData, PrefabError, ProgressCounter},
+    core::specs::error::Error,
+    ecs::{Component, DenseVecStorage, Entity, WriteStorage},
+};
 use events::{actions::EventAction, triggers::EventTrigger};
 
 pub mod actions;
@@ -16,13 +18,30 @@ impl Component for Event {
     type Storage = DenseVecStorage<Self>;
 }
 
-/*#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct GameEventList {
-    pub events: Vec<Event>,
+#[derive(Default, Debug, Serialize, Deserialize, Clone)]
+pub struct GameEventPrefab {
+    event: Option<Event>,
 }
 
-impl Asset for GameEventList {
-    const NAME: &'static str = "game_event_list";
-    type Data = Self;
-    type HandleStorage = DenseVecStorage<Self>;
-}*/
+#[derive(Default)]
+pub struct GameEvents {
+    pub handle: Option<Handle<Prefab<GameEventPrefab>>>,
+}
+
+impl<'a> PrefabData<'a> for GameEventPrefab {
+    type SystemData = (WriteStorage<'a, Event>);
+    type Result = ();
+
+    fn add_to_entity(
+        &self,
+        entity: Entity,
+        events: &mut <Self as PrefabData<'a>>::SystemData,
+        entities: &[Entity],
+    ) -> Result<<Self as PrefabData<'a>>::Result, Error> {
+        events
+            .insert(entity, self.event.clone().unwrap())
+            .expect("Could not insert event");
+        println!("Loaded prefab");
+        Ok(())
+    }
+}

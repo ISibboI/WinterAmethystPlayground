@@ -1,6 +1,7 @@
 use amethyst::{
-    assets::{AssetStorage, Loader, RonFormat},
+    assets::{AssetStorage, Loader, PrefabLoader, RonFormat, ProgressCounter, Completion},
     core::transform::Transform,
+    ecs::Write,
     prelude::*,
     renderer::{
         Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
@@ -12,17 +13,23 @@ use amethyst::{
 };
 use components::*;
 use entities::{Player, Snowflake};
-use events::{actions::EventAction, triggers::EventTrigger, Event};
+use events::{actions::EventAction, triggers::EventTrigger, Event, GameEventPrefab, GameEvents};
 use resources::{dialogue::Dialogue, GameSpriteSheets, Ui};
 //use events::GameEventList;
 
 pub const ARENA_WIDTH: f32 = 100.0;
 pub const ARENA_HEIGHT: f32 = 100.0;
 
-pub struct GameState;
+#[derive(Default)]
+pub struct GameState {
+    progress: Option<ProgressCounter>,
+    initialized: bool,
+}
 
 impl<'a, 'b> SimpleState<'a, 'b> for GameState {
     fn on_start(&mut self, data: StateData<GameData>) {
+        self.progress = Some(ProgressCounter::default());
+
         let world = data.world;
 
         // Load the spritesheet necessary to render the graphics.
@@ -45,22 +52,29 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         initialize_player(world);
         initialize_camera(world);
 
-        world.create_entity().with(Event {
-            trigger: EventTrigger::Timed(1.0),
-            actions: vec![
-                EventAction::Dialogue(Dialogue {
-                    text: "Hello! I'm Santa.".to_owned(),
-                }),
-                EventAction::Dialogue(Dialogue {
-                    text: "Help me give all the presents!".to_owned(),
-                }),
-                EventAction::Dialogue(Dialogue {
-                    text: "Don't unwrap them all yourself!".to_owned(),
-                }),
-            ]
-        }).build();
+        world.exec(
+            |(loader, mut store): (PrefabLoader<GameEventPrefab>, Write<GameEvents>)| {
+                store.handle = Some(loader.load("resources/events.ron", RonFormat, (), self.progress.as_mut().unwrap()));
+            },
+        );
 
         //load_events(world);
+    }
+
+    fn update(&mut self, data: &mut StateData<'_, GameData<'_, '_>>) -> Trans<GameData<'a, 'b>, StateEvent> {
+        if !self.initialized {
+            self.initialized = match self.progress.as_ref().map(|p| p.complete()) {
+                None | Some(Completion::Loading) => false,
+                _ => {
+                    let event_handle = data.world.read_resource::<GameEvents>().handle.as_ref().unwrap().clone();
+                    data.world.create_entity().with(event_handle).build();
+                    println!("GameState initialized");
+                    true
+                },
+            }
+        }
+
+        Trans::None
     }
 }
 

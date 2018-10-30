@@ -1,0 +1,14 @@
+#![enable(implicit_some)]
+
+Prefab (entities: [
+(data: (event: (trigger: Timed(1.0), actions: [
+    Dialogue((text: "Hello, I'm Santa!")),
+    Dialogue((text: "Help me distribute all the presents!")),
+    Dialogue((text: "And do not unwrap them yourself!")),
+]))),
+(data: (event: (trigger: Timed(5.0), actions: [
+    Dialogue((text: "But first, you have to walk to the right.")),
+    Dialogue((text: "To do that, press <D> on your keyboard.")),
+    Dialogue((text: "Do it now!")),
+]))),
+])

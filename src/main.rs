@@ -1,5 +1,6 @@
 #![feature(nll)]
 
+#[macro_use]
 extern crate amethyst;
 extern crate noise;
 extern crate rand;
@@ -14,6 +15,7 @@ mod states;
 mod systems;
 
 use amethyst::{
+    assets::PrefabLoaderSystem,
     core::transform::TransformBundle,
     input::InputBundle,
     prelude::*,
@@ -22,6 +24,7 @@ use amethyst::{
     },
     ui::{DrawUi, UiBundle},
 };
+use events::GameEventPrefab;
 use states::game::GameState;
 
 fn main() -> amethyst::Result<()> {
@@ -46,6 +49,11 @@ fn main() -> amethyst::Result<()> {
         InputBundle::<String, String>::new().with_bindings_from_file(binding_path)?;
 
     let game_data = GameDataBuilder::default()
+        .with(
+            PrefabLoaderSystem::<GameEventPrefab>::default(),
+            "event_loader",
+            &[],
+        )
         .with_bundle(TransformBundle::new())?
         .with(systems::SnowflakeSystem::new(), "snowflake_system", &[])
         .with_bundle(input_bundle)?
@@ -87,7 +95,7 @@ fn main() -> amethyst::Result<()> {
                 .with_sprite_sheet_processor()
                 .with_sprite_visibility_sorting(&["world_collision_system", "ui_transform"]),
         )?;
-    let mut game = Application::new("./", GameState, game_data)?;
+    let mut game = Application::new("./", GameState::default(), game_data)?;
     game.run();
 
     Ok(())
