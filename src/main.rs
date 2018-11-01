@@ -74,7 +74,7 @@ fn main() -> amethyst::Result<()> {
             "gravity_system",
             &["snowflake_system"],
         )
-        .with(systems::ControlSystem, "control_system", &["input_system"])
+        .with(systems::ControlSystem, "control_system", &["input_system", "dialogue_system"])
         .with(
             systems::MovementSystem,
             "movement_system",
@@ -86,9 +86,9 @@ fn main() -> amethyst::Result<()> {
             &["movement_system"],
         )
         .with(
-            systems::AnimationSystem,
+            systems::AnimationSystem::default(),
             "animation_system",
-            &["movement_system"],
+            &["movement_system", "dialogue_system"],
         )
         .with_bundle(
             RenderBundle::new(pipe, Some(config))

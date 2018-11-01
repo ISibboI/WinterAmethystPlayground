@@ -9,6 +9,7 @@ use amethyst::{
 use components::{Animated, WorldCollisionAffected};
 use resources::{dialogue::Dialogue, Ui};
 use std::collections::VecDeque;
+use systems::animation::AnimationSystem;
 
 #[derive(Default)]
 pub struct DialogueSystem {
@@ -24,12 +25,13 @@ impl<'s> System<'s> for DialogueSystem {
         Read<'s, InputHandler<String, String>>,
         Read<'s, EventChannel<Dialogue>>,
         WriteStorage<'s, UiText>,
+        Write<'s, InDialogue>,
         UiFinder<'s>,
     );
 
     fn run(
         &mut self,
-        (entities, input_handler, dialogues, mut ui_texts, ui_finder): <Self as System<'s>>::SystemData,
+        (entities, input_handler, dialogues, mut ui_texts, mut in_dialogue, ui_finder): <Self as System<'s>>::SystemData,
     ) {
         let reader = self.reader.as_mut().unwrap();
         let mut reader = dialogues.read(reader);
@@ -44,8 +46,10 @@ impl<'s> System<'s> for DialogueSystem {
             if dialogue_text.text == "" || replace_dialogue {
                 if let Some(dialogue) = self.dialogue_queue.first() {
                     dialogue_text.text = dialogue.text.clone();
+                    in_dialogue.in_dialogue = true;
                 } else {
                     dialogue_text.text = "".to_owned();
+                    in_dialogue.in_dialogue = false;
                 }
                 if self.dialogue_queue.len() > 0 {
                     self.dialogue_queue.remove(0);
@@ -58,5 +62,11 @@ impl<'s> System<'s> for DialogueSystem {
 
     fn setup(&mut self, res: &mut Resources) {
         self.reader = Some(Write::<EventChannel<Dialogue>>::fetch(res).register_reader());
+        res.insert::<InDialogue>(InDialogue {in_dialogue: false});
     }
+}
+
+#[derive(Default)]
+pub struct InDialogue {
+    pub in_dialogue: bool,
 }

@@ -47,11 +47,6 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         world.register::<Event>();
 
         world.exec(|mut creator: UiCreator| creator.create("ui/dialogue.ron", ()));
-
-        initialize_background(world);
-        initialize_player(world);
-        initialize_camera(world);
-
         world.exec(
             |(loader, mut store): (PrefabLoader<GameEventPrefab>, Write<GameEvents>)| {
                 store.handle = Some(loader.load(
@@ -63,7 +58,9 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
             },
         );
 
-        //load_events(world);
+        initialize_background(world);
+        initialize_player(world);
+        initialize_camera(world);
     }
 
     fn update(
@@ -198,9 +195,3 @@ fn load_texture(world: &mut World, name: &str, texture_id: u64) -> SpriteSheetHa
         &sprite_sheet_store,
     )
 }
-
-/*fn load_events(world: &mut World) {
-    let loader = world.read_resource::<Loader>();
-    let event_store = &world.read_resource();
-    loader.load("events/events.ron", RonFormat, None, (), event_store);
-}*/

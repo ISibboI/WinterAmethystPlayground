@@ -4,6 +4,7 @@ use amethyst::{
 };
 use components::{Velocity, WorldCollisionAffected};
 use entities::Player;
+use systems::dialogue::InDialogue;
 
 pub struct ControlSystem;
 
@@ -19,15 +20,21 @@ impl<'s> System<'s> for ControlSystem {
         ReadStorage<'s, Player>,
         ReadStorage<'s, WorldCollisionAffected>,
         WriteStorage<'s, Velocity>,
+        Read<'s, InDialogue>,
         Read<'s, InputHandler<String, String>>,
     );
 
     fn run(
         &mut self,
-        (players, world_collision_affecteds, mut velocities, input_handler): <Self as System<'s>>::SystemData,
+        (players, world_collision_affecteds, mut velocities, in_dialogue, input_handler): <Self as System<'s>>::SystemData,
     ) {
-        let movement = input_handler.axis_value("move").unwrap() as f32;
-        let jump = input_handler.action_is_down("jump").unwrap();
+        let mut movement = input_handler.axis_value("move").unwrap() as f32;
+        let mut jump = input_handler.action_is_down("jump").unwrap();
+
+        if in_dialogue.in_dialogue {
+            movement = 0.0;
+            jump = false;
+        }
 
         for (player, world_collision_affected, mut velocity) in
             (&players, &world_collision_affecteds, &mut velocities).join()
