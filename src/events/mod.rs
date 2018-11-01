@@ -41,7 +41,7 @@ impl<'a> PrefabData<'a> for GameEventPrefab {
         events
             .insert(entity, self.event.clone().unwrap())
             .expect("Could not insert event");
-        println!("Loaded prefab");
+        info!("Loaded event prefab");
         Ok(())
     }
 }

@@ -62,7 +62,7 @@ impl<'s> System<'s> for DialogueSystem {
 
     fn setup(&mut self, res: &mut Resources) {
         self.reader = Some(Write::<EventChannel<Dialogue>>::fetch(res).register_reader());
-        res.insert::<InDialogue>(InDialogue {in_dialogue: false});
+        res.insert::<InDialogue>(InDialogue { in_dialogue: false });
     }
 }
 

@@ -8,6 +8,7 @@ rand = "0.5"
 noise = "0.5"
 serde = "1"
 serde_derive = "1"
+log = "0.4"
 
 [dependencies.amethyst]
 version = "0.9.0"

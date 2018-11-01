@@ -79,7 +79,7 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
                         .unwrap()
                         .clone();
                     data.world.create_entity().with(event_handle).build();
-                    println!("GameState initialized");
+                    info!("GameState initialized");
                     true
                 }
             }

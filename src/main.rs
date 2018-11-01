@@ -6,6 +6,8 @@ extern crate noise;
 extern crate rand;
 #[macro_use]
 extern crate serde_derive;
+#[macro_use]
+extern crate log;
 
 mod components;
 mod entities;
@@ -74,7 +76,11 @@ fn main() -> amethyst::Result<()> {
             "gravity_system",
             &["snowflake_system"],
         )
-        .with(systems::ControlSystem, "control_system", &["input_system", "dialogue_system"])
+        .with(
+            systems::ControlSystem,
+            "control_system",
+            &["input_system", "dialogue_system"],
+        )
         .with(
             systems::MovementSystem,
             "movement_system",

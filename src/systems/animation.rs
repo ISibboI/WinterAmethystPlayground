@@ -26,7 +26,14 @@ impl<'s> System<'s> for AnimationSystem {
 
     fn run(
         &mut self,
-        (mut animateds, world_collision_affecteds, mut sprite_renders, in_dialogue, time, input_handler): <Self as System<'s>>::SystemData,
+        (
+            mut animateds,
+            world_collision_affecteds,
+            mut sprite_renders,
+            in_dialogue,
+            time,
+            input_handler,
+        ): <Self as System<'s>>::SystemData,
     ) {
         let in_dialogue = in_dialogue.in_dialogue;
         for (mut animated, world_collision_affected, mut sprite_render) in (
@@ -51,7 +58,7 @@ impl<'s> System<'s> for AnimationSystem {
             } else {
                 if self.last_dialogue {
                     animated.time = 0.0;
-                    sprite_render.sprite_number = if move_axis == 0.0 {0} else {1};
+                    sprite_render.sprite_number = if move_axis == 0.0 { 0 } else { 1 };
                 }
                 if !world_collision_affected.on_ground {
                     sprite_render.sprite_number = 1;
