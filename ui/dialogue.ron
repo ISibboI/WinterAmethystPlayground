@@ -16,5 +16,6 @@ Text(
         font: File("font/square.ttf", Ttf, ()),
         font_size: 25.,
         color: (1.0, 1.0, 1.0, 1.0),
+        line_mode: Wrap,
     )
 )

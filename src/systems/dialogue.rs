@@ -45,7 +45,7 @@ impl<'s> System<'s> for DialogueSystem {
             let dialogue_text = &mut ui_texts.get_mut(dialogue_text).unwrap();
             if dialogue_text.text == "" || replace_dialogue {
                 if let Some(dialogue) = self.dialogue_queue.first() {
-                    dialogue_text.text = dialogue.text.clone();
+                    dialogue_text.text = format!("{}\nPress <F>", dialogue.text);
                     in_dialogue.in_dialogue = true;
                 } else {
                     dialogue_text.text = "".to_owned();
