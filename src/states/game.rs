@@ -2,23 +2,26 @@ use amethyst::{
     assets::{AssetStorage, Completion, Loader, PrefabLoader, ProgressCounter, RonFormat},
     core::transform::Transform,
     ecs::Write,
+    GameData,
     prelude::*,
     renderer::{
         Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
         SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
     },
     shrev::EventChannel,
-    ui::{UiCreator, UiFinder},
-    GameData, SimpleState, StateData,
+    SimpleState, StateData, ui::{UiCreator, UiFinder},
 };
 use components::*;
 use entities::{Player, Snowflake};
-use events::{actions::EventAction, triggers::EventTrigger, Event, GameEventPrefab, GameEvents};
+use euclid::TypedPoint2D;
+use euclid::TypedRect;
+use euclid::TypedSize2D;
+use events::{actions::EventAction, Event, GameEventPrefab, GameEvents, triggers::EventTrigger};
 use resources::{dialogue::Dialogue, GameSpriteSheets, Ui};
-//use events::GameEventList;
+use resources::level::Level;
 
-pub const ARENA_WIDTH: f32 = 100.0;
-pub const ARENA_HEIGHT: f32 = 100.0;
+pub const VIEWPORT_WIDTH: f32 = 100.0;
+pub const VIEWPORT_HEIGHT: f32 = 100.0;
 
 #[derive(Default)]
 pub struct GameState {
@@ -58,6 +61,10 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
             },
         );
 
+        world.add_resource(Level {
+            bounding_box: TypedRect::new(TypedPoint2D::new(0.0, 0.0), TypedSize2D::new(200.0, 100.0)),
+        });
+
         initialize_background(world);
         initialize_player(world);
         initialize_camera(world);
@@ -91,8 +98,9 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
 
 fn initialize_background(world: &mut World) {
     let mut transform = Transform::default();
-    transform.translation.x = ARENA_WIDTH / 2.0;
-    transform.translation.y = ARENA_HEIGHT / 2.0;;
+    transform.translation.x = VIEWPORT_WIDTH / 2.0 + 50.0;
+    transform.translation.y = VIEWPORT_HEIGHT / 2.0;
+    ;
     transform.translation.z = -1.0;
     transform.scale *= 0.5;
 
@@ -112,8 +120,8 @@ fn initialize_background(world: &mut World) {
 
 fn initialize_player(world: &mut World) {
     let mut transform = Transform::default();
-    transform.translation.x = ARENA_WIDTH / 2.0;
-    transform.translation.y = ARENA_HEIGHT / 2.0;
+    transform.translation.x = VIEWPORT_WIDTH / 2.0;
+    transform.translation.y = VIEWPORT_HEIGHT / 2.0;
     transform.scale *= 0.5;
 
     let sprite_sheet = world.read_resource::<GameSpriteSheets>().santa();
@@ -148,8 +156,8 @@ fn initialize_camera(world: &mut World) {
         .create_entity()
         .with(Camera::from(Projection::orthographic(
             0.0,
-            ARENA_WIDTH,
-            ARENA_HEIGHT,
+            VIEWPORT_WIDTH,
+            VIEWPORT_HEIGHT,
             0.0,
         )))
         .with(transform)

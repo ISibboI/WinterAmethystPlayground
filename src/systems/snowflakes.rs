@@ -7,10 +7,11 @@ use components::{GravityAffected, Velocity, WindAffected};
 use entities::Snowflake;
 use rand::distributions::{Distribution, Uniform};
 use resources::GameSpriteSheets;
-use states::game::{ARENA_HEIGHT, ARENA_WIDTH};
+use resources::level::Level;
+use states::game::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 
 const MAX_SNOWFLAKE_COUNT: usize = 200;
-const SNOWFLAKE_RATE: f32 = 10.0;
+const SNOWFLAKE_RATE: f32 = 0.1;
 
 pub struct SnowflakeSystem {
     snowflake_count: usize,
@@ -33,12 +34,13 @@ impl<'s> System<'s> for SnowflakeSystem {
         Read<'s, GameSpriteSheets>,
         ReadStorage<'s, Snowflake>,
         ReadStorage<'s, Transform>,
+        Read<'s, Level>,
         Read<'s, Time>,
     );
 
     fn run(
         &mut self,
-        (entities, updater, sprite_sheets, snowflakes, transforms, time): <Self as System<'s>>::SystemData,
+        (entities, updater, sprite_sheets, snowflakes, transforms, level, time): <Self as System<'s>>::SystemData,
     ) {
         let rng = &mut rand::thread_rng();
         let deletion_distribution = Uniform::new(0, 15);
@@ -52,14 +54,14 @@ impl<'s> System<'s> for SnowflakeSystem {
             }
         }
 
-        self.partial_snowflake += time.fixed_seconds() * SNOWFLAKE_RATE;
+        self.partial_snowflake += time.fixed_seconds() * SNOWFLAKE_RATE * level.bounding_box.size.width;
         while self.partial_snowflake >= 1.0 {
-            if self.snowflake_count >= MAX_SNOWFLAKE_COUNT {
+            if self.snowflake_count as f32 >= MAX_SNOWFLAKE_COUNT as f32 / 10_000.0 * level.bounding_box.size.width * level.bounding_box.size.height {
                 self.partial_snowflake = 0.0;
                 break;
             }
 
-            self.spawn_snowflake(&entities, &updater, &sprite_sheets);
+            self.spawn_snowflake(&entities, &updater, &sprite_sheets, &level);
             self.partial_snowflake -= 1.0;
         }
     }
@@ -71,6 +73,7 @@ impl<'s> SnowflakeSystem {
         entities: &Entities<'s>,
         updater: &Read<'s, LazyUpdate>,
         sprite_sheets: &Read<'s, GameSpriteSheets>,
+        level: &Read<'s, Level>,
     ) {
         let snowflake = entities.create();
         updater.insert(snowflake, Snowflake::new());
@@ -79,10 +82,10 @@ impl<'s> SnowflakeSystem {
         let rng = &mut rand::thread_rng();
         let sprite_number_distribution = Uniform::new(1, 7);
         let sprite_number = sprite_number_distribution.sample(rng);
-        let translation_distribution = Uniform::new_inclusive(-5.0, ARENA_WIDTH + 5.0);
+        let translation_distribution = Uniform::new_inclusive(-5.0 + level.bounding_box.min_x(), level.bounding_box.max_x() + 5.0);
         let z_distribution = Uniform::new_inclusive(-0.2, 0.5);
         transform.translation.x = translation_distribution.sample(rng);
-        transform.translation.y = ARENA_HEIGHT + 10.0;
+        transform.translation.y = level.bounding_box.max_y() + 10.0;
         transform.translation.z = 0.25 - sprite_number as f32 * 0.1;
         transform.scale *= 0.5;
         updater.insert(snowflake, transform);

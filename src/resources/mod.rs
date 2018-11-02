@@ -1,6 +1,7 @@
 use amethyst::{ecs::Entity, renderer::SpriteSheetHandle};
 
 pub mod dialogue;
+pub mod level;
 
 #[derive(Default, Clone)]
 pub struct GameSpriteSheets {

@@ -2,19 +2,13 @@
 
 #[macro_use]
 extern crate amethyst;
+extern crate euclid;
+#[macro_use]
+extern crate log;
 extern crate noise;
 extern crate rand;
 #[macro_use]
 extern crate serde_derive;
-#[macro_use]
-extern crate log;
-
-mod components;
-mod entities;
-mod events;
-mod resources;
-mod states;
-mod systems;
 
 use amethyst::{
     assets::PrefabLoaderSystem,
@@ -22,12 +16,19 @@ use amethyst::{
     input::InputBundle,
     prelude::*,
     renderer::{
-        ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage, ALPHA,
+        ALPHA, ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage,
     },
     ui::{DrawUi, UiBundle},
 };
 use events::GameEventPrefab;
 use states::game::GameState;
+
+mod components;
+mod entities;
+mod events;
+mod resources;
+mod states;
+mod systems;
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
@@ -96,10 +97,14 @@ fn main() -> amethyst::Result<()> {
             "animation_system",
             &["movement_system", "dialogue_system"],
         )
+        .with(systems::CameraSystem::default(),
+              "camera_system",
+              &["control_system"],
+        )
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
-                .with_sprite_visibility_sorting(&["world_collision_system", "ui_transform"]),
+                .with_sprite_visibility_sorting(&["world_collision_system", "ui_transform", "camera_system"]),
         )?;
     let mut game = Application::new("./", GameState::default(), game_data)?;
     game.run();

@@ -1,3 +1,10 @@
+pub use self::{
+    animation::AnimationSystem, camera::CameraSystem, control::ControlSystem,
+    dialogue::DialogueSystem, events::EventSystem, gravity::GravitySystem,
+    movement::MovementSystem, snowflakes::SnowflakeSystem, wind::WindSystem,
+    world_collision::WorldCollisionSystem,
+};
+
 mod animation;
 mod control;
 mod dialogue;
@@ -7,9 +14,5 @@ mod movement;
 mod snowflakes;
 mod wind;
 mod world_collision;
+mod camera;
 
-pub use self::{
-    animation::AnimationSystem, control::ControlSystem, dialogue::DialogueSystem,
-    events::EventSystem, gravity::GravitySystem, movement::MovementSystem,
-    snowflakes::SnowflakeSystem, wind::WindSystem, world_collision::WorldCollisionSystem,
-};
