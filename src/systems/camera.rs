@@ -29,11 +29,9 @@ impl<'s> System<'s> for CameraSystem {
             dead_zone(&mut difference.x);
             dead_zone(&mut difference.y);
             *camera_translation += 0.1 * difference;
-            println!("camera_translation: {:?}", camera_translation);
 
             let mut camera_rect = level.bounding_box.clone();
             camera_rect.size = camera_rect.size - TypedSize2D::new(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-            println!("{:?}", &camera_rect);
             clamp(&mut camera_translation.x, camera_rect.min_x(), camera_rect.max_x());
             clamp(&mut camera_translation.y, camera_rect.min_y(), camera_rect.max_y());
         }
