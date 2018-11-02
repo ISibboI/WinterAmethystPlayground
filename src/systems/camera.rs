@@ -4,7 +4,6 @@ use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use amethyst::renderer::Camera;
 use entities::Player;
 use euclid::TypedSize2D;
-use euclid::TypedVector2D;
 use resources::level::Level;
 use states::game::VIEWPORT_HEIGHT;
 use states::game::VIEWPORT_WIDTH;

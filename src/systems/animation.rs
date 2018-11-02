@@ -12,6 +12,7 @@ const ANIMATION_DELAY: f32 = 0.2;
 #[derive(Default)]
 pub struct AnimationSystem {
     last_dialogue: bool,
+    last_on_ground: bool,
 }
 
 impl<'s> System<'s> for AnimationSystem {
@@ -63,15 +64,22 @@ impl<'s> System<'s> for AnimationSystem {
                 if !world_collision_affected.on_ground {
                     sprite_render.sprite_number = 1;
                     animated.time = 0.0;
-                } else if move_axis == 0.0 {
-                    sprite_render.sprite_number = 0;
-                    animated.time = 0.0;
                 } else {
-                    if animated.time > ANIMATION_DELAY {
-                        animated.time -= ANIMATION_DELAY;
-                        sprite_render.sprite_number = 1 - sprite_render.sprite_number;
+                    if !self.last_on_ground {
+                        sprite_render.sprite_number = 0;
+                        animated.time = 0.0;
                     }
-                    animated.time += time.fixed_seconds();
+
+                    if move_axis == 0.0 {
+                        sprite_render.sprite_number = 0;
+                        animated.time = 0.0;
+                    } else {
+                        if animated.time > ANIMATION_DELAY {
+                            animated.time -= ANIMATION_DELAY;
+                            sprite_render.sprite_number = 1 - sprite_render.sprite_number;
+                        }
+                        animated.time += time.fixed_seconds();
+                    }
                 }
 
                 if move_axis != 0.0 {
@@ -79,6 +87,7 @@ impl<'s> System<'s> for AnimationSystem {
                 }
             }
             self.last_dialogue = in_dialogue;
+            self.last_on_ground = world_collision_affected.on_ground;
         }
     }
 }
