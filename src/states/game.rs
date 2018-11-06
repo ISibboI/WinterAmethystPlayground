@@ -49,7 +49,7 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         world.register::<WindGenerator>();
         world.register::<Event>();
 
-        world.exec(|mut creator: UiCreator| creator.create("ui/dialogue.ron", ()));
+        world.exec(|mut creator: UiCreator| creator.create("resources/ui/dialogue.ron", ()));
         world.exec(
             |(loader, mut store): (PrefabLoader<GameEventPrefab>, Write<GameEvents>)| {
                 store.handle = Some(loader.load(
@@ -180,7 +180,7 @@ fn load_texture(world: &mut World, name: &str, texture_id: u64) -> SpriteSheetHa
         let loader = world.read_resource::<Loader>();
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
         loader.load(
-            format!("texture/{}_spritesheet.png", name),
+            format!("resources/texture/{}_spritesheet.png", name),
             PngFormat,
             TextureMetadata::srgb_scale(),
             (),
@@ -196,7 +196,7 @@ fn load_texture(world: &mut World, name: &str, texture_id: u64) -> SpriteSheetHa
     let loader = world.read_resource::<Loader>();
     let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     loader.load(
-        format!("texture/{}_spritesheet.ron", name), // Here we load the associated ron file
+        format!("resources/texture/{}_spritesheet.ron", name), // Here we load the associated ron file
         SpriteSheetFormat,
         texture_id, // We pass it the ID of the texture we want it to use
         (),
