@@ -10,7 +10,7 @@ pub mod triggers;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Event {
-    pub trigger: EventTrigger,
+    pub triggers: Vec<EventTrigger>,
     pub actions: Vec<EventAction>,
 }
 
