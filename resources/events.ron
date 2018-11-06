@@ -11,4 +11,10 @@ Prefab (entities: [
     Dialogue((text: "To do that, press <D> on your keyboard.")),
     Dialogue((text: "Do it now!")),
 ]))),
+(data: (event: (triggers: [Area(Area(x1: 180.0, x2: 200.0, y1: 0.0, y2: 100.0))], actions: [
+    Dialogue((text: "You found the door! Press <F>!")),
+]))),
+(data: (event: (triggers: [Area(Area(x1: 180.0, x2: 200.0, y1: 0.0, y2: 100.0)), ActionKey], actions: [
+    Dialogue((text: "You are entering the house!")),
+]))),
 ])
