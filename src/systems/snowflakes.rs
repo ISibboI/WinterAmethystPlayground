@@ -6,8 +6,7 @@ use amethyst::{
 use components::{GravityAffected, Velocity, WindAffected};
 use entities::Snowflake;
 use rand::distributions::{Distribution, Uniform};
-use resources::GameSpriteSheets;
-use resources::level::Level;
+use resources::{level::Level, GameSpriteSheets};
 use states::game::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 
 const MAX_SNOWFLAKE_COUNT: usize = 200;
@@ -40,7 +39,9 @@ impl<'s> System<'s> for SnowflakeSystem {
 
     fn run(
         &mut self,
-        (entities, updater, sprite_sheets, snowflakes, transforms, level, time): <Self as System<'s>>::SystemData,
+        (entities, updater, sprite_sheets, snowflakes, transforms, level, time): <Self as System<
+            's,
+        >>::SystemData,
     ) {
         let rng = &mut rand::thread_rng();
         let deletion_distribution = Uniform::new(0, 15);
@@ -54,9 +55,14 @@ impl<'s> System<'s> for SnowflakeSystem {
             }
         }
 
-        self.partial_snowflake += time.fixed_seconds() * SNOWFLAKE_RATE * level.bounding_box.size.width;
+        self.partial_snowflake +=
+            time.fixed_seconds() * SNOWFLAKE_RATE * level.bounding_box.size.width;
         while self.partial_snowflake >= 1.0 {
-            if self.snowflake_count as f32 >= MAX_SNOWFLAKE_COUNT as f32 / 10_000.0 * level.bounding_box.size.width * level.bounding_box.size.height {
+            if self.snowflake_count as f32
+                >= MAX_SNOWFLAKE_COUNT as f32 / 10_000.0
+                    * level.bounding_box.size.width
+                    * level.bounding_box.size.height
+            {
                 self.partial_snowflake = 0.0;
                 break;
             }
@@ -82,7 +88,10 @@ impl<'s> SnowflakeSystem {
         let rng = &mut rand::thread_rng();
         let sprite_number_distribution = Uniform::new(1, 7);
         let sprite_number = sprite_number_distribution.sample(rng);
-        let translation_distribution = Uniform::new_inclusive(-5.0 + level.bounding_box.min_x(), level.bounding_box.max_x() + 5.0);
+        let translation_distribution = Uniform::new_inclusive(
+            -5.0 + level.bounding_box.min_x(),
+            level.bounding_box.max_x() + 5.0,
+        );
         let z_distribution = Uniform::new_inclusive(-0.2, 0.5);
         transform.translation.x = translation_distribution.sample(rng);
         transform.translation.y = level.bounding_box.max_y() + 10.0;

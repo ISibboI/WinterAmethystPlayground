@@ -12,19 +12,17 @@ extern crate serde_derive;
 
 use amethyst::{
     assets::PrefabLoaderSystem,
-    audio::AudioBundle,
-    audio::SourceHandle,
+    audio::{AudioBundle, SourceHandle},
     core::transform::TransformBundle,
     input::InputBundle,
     prelude::*,
     renderer::{
-        ALPHA, ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage,
+        ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage, ALPHA,
     },
     ui::{DrawUi, UiBundle},
 };
 use events::GameEventPrefab;
-use states::game::GameState;
-use states::game::Music;
+use states::game::{GameState, Music};
 
 mod components;
 mod entities;
@@ -100,15 +98,20 @@ fn main() -> amethyst::Result<()> {
             "animation_system",
             &["movement_system", "dialogue_system"],
         )
-        .with(systems::CameraSystem::default(),
-              "camera_system",
-              &["control_system"],
+        .with(
+            systems::CameraSystem::default(),
+            "camera_system",
+            &["control_system"],
         )
         .with_bundle(AudioBundle::new(|_: &mut Music| None))?
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
-                .with_sprite_visibility_sorting(&["world_collision_system", "ui_transform", "camera_system"]),
+                .with_sprite_visibility_sorting(&[
+                    "world_collision_system",
+                    "ui_transform",
+                    "camera_system",
+                ]),
         )?;
     let mut game = Application::new("./", GameState::default(), game_data)?;
     game.run();

@@ -19,7 +19,9 @@ impl<'s> System<'s> for WorldCollisionSystem {
 
     fn run(
         &mut self,
-        (mut world_collision_affecteds, mut transforms, mut velocities, level): <Self as System<'s>>::SystemData,
+        (mut world_collision_affecteds, mut transforms, mut velocities, level): <Self as System<
+            's,
+        >>::SystemData,
     ) {
         for (mut world_collision_affected, mut transform, mut velocity) in (
             &mut world_collision_affecteds,
@@ -28,25 +30,35 @@ impl<'s> System<'s> for WorldCollisionSystem {
         )
             .join()
         {
-            if transform.translation.y < level.bounding_box.min_y() + world_collision_affected.height / 2.0 + GROUND_HEIGHT {
+            if transform.translation.y
+                < level.bounding_box.min_y() + world_collision_affected.height / 2.0 + GROUND_HEIGHT
+            {
                 world_collision_affected.on_ground = true;
-                transform.translation.y = level.bounding_box.min_y() + world_collision_affected.height / 2.0 + GROUND_HEIGHT;
+                transform.translation.y = level.bounding_box.min_y()
+                    + world_collision_affected.height / 2.0
+                    + GROUND_HEIGHT;
                 velocity.velocity.y = 0.0;
             } else {
                 world_collision_affected.on_ground = false;
             }
 
-            if transform.translation.x < level.bounding_box.min_x() + world_collision_affected.width / 2.0 {
+            if transform.translation.x
+                < level.bounding_box.min_x() + world_collision_affected.width / 2.0
+            {
                 world_collision_affected.collides_left = true;
-                transform.translation.x = level.bounding_box.min_x() + world_collision_affected.width / 2.0;
+                transform.translation.x =
+                    level.bounding_box.min_x() + world_collision_affected.width / 2.0;
                 velocity.velocity.x = velocity.velocity.x.max(0.0);
             } else {
                 world_collision_affected.collides_left = false;
             }
 
-            if transform.translation.x > level.bounding_box.max_x() - world_collision_affected.width / 2.0 {
+            if transform.translation.x
+                > level.bounding_box.max_x() - world_collision_affected.width / 2.0
+            {
                 world_collision_affected.collides_right = true;
-                transform.translation.x = level.bounding_box.max_x() - world_collision_affected.width / 2.0;
+                transform.translation.x =
+                    level.bounding_box.max_x() - world_collision_affected.width / 2.0;
                 velocity.velocity.x = velocity.velocity.x.min(0.0);
             } else {
                 world_collision_affected.collides_right = false;

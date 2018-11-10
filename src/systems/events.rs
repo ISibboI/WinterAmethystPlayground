@@ -1,12 +1,11 @@
 use amethyst::{
-    core::Time,
-    core::Transform,
+    core::{Time, Transform},
     ecs::{Component, Entities, Join, Read, ReadStorage, Resources, System, Write, WriteStorage},
     input::InputHandler,
     shrev::EventChannel,
 };
 use entities::Player;
-use events::{actions::EventAction, Event, triggers::EventTrigger};
+use events::{actions::EventAction, triggers::EventTrigger, Event};
 use resources::dialogue::Dialogue;
 
 #[derive(Default)]

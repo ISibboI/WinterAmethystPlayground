@@ -1,8 +1,6 @@
 use amethyst::{
     assets::AssetStorage,
-    audio::output::Output,
-    audio::Source,
-    audio::SourceHandle,
+    audio::{output::Output, Source, SourceHandle},
     core::{specs::SystemData, Time},
     ecs::{Entities, Entity, Join, Read, ReadStorage, Resources, System, Write, WriteStorage},
     input::InputHandler,
@@ -12,8 +10,7 @@ use amethyst::{
 };
 use components::{Animated, WorldCollisionAffected};
 use resources::{dialogue::Dialogue, Ui};
-use std::collections::HashMap;
-use std::collections::VecDeque;
+use std::collections::{HashMap, VecDeque};
 use systems::animation::AnimationSystem;
 
 #[derive(Default)]
@@ -39,7 +36,17 @@ impl<'s> System<'s> for DialogueSystem {
 
     fn run(
         &mut self,
-        (entities, input_handler, dialogues, sound_effects, audio_sources, audio_output, mut ui_texts, mut in_dialogue, ui_finder): <Self as System<'s>>::SystemData,
+        (
+            entities,
+            input_handler,
+            dialogues,
+            sound_effects,
+            audio_sources,
+            audio_output,
+            mut ui_texts,
+            mut in_dialogue,
+            ui_finder,
+        ): <Self as System<'s>>::SystemData,
     ) {
         let reader = self.reader.as_mut().unwrap();
         let mut reader = dialogues.read(reader);
@@ -56,7 +63,9 @@ impl<'s> System<'s> for DialogueSystem {
                     dialogue_text.text = format!("{}\nPress <F>", dialogue.text);
                     in_dialogue.in_dialogue = true;
                     debug!("Showing dialogue: {}", dialogue.text);
-                    if let (Some(sound_name), Some(output)) = (dialogue.sound.as_ref(), audio_output) {
+                    if let (Some(sound_name), Some(output)) =
+                        (dialogue.sound.as_ref(), audio_output)
+                    {
                         if let Some(sound) = sound_effects.get(sound_name) {
                             if let Some(sound) = audio_sources.get(sound) {
                                 debug!("Playing sound: {}", sound_name);

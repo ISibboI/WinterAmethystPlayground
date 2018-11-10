@@ -6,6 +6,7 @@ pub use self::{
 };
 
 mod animation;
+mod camera;
 mod control;
 mod dialogue;
 mod events;
@@ -14,5 +15,3 @@ mod movement;
 mod snowflakes;
 mod wind;
 mod world_collision;
-mod camera;
-

@@ -1,12 +1,12 @@
-use amethyst::core::cgmath::Vector3;
-use amethyst::core::Transform;
-use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
-use amethyst::renderer::Camera;
+use amethyst::{
+    core::{cgmath::Vector3, Transform},
+    ecs::{Join, Read, ReadStorage, System, WriteStorage},
+    renderer::Camera,
+};
 use entities::Player;
 use euclid::TypedSize2D;
 use resources::level::Level;
-use states::game::VIEWPORT_HEIGHT;
-use states::game::VIEWPORT_WIDTH;
+use states::game::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 
 const DEAD_ZONE: f32 = 10.0;
 
@@ -14,7 +14,12 @@ const DEAD_ZONE: f32 = 10.0;
 pub struct CameraSystem;
 
 impl<'s> System<'s> for CameraSystem {
-    type SystemData = (ReadStorage<'s, Player>, WriteStorage<'s, Transform>, ReadStorage<'s, Camera>, Read<'s, Level>);
+    type SystemData = (
+        ReadStorage<'s, Player>,
+        WriteStorage<'s, Transform>,
+        ReadStorage<'s, Camera>,
+        Read<'s, Level>,
+    );
 
     fn run(&mut self, (players, mut transforms, cameras, level): <Self as System<'s>>::SystemData) {
         let (_, transform) = (&players, &transforms).join().next().unwrap();
@@ -31,8 +36,16 @@ impl<'s> System<'s> for CameraSystem {
 
             let mut camera_rect = level.bounding_box.clone();
             camera_rect.size = camera_rect.size - TypedSize2D::new(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-            clamp(&mut camera_translation.x, camera_rect.min_x(), camera_rect.max_x());
-            clamp(&mut camera_translation.y, camera_rect.min_y(), camera_rect.max_y());
+            clamp(
+                &mut camera_translation.x,
+                camera_rect.min_x(),
+                camera_rect.max_x(),
+            );
+            clamp(
+                &mut camera_translation.y,
+                camera_rect.min_y(),
+                camera_rect.max_y(),
+            );
         }
     }
 }

@@ -1,28 +1,23 @@
 use amethyst::{
     assets::{AssetStorage, Completion, Loader, PrefabLoader, ProgressCounter, RonFormat},
-    audio::AudioFormat,
-    audio::SourceHandle,
+    audio::{AudioFormat, SourceHandle},
     core::transform::Transform,
     ecs::Write,
-    GameData,
     prelude::*,
     renderer::{
         Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
         SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
     },
     shrev::EventChannel,
-    SimpleState, StateData, ui::{UiCreator, UiFinder},
+    ui::{UiCreator, UiFinder},
+    GameData, SimpleState, StateData,
 };
 use components::*;
 use entities::{Player, Snowflake};
-use euclid::TypedPoint2D;
-use euclid::TypedRect;
-use euclid::TypedSize2D;
-use events::{actions::EventAction, Event, GameEventPrefab, GameEvents, triggers::EventTrigger};
-use resources::{dialogue::Dialogue, GameSpriteSheets, Ui};
-use resources::level::Level;
-use std::collections::HashMap;
-use std::fs;
+use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
+use events::{actions::EventAction, triggers::EventTrigger, Event, GameEventPrefab, GameEvents};
+use resources::{dialogue::Dialogue, level::Level, GameSpriteSheets, Ui};
+use std::{collections::HashMap, fs};
 
 pub const VIEWPORT_WIDTH: f32 = 100.0;
 pub const VIEWPORT_HEIGHT: f32 = 100.0;
@@ -66,7 +61,10 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         );
 
         world.add_resource(Level {
-            bounding_box: TypedRect::new(TypedPoint2D::new(0.0, 0.0), TypedSize2D::new(200.0, 100.0)),
+            bounding_box: TypedRect::new(
+                TypedPoint2D::new(0.0, 0.0),
+                TypedSize2D::new(200.0, 100.0),
+            ),
         });
 
         initialize_background(world);
@@ -220,7 +218,12 @@ fn load_audio(world: &mut World) {
         if path.is_file() && path_str.ends_with(".ogg") {
             debug!("Loading sound {:?}", &path);
             let source_handle = load_audio_track(world, path_str);
-            let file_stem = path.file_stem().expect("File does not have stem").to_str().expect("Cannot convert from OsString to String").to_owned();
+            let file_stem = path
+                .file_stem()
+                .expect("File does not have stem")
+                .to_str()
+                .expect("Cannot convert from OsString to String")
+                .to_owned();
             info!("Loaded sound {}", &file_stem);
             audio_map.insert(file_stem, source_handle);
         }
