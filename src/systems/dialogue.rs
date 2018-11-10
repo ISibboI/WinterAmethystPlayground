@@ -1,4 +1,8 @@
 use amethyst::{
+    assets::AssetStorage,
+    audio::output::Output,
+    audio::Source,
+    audio::SourceHandle,
     core::{specs::SystemData, Time},
     ecs::{Entities, Entity, Join, Read, ReadStorage, Resources, System, Write, WriteStorage},
     input::InputHandler,
@@ -8,6 +12,7 @@ use amethyst::{
 };
 use components::{Animated, WorldCollisionAffected};
 use resources::{dialogue::Dialogue, Ui};
+use std::collections::HashMap;
 use std::collections::VecDeque;
 use systems::animation::AnimationSystem;
 
@@ -24,6 +29,9 @@ impl<'s> System<'s> for DialogueSystem {
         Entities<'s>,
         Read<'s, InputHandler<String, String>>,
         Read<'s, EventChannel<Dialogue>>,
+        Read<'s, HashMap<String, SourceHandle>>,
+        Read<'s, AssetStorage<Source>>,
+        Option<Read<'s, Output>>,
         WriteStorage<'s, UiText>,
         Write<'s, InDialogue>,
         UiFinder<'s>,
@@ -31,7 +39,7 @@ impl<'s> System<'s> for DialogueSystem {
 
     fn run(
         &mut self,
-        (entities, input_handler, dialogues, mut ui_texts, mut in_dialogue, ui_finder): <Self as System<'s>>::SystemData,
+        (entities, input_handler, dialogues, sound_effects, audio_sources, audio_output, mut ui_texts, mut in_dialogue, ui_finder): <Self as System<'s>>::SystemData,
     ) {
         let reader = self.reader.as_mut().unwrap();
         let mut reader = dialogues.read(reader);
@@ -47,6 +55,19 @@ impl<'s> System<'s> for DialogueSystem {
                 if let Some(dialogue) = self.dialogue_queue.first() {
                     dialogue_text.text = format!("{}\nPress <F>", dialogue.text);
                     in_dialogue.in_dialogue = true;
+                    debug!("Showing dialogue: {}", dialogue.text);
+                    if let (Some(sound_name), Some(output)) = (dialogue.sound.as_ref(), audio_output) {
+                        if let Some(sound) = sound_effects.get(sound_name) {
+                            if let Some(sound) = audio_sources.get(sound) {
+                                debug!("Playing sound: {}", sound_name);
+                                output.play_once(sound, 1.0);
+                            } else {
+                                warn!("Sound not loaded: {}", sound_name);
+                            }
+                        } else {
+                            warn!("Sound not registered: {}", sound_name);
+                        }
+                    }
                 } else {
                     dialogue_text.text = "".to_owned();
                     in_dialogue.in_dialogue = false;

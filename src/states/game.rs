@@ -1,5 +1,7 @@
 use amethyst::{
     assets::{AssetStorage, Completion, Loader, PrefabLoader, ProgressCounter, RonFormat},
+    audio::AudioFormat,
+    audio::SourceHandle,
     core::transform::Transform,
     ecs::Write,
     GameData,
@@ -19,6 +21,8 @@ use euclid::TypedSize2D;
 use events::{actions::EventAction, Event, GameEventPrefab, GameEvents, triggers::EventTrigger};
 use resources::{dialogue::Dialogue, GameSpriteSheets, Ui};
 use resources::level::Level;
+use std::collections::HashMap;
+use std::fs;
 
 pub const VIEWPORT_WIDTH: f32 = 100.0;
 pub const VIEWPORT_HEIGHT: f32 = 100.0;
@@ -36,8 +40,8 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         let world = data.world;
 
         // Load the spritesheet necessary to render the graphics.
-        let sprite_sheets = load_sprite_sheets(world);
-        world.add_resource(sprite_sheets.clone());
+        load_sprite_sheets(world);
+        load_audio(world);
 
         world.register::<Snowflake>();
         world.register::<GravityAffected>();
@@ -137,12 +141,12 @@ fn initialize_player(world: &mut World) {
         .with(Player::new(30.0, 100.0))
         .with(GravityAffected::new(110.0))
         .with(Velocity::default())
-        .with(transform.clone())
         .with(sprite_render)
         .with(WorldCollisionAffected::new(
             36.0 * transform.scale.x,
             51.0 * transform.scale.y,
         ))
+        .with(transform)
         .with(Transparent)
         .with(Animated::default())
         //.with(WindGenerator::new(18.0, 25.5, 0.3))
@@ -164,13 +168,13 @@ fn initialize_camera(world: &mut World) {
         .build();
 }
 
-fn load_sprite_sheets(world: &mut World) -> GameSpriteSheets {
+fn load_sprite_sheets(world: &mut World) {
     let mut sprite_sheets = GameSpriteSheets::default();
     sprite_sheets.set_santa(load_texture(world, "santa", 0));
     sprite_sheets.set_snowflake(load_texture(world, "snowflake", 1));
     sprite_sheets.set_ground(load_texture(world, "ground", 2));
     sprite_sheets.set_background(load_texture(world, "background", 3));
-    sprite_sheets
+    world.add_resource(sprite_sheets);
 }
 
 fn load_texture(world: &mut World, name: &str, texture_id: u64) -> SpriteSheetHandle {
@@ -203,3 +207,32 @@ fn load_texture(world: &mut World, name: &str, texture_id: u64) -> SpriteSheetHa
         &sprite_sheet_store,
     )
 }
+
+fn load_audio(world: &mut World) {
+    debug!("Loading audio");
+    let mut audio_map = HashMap::new();
+    let dir = fs::read_dir("resources/speech/").expect("Could not read speech dir");
+    for file in dir {
+        debug!("Found DirEntry {:?}", &file);
+        let file = file.expect("Could not read file");
+        let path = file.path();
+        let path_str = path.to_str().expect("Could not convert path to string");
+        if path.is_file() && path_str.ends_with(".ogg") {
+            debug!("Loading sound {:?}", &path);
+            let source_handle = load_audio_track(world, path_str);
+            let file_stem = path.file_stem().expect("File does not have stem").to_str().expect("Cannot convert from OsString to String").to_owned();
+            info!("Loaded sound {}", &file_stem);
+            audio_map.insert(file_stem, source_handle);
+        }
+    }
+    world.add_resource(audio_map);
+    world.add_resource(Music);
+}
+
+/// Loads an ogg audio track.
+fn load_audio_track<N: Into<String>>(world: &World, name: N) -> SourceHandle {
+    let loader = world.read_resource::<Loader>();
+    loader.load(name, AudioFormat::Ogg, (), (), &world.read_resource())
+}
+
+pub struct Music;

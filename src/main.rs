@@ -12,6 +12,8 @@ extern crate serde_derive;
 
 use amethyst::{
     assets::PrefabLoaderSystem,
+    audio::AudioBundle,
+    audio::SourceHandle,
     core::transform::TransformBundle,
     input::InputBundle,
     prelude::*,
@@ -22,6 +24,7 @@ use amethyst::{
 };
 use events::GameEventPrefab;
 use states::game::GameState;
+use states::game::Music;
 
 mod components;
 mod entities;
@@ -101,6 +104,7 @@ fn main() -> amethyst::Result<()> {
               "camera_system",
               &["control_system"],
         )
+        .with_bundle(AudioBundle::new(|_: &mut Music| None))?
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
