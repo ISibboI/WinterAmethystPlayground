@@ -23,6 +23,9 @@ use amethyst::{
 };
 use events::GameEventPrefab;
 use states::game::{GameState, Music};
+use amethyst::LoggerConfig;
+use std::path::{PathBuf, Path};
+use std::fs;
 
 mod components;
 mod entities;
@@ -32,7 +35,14 @@ mod states;
 mod systems;
 
 fn main() -> amethyst::Result<()> {
-    amethyst::start_logger(Default::default());
+    let log_file = Path::new("debug.log");
+    if log_file.is_file() {
+        fs::remove_file(log_file);
+    }
+
+    let mut logger_config = LoggerConfig::default();
+    logger_config.log_file = Some(log_file.to_path_buf());
+    amethyst::start_logger(logger_config);
 
     let path = "./resources/display_config.ron";
     let config = DisplayConfig::load(&path);

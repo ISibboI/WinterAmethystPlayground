@@ -13,3 +13,4 @@ Cargo.lock
 
 *.tar.*
 *.rar
+*.log
