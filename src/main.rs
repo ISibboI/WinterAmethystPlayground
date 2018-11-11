@@ -10,21 +10,23 @@ extern crate rand;
 #[macro_use]
 extern crate serde_derive;
 
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 use amethyst::{
     assets::PrefabLoaderSystem,
     audio::{AudioBundle, SourceHandle},
     core::transform::TransformBundle,
     input::InputBundle,
+    LoggerConfig,
     prelude::*,
     renderer::{
         ALPHA, ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage,
     },
     ui::{DrawUi, UiBundle},
 };
-use amethyst::LoggerConfig;
 
 use events::GameEventPrefab;
 use states::game::{GameState, Music};
@@ -39,7 +41,8 @@ mod systems;
 fn main() -> amethyst::Result<()> {
     let log_file = Path::new("debug.log");
     if log_file.is_file() {
-        fs::remove_file(log_file).unwrap_or_else(|error| warn!("Could not delete old log file: {}", error));
+        fs::remove_file(log_file)
+            .unwrap_or_else(|error| warn!("Could not delete old log file: {}", error));
     }
 
     let mut logger_config = LoggerConfig::default();
