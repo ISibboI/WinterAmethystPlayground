@@ -7,6 +7,7 @@ use geometry::Rectangle;
 #[derive(Default, Clone, Debug, Serialize, Deserialize, PrefabData)]
 #[prefab(Component)]
 pub struct Level {
+    name: String,
     bounding_box: Rectangle,
 }
 
@@ -17,10 +18,15 @@ impl Component for Level {
 pub type LevelStore = HashMap<String, Level>;
 
 impl Level {
-    pub fn new(bounding_box: Rectangle) -> Self {
+    pub fn new(name: String, bounding_box: Rectangle) -> Self {
         Self {
+            name,
             bounding_box
         }
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
     }
 
     pub fn bounding_box(&self) -> &Rectangle {

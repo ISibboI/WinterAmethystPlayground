@@ -1,7 +1,7 @@
 use std::{collections::HashMap, fs};
 
 use amethyst::{
-    assets::{AssetStorage, Completion, Loader, PrefabLoader, ProgressCounter, RonFormat},
+    assets::{AssetStorage, Completion, Loader, PrefabLoader, ProgressCounter, RonFormat, Prefab},
     audio::{AudioFormat, SourceHandle},
     core::transform::Transform,
     ecs::Write,
@@ -21,6 +21,7 @@ use entities::{Player, Snowflake};
 use events::{actions::EventAction, Event, triggers::EventTrigger};
 use geometry::Rectangle;
 use resources::{dialogue::Dialogue, GameSpriteSheets, level::Level, Ui};
+use resources::level::LevelStore;
 
 pub const VIEWPORT_WIDTH: f32 = 100.0;
 pub const VIEWPORT_HEIGHT: f32 = 100.0;
@@ -59,8 +60,21 @@ impl SimpleState for GameState {
         );
         world.create_entity().with(event_prefab_handle.clone()).build();
 
-        world.add_resource(Level::new(Rectangle::new(0.0, 0.0, 200.0, 100.0)),
-        );
+        {
+            let level_prefab_handle = world.exec(|loader: PrefabLoader<Level>| {
+                loader.load("resources/levels.ron", RonFormat, (), ())
+            });
+            let level_storage = world.read_resource::<AssetStorage<Prefab<Level>>>();
+            let level_prefab = level_storage.get(&level_prefab_handle).unwrap();
+
+            let mut level_store = LevelStore::new();
+            for entity in level_prefab.entities() {
+                let level = entity.data().unwrap();
+                level_store.insert(level.name().to_owned(), level.clone());
+            }
+        }
+
+        world.add_resource(Level::new(String::from("outside"), Rectangle::new(0.0, 0.0, 200.0, 100.0)));
 
         initialize_background(world);
         initialize_player(world);
