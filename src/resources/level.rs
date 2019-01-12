@@ -20,7 +20,7 @@ impl Level {
         &self.bounding_box
     }
 
-    pub fn bounding_box_mut(&mut self) -> &mut Rectangle {
+    /*pub fn bounding_box_mut(&mut self) -> &mut Rectangle {
         &mut self.bounding_box
-    }
+    }*/
 }

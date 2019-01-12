@@ -2,6 +2,7 @@ use amethyst::{
     ecs::{Join, Read, ReadStorage, System, WriteStorage},
     input::InputHandler,
 };
+
 use components::{Velocity, WorldCollisionAffected};
 use entities::Player;
 use systems::dialogue::InDialogue;
@@ -43,7 +44,7 @@ impl<'s> System<'s> for ControlSystem {
                 velocity.velocity.y = player.jump_power();
             }
 
-            let mut target = movement * player.speed();
+            let target = movement * player.speed();
             let mut sharpness = 0.5;
             if !world_collision_affected.on_ground {
                 sharpness *= 0.3;

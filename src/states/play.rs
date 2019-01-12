@@ -4,7 +4,7 @@ use amethyst::{
     GameData,
     prelude::*,
     renderer::{
-        Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
+        Camera, PngFormat, Projection, SpriteRender, SpriteSheet,
         SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
     }, SimpleState, StateData,
 };
@@ -15,7 +15,7 @@ use resources::GameSpriteSheets;
 
 pub struct PlayState;
 
-impl<'a, 'b> SimpleState<'a, 'b> for PlayState {
+impl SimpleState for PlayState {
     fn on_start(&mut self, data: StateData<GameData>) {
         let world = data.world;
     }

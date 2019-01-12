@@ -1,3 +1,5 @@
+use std::collections::{HashMap, VecDeque};
+
 use amethyst::{
     assets::AssetStorage,
     audio::{output::Output, Source, SourceHandle},
@@ -8,9 +10,9 @@ use amethyst::{
     shrev::{EventChannel, ReaderId},
     ui::{FontHandle, UiFinder, UiText},
 };
+
 use components::{Animated, WorldCollisionAffected};
 use resources::{dialogue::Dialogue, Ui};
-use std::collections::{HashMap, VecDeque};
 use systems::animation::AnimationSystem;
 
 #[derive(Default)]
@@ -23,7 +25,6 @@ pub struct DialogueSystem {
 
 impl<'s> System<'s> for DialogueSystem {
     type SystemData = (
-        Entities<'s>,
         Read<'s, InputHandler<String, String>>,
         Read<'s, EventChannel<Dialogue>>,
         Read<'s, HashMap<String, SourceHandle>>,
@@ -37,7 +38,6 @@ impl<'s> System<'s> for DialogueSystem {
     fn run(
         &mut self,
         (
-            entities,
             input_handler,
             dialogues,
             sound_effects,
@@ -49,7 +49,7 @@ impl<'s> System<'s> for DialogueSystem {
         ): <Self as System<'s>>::SystemData,
     ) {
         let reader = self.reader.as_mut().unwrap();
-        let mut reader = dialogues.read(reader);
+        let reader = dialogues.read(reader);
         self.dialogue_queue.append(&mut reader.cloned().collect());
 
         let action_key_down = input_handler.action_is_down("action").unwrap();

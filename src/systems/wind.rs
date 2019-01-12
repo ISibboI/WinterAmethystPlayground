@@ -2,8 +2,9 @@ use amethyst::{
     core::{Time, Transform},
     ecs::{Join, Read, ReadStorage, System, WriteStorage},
 };
-use components::{Velocity, WindAffected, WindGenerator};
 use noise::{BasicMulti, MultiFractal, NoiseFn, Point3, Seedable};
+
+use components::{Velocity, WindAffected, WindGenerator};
 
 pub struct WindSystem<T: NoiseFn<Point3<f64>>> {
     noise: T,
@@ -58,16 +59,16 @@ impl<'s, T: NoiseFn<Point3<f64>>> System<'s> for WindSystem<T> {
 
         for (wind_affected, mut transform) in (&wind_affecteds, &mut transforms).join() {
             let mut x = self.noise.get([
-                f64::from(transform.translation.x),
-                f64::from(transform.translation.y),
+                f64::from(transform.translation().x),
+                f64::from(transform.translation().y),
                 z + f64::from(wind_affected.time_offset),
             ]) as f32
                 * self.wind_speed
                 * wind_affected.air_resistance
                 * time.fixed_seconds();
             let mut y = self.noise.get([
-                f64::from(transform.translation.x),
-                f64::from(transform.translation.y),
+                f64::from(transform.translation().x),
+                f64::from(transform.translation().y),
                 z + f64::from(wind_affected.time_offset) + 10000.0,
             ]) as f32
                 * self.wind_speed
@@ -75,8 +76,8 @@ impl<'s, T: NoiseFn<Point3<f64>>> System<'s> for WindSystem<T> {
                 * time.fixed_seconds();
 
             for (wind_generator, velocity, wind_transform) in &generators {
-                let mut gen_x = transform.translation.x - wind_transform.translation.x;
-                let mut gen_y = transform.translation.y - wind_transform.translation.y;
+                let mut gen_x = transform.translation().x - wind_transform.translation().x;
+                let mut gen_y = transform.translation().y - wind_transform.translation().y;
                 gen_x /= wind_generator.width();
                 gen_y /= wind_generator.height();
                 let power = (1.0 - gen_x.abs().max(gen_y.abs())).max(0.0) * wind_generator.speed();
@@ -84,8 +85,8 @@ impl<'s, T: NoiseFn<Point3<f64>>> System<'s> for WindSystem<T> {
                 y += velocity.velocity.y * power * time.fixed_seconds();
             }
 
-            transform.translation.x += x;
-            transform.translation.y += y;
+            transform.translation_mut().x += x;
+            transform.translation_mut().y += y;
         }
     }
 }

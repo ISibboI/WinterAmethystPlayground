@@ -48,8 +48,8 @@ impl<'s> System<'s> for SnowflakeSystem {
         let deletion_distribution = Uniform::new(0, 15);
 
         for (entity, _, transform) in (&entities, &snowflakes, &transforms).join() {
-            if transform.translation.y < -3.0
-                || (transform.translation.y < 8.0 && deletion_distribution.sample(rng) == 0)
+            if transform.translation().y < -3.0
+                || (transform.translation().y < 8.0 && deletion_distribution.sample(rng) == 0)
             {
                 entities.delete(entity).expect("Could not delete snowflake");
                 self.snowflake_count -= 1;
@@ -93,18 +93,15 @@ impl<'s> SnowflakeSystem {
             -5.0 + level.bounding_box().min_x(),
             level.bounding_box().max_x() + 5.0,
         );
-        let z_distribution = Uniform::new_inclusive(-0.2, 0.5);
-        transform.translation.x = translation_distribution.sample(rng);
-        transform.translation.y = level.bounding_box().max_y() + 10.0;
-        transform.translation.z = 0.25 - sprite_number as f32 * 0.1;
-        transform.scale *= 0.5;
+        transform.translation_mut().x = translation_distribution.sample(rng);
+        transform.translation_mut().y = level.bounding_box().max_y() + 10.0;
+        transform.translation_mut().z = 0.25 - sprite_number as f32 * 0.1;
+        *transform.scale_mut() *= 0.5;
         updater.insert(snowflake, transform);
 
         let sprite_render = SpriteRender {
             sprite_sheet: sprite_sheets.snowflake(),
             sprite_number,
-            flip_horizontal: false,
-            flip_vertical: false,
         };
         let terminal_velocity_distribution = Uniform::new_inclusive(8.0, 12.0);
         let terminal_velocity = terminal_velocity_distribution.sample(rng);

@@ -19,8 +19,6 @@ impl Component for Event {
     type Storage = DenseVecStorage<Self>;
 }
 
-pub type EventHandle = Option<Handle<Prefab<Event>>>;
-
 impl<'a> PrefabData<'a> for Event {
     type SystemData = (WriteStorage<'a, Event>);
     type Result = ();

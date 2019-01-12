@@ -31,11 +31,11 @@ impl<'s> System<'s> for WorldCollisionSystem {
         )
             .join()
         {
-            if transform.translation.y
+            if transform.translation().y
                 < level.bounding_box().min_y() + world_collision_affected.height / 2.0 + GROUND_HEIGHT
             {
                 world_collision_affected.on_ground = true;
-                transform.translation.y = level.bounding_box().min_y()
+                transform.translation_mut().y = level.bounding_box().min_y()
                     + world_collision_affected.height / 2.0
                     + GROUND_HEIGHT;
                 velocity.velocity.y = 0.0;
@@ -43,22 +43,22 @@ impl<'s> System<'s> for WorldCollisionSystem {
                 world_collision_affected.on_ground = false;
             }
 
-            if transform.translation.x
+            if transform.translation().x
                 < level.bounding_box().min_x() + world_collision_affected.width / 2.0
             {
                 world_collision_affected.collides_left = true;
-                transform.translation.x =
+                transform.translation_mut().x =
                     level.bounding_box().min_x() + world_collision_affected.width / 2.0;
                 velocity.velocity.x = velocity.velocity.x.max(0.0);
             } else {
                 world_collision_affected.collides_left = false;
             }
 
-            if transform.translation.x
+            if transform.translation().x
                 > level.bounding_box().max_x() - world_collision_affected.width / 2.0
             {
                 world_collision_affected.collides_right = true;
-                transform.translation.x =
+                transform.translation_mut().x =
                     level.bounding_box().max_x() - world_collision_affected.width / 2.0;
                 velocity.velocity.x = velocity.velocity.x.min(0.0);
             } else {

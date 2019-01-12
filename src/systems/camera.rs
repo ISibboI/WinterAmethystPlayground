@@ -1,5 +1,5 @@
 use amethyst::{
-    core::{cgmath::Vector3, Transform},
+    core::{nalgebra::Vector3, Transform},
     ecs::{Join, Read, ReadStorage, System, WriteStorage},
     renderer::Camera,
 };
@@ -24,10 +24,10 @@ impl<'s> System<'s> for CameraSystem {
 
     fn run(&mut self, (players, mut transforms, cameras, level): <Self as System<'s>>::SystemData) {
         let (_, transform) = (&players, &transforms).join().next().unwrap();
-        let player_translation = transform.translation.clone();
+        let player_translation = transform.translation().clone();
 
-        for (camera, mut transform) in (&cameras, &mut transforms).join() {
-            let camera_translation = &mut transform.translation;
+        for (_camera, transform) in (&cameras, &mut transforms).join() {
+            let camera_translation = transform.translation_mut();
             let mut difference = player_translation - *camera_translation;
             difference.z = 0.0;
             difference -= Vector3::new(50.0, 50.0, 0.0);

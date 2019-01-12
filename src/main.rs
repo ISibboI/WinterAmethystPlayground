@@ -25,7 +25,7 @@ use amethyst::{
     LoggerConfig,
     prelude::*,
     renderer::{
-        ALPHA, ColorMask, DepthMode, DisplayConfig, DrawSprite, Pipeline, RenderBundle, Stage,
+        ALPHA, ColorMask, DepthMode, DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stage,
     },
     ui::{DrawUi, UiBundle},
 };
@@ -58,7 +58,7 @@ fn main() -> amethyst::Result<()> {
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
             .clear_target([0.1, 0.01, 0.01, 1.0], 1.0)
-            .with_pass(DrawSprite::new().with_transparency(
+            .with_pass(DrawFlat2D::new().with_transparency(
                 ColorMask::all(),
                 ALPHA,
                 Some(DepthMode::LessEqualWrite),

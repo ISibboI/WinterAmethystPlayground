@@ -8,7 +8,7 @@ use amethyst::{
     GameData,
     prelude::*,
     renderer::{
-        Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
+        Camera, PngFormat, Projection, SpriteRender, SpriteSheet,
         SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
     },
     shrev::EventChannel,
@@ -18,7 +18,7 @@ use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
 
 use components::*;
 use entities::{Player, Snowflake};
-use events::{actions::EventAction, Event, EventHandle, triggers::EventTrigger};
+use events::{actions::EventAction, Event, triggers::EventTrigger};
 use geometry::Rectangle;
 use resources::{dialogue::Dialogue, GameSpriteSheets, level::Level, Ui};
 
@@ -28,7 +28,7 @@ pub const VIEWPORT_HEIGHT: f32 = 100.0;
 #[derive(Default)]
 pub struct GameState;
 
-impl<'a, 'b> SimpleState<'a, 'b> for GameState {
+impl SimpleState for GameState {
     fn on_start(&mut self, data: StateData<GameData>) {
         let world = data.world;
 
@@ -59,35 +59,26 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         );
         world.create_entity().with(event_prefab_handle.clone()).build();
 
-        world.add_resource(Level::new(Rectangle::new(0.0, 0.0, 100.0, 200.0)),
+        world.add_resource(Level::new(Rectangle::new(0.0, 0.0, 200.0, 100.0)),
         );
 
         initialize_background(world);
         initialize_player(world);
         initialize_camera(world);
     }
-
-    fn update(
-        &mut self,
-        data: &mut StateData<'_, GameData<'_, '_>>,
-    ) -> Trans<GameData<'a, 'b>, StateEvent> {
-        Trans::None
-    }
 }
 
 fn initialize_background(world: &mut World) {
     let mut transform = Transform::default();
-    transform.translation.x = VIEWPORT_WIDTH / 2.0 + 50.0;
-    transform.translation.y = VIEWPORT_HEIGHT / 2.0;
+    transform.translation_mut().x = VIEWPORT_WIDTH / 2.0 + 50.0;
+    transform.translation_mut().y = VIEWPORT_HEIGHT / 2.0;
     ;
-    transform.translation.z = -1.0;
-    transform.scale *= 0.5;
+    transform.translation_mut().z = -1.0;
+    *transform.scale_mut() *= 0.5;
 
     let sprite_render = SpriteRender {
         sprite_sheet: world.read_resource::<GameSpriteSheets>().background(),
         sprite_number: 0,
-        flip_horizontal: false,
-        flip_vertical: false,
     };
 
     world
@@ -99,16 +90,14 @@ fn initialize_background(world: &mut World) {
 
 fn initialize_player(world: &mut World) {
     let mut transform = Transform::default();
-    transform.translation.x = VIEWPORT_WIDTH / 2.0;
-    transform.translation.y = VIEWPORT_HEIGHT / 2.0;
-    transform.scale *= 0.5;
+    transform.translation_mut().x = VIEWPORT_WIDTH / 2.0;
+    transform.translation_mut().y = VIEWPORT_HEIGHT / 2.0;
+    *transform.scale_mut() *= 0.5;
 
     let sprite_sheet = world.read_resource::<GameSpriteSheets>().santa();
     let sprite_render = SpriteRender {
         sprite_sheet: sprite_sheet.clone(),
         sprite_number: 0,
-        flip_horizontal: false,
-        flip_vertical: false,
     };
 
     world
@@ -118,8 +107,8 @@ fn initialize_player(world: &mut World) {
         .with(Velocity::default())
         .with(sprite_render)
         .with(WorldCollisionAffected::new(
-            36.0 * transform.scale.x,
-            51.0 * transform.scale.y,
+            36.0 * transform.scale().x,
+            51.0 * transform.scale().y,
         ))
         .with(transform)
         .with(Transparent)
@@ -130,14 +119,14 @@ fn initialize_player(world: &mut World) {
 
 fn initialize_camera(world: &mut World) {
     let mut transform = Transform::default();
-    transform.translation.z = 1.0;
+    transform.translation_mut().z = 1.0;
     world
         .create_entity()
         .with(Camera::from(Projection::orthographic(
             0.0,
             VIEWPORT_WIDTH,
-            VIEWPORT_HEIGHT,
             0.0,
+            VIEWPORT_HEIGHT,
         )))
         .with(transform)
         .build();
@@ -145,14 +134,14 @@ fn initialize_camera(world: &mut World) {
 
 fn load_sprite_sheets(world: &mut World) {
     let mut sprite_sheets = GameSpriteSheets::default();
-    sprite_sheets.set_santa(load_texture(world, "santa", 0));
-    sprite_sheets.set_snowflake(load_texture(world, "snowflake", 1));
-    sprite_sheets.set_ground(load_texture(world, "ground", 2));
-    sprite_sheets.set_background(load_texture(world, "background", 3));
+    sprite_sheets.set_santa(load_texture(world, "santa"));
+    sprite_sheets.set_snowflake(load_texture(world, "snowflake"));
+    sprite_sheets.set_ground(load_texture(world, "ground"));
+    sprite_sheets.set_background(load_texture(world, "background"));
     world.add_resource(sprite_sheets);
 }
 
-fn load_texture(world: &mut World, name: &str, texture_id: u64) -> SpriteSheetHandle {
+fn load_texture(world: &mut World, name: &str) -> SpriteSheetHandle {
     // The texture is the pixel data
     // `texture_handle` is a cloneable reference to the texture
     let texture_handle = {
@@ -167,17 +156,12 @@ fn load_texture(world: &mut World, name: &str, texture_id: u64) -> SpriteSheetHa
         )
     };
 
-    // `texture_id` is a application defined ID given to the texture to store in
-    // the `World`. This is needed to link the texture to the sprite_sheet.
-    let mut material_texture_set = world.write_resource::<MaterialTextureSet>();
-    material_texture_set.insert(texture_id, texture_handle);
-
     let loader = world.read_resource::<Loader>();
     let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     loader.load(
         format!("resources/texture/{}_spritesheet.ron", name), // Here we load the associated ron file
         SpriteSheetFormat,
-        texture_id, // We pass it the ID of the texture we want it to use
+        texture_handle, // We pass it the ID of the texture we want it to use
         (),
         &sprite_sheet_store,
     )

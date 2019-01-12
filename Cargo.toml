@@ -12,7 +12,7 @@ log = "0.4"
 euclid = {version = "0.19", features = ["serde"]}
 
 [dependencies.amethyst]
-version = "0.9"
+version = "0.10"
 #git = "https://github.com/amethyst/amethyst.git"
 #rev = "b006afb049e5c325f4a5d1611502a3408b51a94a"
 features = ["nightly"]

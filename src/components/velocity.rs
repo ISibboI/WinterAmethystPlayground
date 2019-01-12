@@ -1,5 +1,5 @@
 use amethyst::{
-    core::cgmath::Vector2,
+    core::nalgebra::Vector2,
     ecs::{Component, DenseVecStorage},
 };
 
@@ -10,7 +10,7 @@ pub struct Velocity {
 impl Velocity {
     pub fn new(x: f32, y: f32) -> Self {
         Self {
-            velocity: Vector2 { x, y },
+            velocity: Vector2::new(x, y),
         }
     }
 }

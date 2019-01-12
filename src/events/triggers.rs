@@ -17,8 +17,8 @@ pub struct Area {
 
 impl Area {
     pub fn contains(&self, t: &Transform) -> bool {
-        let x = t.translation.x;
-        let y = t.translation.y;
+        let x = t.translation().x;
+        let y = t.translation().y;
         self.x1 <= x && x <= self.x2 && self.y1 <= y && y <= self.y2
     }
 }

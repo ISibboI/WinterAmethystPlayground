@@ -1,9 +1,11 @@
 use amethyst::{
     core::Time,
-    ecs::{Join, Read, ReadStorage, System, WriteStorage},
+    core::transform::Transform,
+    ecs::{Join, Read, ReadStorage, System, Write, WriteStorage},
     input::InputHandler,
     renderer::SpriteRender,
 };
+
 use components::{Animated, WorldCollisionAffected};
 use systems::dialogue::InDialogue;
 
@@ -23,6 +25,7 @@ impl<'s> System<'s> for AnimationSystem {
         Read<'s, InDialogue>,
         Read<'s, Time>,
         Read<'s, InputHandler<String, String>>,
+        WriteStorage<'s, Transform>,
     );
 
     fn run(
@@ -34,17 +37,19 @@ impl<'s> System<'s> for AnimationSystem {
             in_dialogue,
             time,
             input_handler,
+            mut transform,
         ): <Self as System<'s>>::SystemData,
     ) {
         let in_dialogue = in_dialogue.in_dialogue;
-        for (mut animated, world_collision_affected, mut sprite_render) in (
+        for (mut animated, world_collision_affected, mut sprite_render, transform) in (
             &mut animateds,
             &world_collision_affecteds,
             &mut sprite_renders,
+            &mut transform,
         )
             .join()
         {
-            let move_axis = input_handler.axis_value("move").unwrap();
+            let move_axis = input_handler.axis_value("move").unwrap() as f32;
             if in_dialogue {
                 if !self.last_dialogue {
                     animated.time = 0.0;
@@ -83,7 +88,7 @@ impl<'s> System<'s> for AnimationSystem {
                 }
 
                 if move_axis != 0.0 {
-                    sprite_render.flip_horizontal = move_axis < 0.0;
+                    transform.scale_mut()[0] = transform.scale()[0].abs() * move_axis.signum();
                 }
             }
             self.last_dialogue = in_dialogue;
