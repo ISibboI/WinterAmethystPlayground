@@ -1,19 +1,17 @@
 use amethyst::{
     assets::{AssetStorage, Loader},
     core::transform::Transform,
+    GameData,
     prelude::*,
     renderer::{
         Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
         SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
-    },
-    GameData, SimpleState, StateData,
+    }, SimpleState, StateData,
 };
+
 use components::*;
 use entities::{Player, Snowflake};
 use resources::GameSpriteSheets;
-
-pub const ARENA_WIDTH: f32 = 100.0;
-pub const ARENA_HEIGHT: f32 = 100.0;
 
 pub struct PlayState;
 

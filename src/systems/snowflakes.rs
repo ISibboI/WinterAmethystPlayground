@@ -3,10 +3,11 @@ use amethyst::{
     ecs::{Entities, Join, LazyUpdate, Read, ReadStorage, System},
     renderer::{SpriteRender, Transparent},
 };
+use rand::distributions::{Distribution, Uniform};
+
 use components::{GravityAffected, Velocity, WindAffected};
 use entities::Snowflake;
-use rand::distributions::{Distribution, Uniform};
-use resources::{level::Level, GameSpriteSheets};
+use resources::{GameSpriteSheets, level::Level};
 use states::game::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 
 const MAX_SNOWFLAKE_COUNT: usize = 200;
@@ -56,12 +57,12 @@ impl<'s> System<'s> for SnowflakeSystem {
         }
 
         self.partial_snowflake +=
-            time.fixed_seconds() * SNOWFLAKE_RATE * level.bounding_box.size.width;
+            time.fixed_seconds() * SNOWFLAKE_RATE * level.bounding_box().size.width;
         while self.partial_snowflake >= 1.0 {
             if self.snowflake_count as f32
                 >= MAX_SNOWFLAKE_COUNT as f32 / 10_000.0
-                    * level.bounding_box.size.width
-                    * level.bounding_box.size.height
+                * level.bounding_box().size.width
+                * level.bounding_box().size.height
             {
                 self.partial_snowflake = 0.0;
                 break;
@@ -89,12 +90,12 @@ impl<'s> SnowflakeSystem {
         let sprite_number_distribution = Uniform::new(1, 7);
         let sprite_number = sprite_number_distribution.sample(rng);
         let translation_distribution = Uniform::new_inclusive(
-            -5.0 + level.bounding_box.min_x(),
-            level.bounding_box.max_x() + 5.0,
+            -5.0 + level.bounding_box().min_x(),
+            level.bounding_box().max_x() + 5.0,
         );
         let z_distribution = Uniform::new_inclusive(-0.2, 0.5);
         transform.translation.x = translation_distribution.sample(rng);
-        transform.translation.y = level.bounding_box.max_y() + 10.0;
+        transform.translation.y = level.bounding_box().max_y() + 10.0;
         transform.translation.z = 0.25 - sprite_number as f32 * 0.1;
         transform.scale *= 0.5;
         updater.insert(snowflake, transform);

@@ -4,19 +4,25 @@ use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
 
 #[derive(Clone, Debug)]
 pub struct Level {
-    pub bounding_box: TypedRect<f32>,
+    bounding_box: TypedRect<f32>,
 }
 
 pub type LevelStore = HashMap<String, Level>;
 
-impl Default for Level {
-    fn default() -> Self {
+impl Level {
+    pub fn new(bounding_box: TypedRect<f32>) -> Self {
         Self {
-            bounding_box: TypedRect::new(
-                TypedPoint2D::new(0.0, 0.0),
-                TypedSize2D::new(100.0, 100.0),
-            ),
+            bounding_box
         }
+    }
+
+    pub fn bounding_box(&self) -> &TypedRect<f32> {
+        &self.bounding_box
     }
 }
 
+impl Default for Level {
+    fn default() -> Self {
+        Self::new(TypedRect::new(TypedPoint2D::new(Default::default(), Default::default()), TypedSize2D::new(Default::default(), Default::default())))
+    }
+}

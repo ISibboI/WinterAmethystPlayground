@@ -18,7 +18,7 @@ use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
 
 use components::*;
 use entities::{Player, Snowflake};
-use events::{actions::EventAction, Event, GameEvents, triggers::EventTrigger};
+use events::{actions::EventAction, Event, EventHandle, triggers::EventTrigger};
 use resources::{dialogue::Dialogue, GameSpriteSheets, level::Level, Ui};
 
 pub const VIEWPORT_WIDTH: f32 = 100.0;
@@ -52,8 +52,8 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
 
         world.exec(|mut creator: UiCreator| creator.create("resources/ui/dialogue.ron", ()));
         world.exec(
-            |(loader, mut store): (PrefabLoader<Event>, Write<GameEvents>)| {
-                store.handle = Some(loader.load(
+            |(loader, mut store): (PrefabLoader<Event>, Write<EventHandle>)| {
+                store.replace(loader.load(
                     "resources/events.ron",
                     RonFormat,
                     (),
@@ -62,12 +62,11 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
             },
         );
 
-        world.add_resource(Level {
-            bounding_box: TypedRect::new(
+        world.add_resource(Level::new(TypedRect::new(
                 TypedPoint2D::new(0.0, 0.0),
                 TypedSize2D::new(200.0, 100.0),
             ),
-        });
+        ));
 
         initialize_background(world);
         initialize_player(world);
@@ -84,8 +83,7 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
                 _ => {
                     let event_handle = data
                         .world
-                        .read_resource::<GameEvents>()
-                        .handle
+                        .read_resource::<EventHandle>()
                         .as_ref()
                         .unwrap()
                         .clone();

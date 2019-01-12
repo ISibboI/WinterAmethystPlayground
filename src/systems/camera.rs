@@ -3,8 +3,9 @@ use amethyst::{
     ecs::{Join, Read, ReadStorage, System, WriteStorage},
     renderer::Camera,
 };
-use entities::Player;
 use euclid::TypedSize2D;
+
+use entities::Player;
 use resources::level::Level;
 use states::game::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 
@@ -34,7 +35,7 @@ impl<'s> System<'s> for CameraSystem {
             dead_zone(&mut difference.y);
             *camera_translation += 0.1 * difference;
 
-            let mut camera_rect = level.bounding_box.clone();
+            let mut camera_rect = level.bounding_box().clone();
             camera_rect.size = camera_rect.size - TypedSize2D::new(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
             clamp(
                 &mut camera_translation.x,
