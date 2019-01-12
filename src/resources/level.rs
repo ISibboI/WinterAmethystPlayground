@@ -1,9 +1,13 @@
+use std::collections::HashMap;
+
 use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
 
 #[derive(Clone, Debug)]
 pub struct Level {
     pub bounding_box: TypedRect<f32>,
 }
+
+pub type LevelStore = HashMap<String, Level>;
 
 impl Default for Level {
     fn default() -> Self {
@@ -15,3 +19,4 @@ impl Default for Level {
         }
     }
 }
+

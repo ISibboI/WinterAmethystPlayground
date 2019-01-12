@@ -1,23 +1,25 @@
+use std::{collections::HashMap, fs};
+
 use amethyst::{
     assets::{AssetStorage, Completion, Loader, PrefabLoader, ProgressCounter, RonFormat},
     audio::{AudioFormat, SourceHandle},
     core::transform::Transform,
     ecs::Write,
+    GameData,
     prelude::*,
     renderer::{
         Camera, MaterialTextureSet, PngFormat, Projection, SpriteRender, SpriteSheet,
         SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
     },
     shrev::EventChannel,
-    ui::{UiCreator, UiFinder},
-    GameData, SimpleState, StateData,
+    SimpleState, StateData, ui::{UiCreator, UiFinder},
 };
+use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
+
 use components::*;
 use entities::{Player, Snowflake};
-use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
-use events::{actions::EventAction, triggers::EventTrigger, Event, GameEventPrefab, GameEvents};
-use resources::{dialogue::Dialogue, level::Level, GameSpriteSheets, Ui};
-use std::{collections::HashMap, fs};
+use events::{actions::EventAction, Event, GameEvents, triggers::EventTrigger};
+use resources::{dialogue::Dialogue, GameSpriteSheets, level::Level, Ui};
 
 pub const VIEWPORT_WIDTH: f32 = 100.0;
 pub const VIEWPORT_HEIGHT: f32 = 100.0;
@@ -50,7 +52,7 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
 
         world.exec(|mut creator: UiCreator| creator.create("resources/ui/dialogue.ron", ()));
         world.exec(
-            |(loader, mut store): (PrefabLoader<GameEventPrefab>, Write<GameEvents>)| {
+            |(loader, mut store): (PrefabLoader<Event>, Write<GameEvents>)| {
                 store.handle = Some(loader.load(
                     "resources/events.ron",
                     RonFormat,

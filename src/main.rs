@@ -1,4 +1,6 @@
 #![feature(nll)]
+// Disable some warnings
+#[allow(unused_imports)]
 
 #[macro_use]
 extern crate amethyst;
@@ -28,7 +30,7 @@ use amethyst::{
     ui::{DrawUi, UiBundle},
 };
 
-use events::GameEventPrefab;
+use events::Event;
 use states::game::{GameState, Music};
 
 mod components;
@@ -69,7 +71,7 @@ fn main() -> amethyst::Result<()> {
 
     let game_data = GameDataBuilder::default()
         .with(
-            PrefabLoaderSystem::<GameEventPrefab>::default(),
+            PrefabLoaderSystem::<Event>::default(),
             "event_loader",
             &[],
         )

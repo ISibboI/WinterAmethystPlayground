@@ -3,12 +3,13 @@ use amethyst::{
     core::specs::error::Error,
     ecs::{Component, DenseVecStorage, Entity, WriteStorage},
 };
+
 use events::{actions::EventAction, triggers::EventTrigger};
 
 pub mod actions;
 pub mod triggers;
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Default, Debug, Serialize, Deserialize, Clone)]
 pub struct Event {
     pub triggers: Vec<EventTrigger>,
     pub actions: Vec<EventAction>,
@@ -18,17 +19,12 @@ impl Component for Event {
     type Storage = DenseVecStorage<Self>;
 }
 
-#[derive(Default, Debug, Serialize, Deserialize, Clone)]
-pub struct GameEventPrefab {
-    event: Option<Event>,
-}
-
 #[derive(Default)]
 pub struct GameEvents {
-    pub handle: Option<Handle<Prefab<GameEventPrefab>>>,
+    pub handle: Option<Handle<Prefab<Event>>>,
 }
 
-impl<'a> PrefabData<'a> for GameEventPrefab {
+impl<'a> PrefabData<'a> for Event {
     type SystemData = (WriteStorage<'a, Event>);
     type Result = ();
 
@@ -39,7 +35,7 @@ impl<'a> PrefabData<'a> for GameEventPrefab {
         entities: &[Entity],
     ) -> Result<<Self as PrefabData<'a>>::Result, Error> {
         events
-            .insert(entity, self.event.clone().unwrap())
+            .insert(entity, self.clone())
             .expect("Could not insert event");
         info!("Loaded event prefab");
         Ok(())
