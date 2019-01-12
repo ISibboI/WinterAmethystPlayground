@@ -57,12 +57,12 @@ impl<'s> System<'s> for SnowflakeSystem {
         }
 
         self.partial_snowflake +=
-            time.fixed_seconds() * SNOWFLAKE_RATE * level.bounding_box().size.width;
+            time.fixed_seconds() * SNOWFLAKE_RATE * level.bounding_box().width();
         while self.partial_snowflake >= 1.0 {
             if self.snowflake_count as f32
                 >= MAX_SNOWFLAKE_COUNT as f32 / 10_000.0
-                * level.bounding_box().size.width
-                * level.bounding_box().size.height
+                * level.bounding_box().width()
+                * level.bounding_box().height()
             {
                 self.partial_snowflake = 0.0;
                 break;

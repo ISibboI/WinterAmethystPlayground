@@ -36,7 +36,7 @@ impl<'s> System<'s> for CameraSystem {
             *camera_translation += 0.1 * difference;
 
             let mut camera_rect = level.bounding_box().clone();
-            camera_rect.size = camera_rect.size - TypedSize2D::new(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+            camera_rect.decrease_size(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
             clamp(
                 &mut camera_translation.x,
                 camera_rect.min_x(),

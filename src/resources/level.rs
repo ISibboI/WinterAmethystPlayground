@@ -1,28 +1,26 @@
 use std::collections::HashMap;
 
-use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
+use geometry::Rectangle;
 
-#[derive(Clone, Debug)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize)]
 pub struct Level {
-    bounding_box: TypedRect<f32>,
+    bounding_box: Rectangle,
 }
 
 pub type LevelStore = HashMap<String, Level>;
 
 impl Level {
-    pub fn new(bounding_box: TypedRect<f32>) -> Self {
+    pub fn new(bounding_box: Rectangle) -> Self {
         Self {
             bounding_box
         }
     }
 
-    pub fn bounding_box(&self) -> &TypedRect<f32> {
+    pub fn bounding_box(&self) -> &Rectangle {
         &self.bounding_box
     }
-}
 
-impl Default for Level {
-    fn default() -> Self {
-        Self::new(TypedRect::new(TypedPoint2D::new(Default::default(), Default::default()), TypedSize2D::new(Default::default(), Default::default())))
+    pub fn bounding_box_mut(&mut self) -> &mut Rectangle {
+        &mut self.bounding_box
     }
 }

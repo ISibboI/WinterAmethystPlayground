@@ -19,21 +19,17 @@ use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
 use components::*;
 use entities::{Player, Snowflake};
 use events::{actions::EventAction, Event, EventHandle, triggers::EventTrigger};
+use geometry::Rectangle;
 use resources::{dialogue::Dialogue, GameSpriteSheets, level::Level, Ui};
 
 pub const VIEWPORT_WIDTH: f32 = 100.0;
 pub const VIEWPORT_HEIGHT: f32 = 100.0;
 
 #[derive(Default)]
-pub struct GameState {
-    progress: Option<ProgressCounter>,
-    initialized: bool,
-}
+pub struct GameState;
 
 impl<'a, 'b> SimpleState<'a, 'b> for GameState {
     fn on_start(&mut self, data: StateData<GameData>) {
-        self.progress = Some(ProgressCounter::default());
-
         let world = data.world;
 
         // Load the spritesheet necessary to render the graphics.
@@ -51,22 +47,20 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         world.register::<Event>();
 
         world.exec(|mut creator: UiCreator| creator.create("resources/ui/dialogue.ron", ()));
-        world.exec(
-            |(loader, mut store): (PrefabLoader<Event>, Write<EventHandle>)| {
-                store.replace(loader.load(
+        let event_prefab_handle = world.exec(
+            |loader: PrefabLoader<Event>| {
+                loader.load(
                     "resources/events.ron",
                     RonFormat,
                     (),
-                    self.progress.as_mut().unwrap(),
-                ));
+                    (),
+                )
             },
         );
+        world.create_entity().with(event_prefab_handle.clone()).build();
 
-        world.add_resource(Level::new(TypedRect::new(
-                TypedPoint2D::new(0.0, 0.0),
-                TypedSize2D::new(200.0, 100.0),
-            ),
-        ));
+        world.add_resource(Level::new(Rectangle::new(0.0, 0.0, 100.0, 200.0)),
+        );
 
         initialize_background(world);
         initialize_player(world);
@@ -77,23 +71,6 @@ impl<'a, 'b> SimpleState<'a, 'b> for GameState {
         &mut self,
         data: &mut StateData<'_, GameData<'_, '_>>,
     ) -> Trans<GameData<'a, 'b>, StateEvent> {
-        if !self.initialized {
-            self.initialized = match self.progress.as_ref().map(|p| p.complete()) {
-                None | Some(Completion::Loading) => false,
-                _ => {
-                    let event_handle = data
-                        .world
-                        .read_resource::<EventHandle>()
-                        .as_ref()
-                        .unwrap()
-                        .clone();
-                    data.world.create_entity().with(event_handle).build();
-                    info!("GameState initialized");
-                    true
-                }
-            }
-        }
-
         Trans::None
     }
 }
