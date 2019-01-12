@@ -1,10 +1,17 @@
 use std::collections::HashMap;
+use amethyst::assets::{PrefabData, PrefabError, ProgressCounter};
+use amethyst::ecs::{Entity, Component, DenseVecStorage, WriteStorage};
 
 use geometry::Rectangle;
 
-#[derive(Default, Clone, Debug, Serialize, Deserialize)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, PrefabData)]
+#[prefab(Component)]
 pub struct Level {
     bounding_box: Rectangle,
+}
+
+impl Component for Level {
+    type Storage = DenseVecStorage<Self>;
 }
 
 pub type LevelStore = HashMap<String, Level>;

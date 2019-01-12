@@ -15,7 +15,7 @@ impl<'s> System<'s> for MovementSystem {
     );
 
     fn run(&mut self, (velocities, mut transforms, time): <Self as System<'s>>::SystemData) {
-        for (velocity, mut transform) in (&velocities, &mut transforms).join() {
+        for (velocity, transform) in (&velocities, &mut transforms).join() {
             transform.translation_mut().x += velocity.velocity.x * time.fixed_seconds();
             transform.translation_mut().y += velocity.velocity.y * time.fixed_seconds();
         }

@@ -57,7 +57,7 @@ impl<'s, T: NoiseFn<Point3<f64>>> System<'s> for WindSystem<T> {
             * f64::from(time.fixed_seconds())
             * f64::from(self.wind_change_rate);
 
-        for (wind_affected, mut transform) in (&wind_affecteds, &mut transforms).join() {
+        for (wind_affected, transform) in (&wind_affecteds, &mut transforms).join() {
             let mut x = self.noise.get([
                 f64::from(transform.translation().x),
                 f64::from(transform.translation().y),

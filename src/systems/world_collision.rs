@@ -24,7 +24,7 @@ impl<'s> System<'s> for WorldCollisionSystem {
             's,
         >>::SystemData,
     ) {
-        for (mut world_collision_affected, mut transform, mut velocity) in (
+        for (mut world_collision_affected, transform, velocity) in (
             &mut world_collision_affecteds,
             &mut transforms,
             &mut velocities,

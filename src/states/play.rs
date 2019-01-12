@@ -13,6 +13,7 @@ use components::*;
 use entities::{Player, Snowflake};
 use resources::GameSpriteSheets;
 
+#[allow(dead_code)]
 pub struct PlayState;
 
 impl SimpleState for PlayState {
