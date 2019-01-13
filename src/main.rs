@@ -53,9 +53,8 @@ fn main() -> amethyst::Result<()> {
     logger_config.log_file = Some(log_file.to_path_buf());
     amethyst::start_logger(logger_config);
 
-    let assets_dir = application_root_dir();
-    let assets_dir = assets_dir + "/assets/";
-    let config = DisplayConfig::load(&(assets_dir.clone() + "display_config.ron"));
+    let assets_dir = application_root_dir()?.join("assets");
+    let config = DisplayConfig::load(&assets_dir.join("display_config.ron"));
 
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
@@ -68,7 +67,7 @@ fn main() -> amethyst::Result<()> {
             .with_pass(DrawUi::new()),
     );
 
-    let binding_dir = assets_dir.clone() + "bindings_config.ron";
+    let binding_dir = assets_dir.join("bindings_config.ron");
     let input_bundle =
         InputBundle::<String, String>::new().with_bindings_from_file(&binding_dir)?;
 
@@ -123,7 +122,7 @@ fn main() -> amethyst::Result<()> {
             "camera_system",
             &["control_system"],
         )
-        .with_bundle(AudioBundle::new(|_: &mut Music| None))?
+        .with_bundle(AudioBundle::new().with_dj_system(|_: &mut Music| None))?
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
