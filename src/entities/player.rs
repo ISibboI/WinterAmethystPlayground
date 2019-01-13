@@ -1,12 +1,13 @@
-use amethyst::assets::PrefabData;
+use amethyst::assets::{PrefabData, PrefabError, ProgressCounter};
 use amethyst::core::transform::Transform;
-use amethyst::ecs::{Component, Entity, error::Error, VecStorage, WriteStorage};
-use amethyst::renderer::SpriteRender;
+use amethyst::ecs::{Component, Entity, VecStorage, WriteStorage};
+use amethyst::renderer::{SpriteRender, Transparent};
 
+use components::{Animated, Velocity, WorldCollisionAffected};
 use components::GravityAffected;
-use components::WorldCollisionAffected;
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Default, Clone, Serialize, Deserialize, PrefabData)]
+#[prefab(Component)]
 pub struct Player {
     speed: f32,
     jump_power: f32,
@@ -30,25 +31,25 @@ impl Component for Player {
     type Storage = VecStorage<Self>;
 }
 
+#[derive(Serialize, Deserialize, PrefabData)]
 pub struct PlayerPrefab {
+    #[prefab(Component)]
     player: Player,
+    #[prefab(Component)]
     transform: Transform,
+    #[prefab(Component)]
     sprite_render: SpriteRender,
+    #[prefab(Component)]
     gravity_affected: GravityAffected,
+    #[prefab(Component)]
     world_collision_affected: WorldCollisionAffected,
-}
-
-impl<'a> PrefabData<'a> for PlayerPrefab {
-    type SystemData = (WriteStorage<'a, Player>, WriteStorage<'a, Transform>, WriteStorage<'a, SpriteRender>, WriteStorage<'a, GravityAffected>, WriteStorage<'a, WorldCollisionAffected>);
-    type Result = ();
-
-    fn add_to_entity(&self, entity: Entity, (players, transforms, sprite_renders, gravity_affecteds, world_collision_affecteds): &mut <Self as PrefabData<'a>>::SystemData, entities: &[Entity]) -> Result<<Self as PrefabData<'a>>::Result, Error> {
-        players.insert(entity, self.player.clone())?;
-        transforms.insert(entity, self.transform.clone())?;
-        sprite_renders.insert(entity, self.sprite_render.clone())?;
-        gravity_affecteds.insert(entity, self.gravity_affected.clone())?;
-        world_collision_affecteds.insert(entity, self.world_collision_affected.clone())?;
-
-        unimplemented!()
-    }
+    #[prefab(Component)]
+    #[serde(default)]
+    velocity: Velocity,
+    #[prefab(Component)]
+    #[serde(default)]
+    animated: Animated,
+    #[prefab(Component)]
+    #[serde(default)]
+    transparent: Transparent,
 }

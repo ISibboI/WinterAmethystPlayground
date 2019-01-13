@@ -1,5 +1,6 @@
 use amethyst::ecs::{Component, DenseVecStorage};
 
+#[derive(Serialize, Deserialize)]
 pub struct Animated {
     pub time: f32,
 }
