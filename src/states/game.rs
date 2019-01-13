@@ -1,7 +1,7 @@
 use std::{collections::HashMap, fs};
 
 use amethyst::{
-    assets::{AssetStorage, Completion, Loader, PrefabLoader, ProgressCounter, RonFormat, Prefab},
+    assets::{AssetStorage, Completion, Loader, Prefab, PrefabLoader, ProgressCounter, RonFormat},
     audio::{AudioFormat, SourceHandle},
     core::transform::Transform,
     ecs::Write,
@@ -47,11 +47,11 @@ impl SimpleState for GameState {
         world.register::<WindGenerator>();
         world.register::<Event>();
 
-        world.exec(|mut creator: UiCreator| creator.create("resources/ui/dialogue.ron", ()));
+        world.exec(|mut creator: UiCreator| creator.create("ui/dialogue.ron", ()));
         let event_prefab_handle = world.exec(
             |loader: PrefabLoader<Event>| {
                 loader.load(
-                    "resources/events.ron",
+                    "events.ron",
                     RonFormat,
                     (),
                     (),
@@ -60,9 +60,9 @@ impl SimpleState for GameState {
         );
         world.create_entity().with(event_prefab_handle.clone()).build();
 
-        {
+        /*{
             let level_prefab_handle = world.exec(|loader: PrefabLoader<Level>| {
-                loader.load("resources/levels.ron", RonFormat, (), ())
+                loader.load("levels.ron", RonFormat, (), ())
             });
             let level_storage = world.read_resource::<AssetStorage<Prefab<Level>>>();
             let level_prefab = level_storage.get(&level_prefab_handle).unwrap();
@@ -72,7 +72,7 @@ impl SimpleState for GameState {
                 let level = entity.data().unwrap();
                 level_store.insert(level.name().to_owned(), level.clone());
             }
-        }
+        }*/
 
         world.add_resource(Level::new(String::from("outside"), Rectangle::new(0.0, 0.0, 200.0, 100.0)));
 
@@ -162,7 +162,7 @@ fn load_texture(world: &mut World, name: &str) -> SpriteSheetHandle {
         let loader = world.read_resource::<Loader>();
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
         loader.load(
-            format!("resources/texture/{}_spritesheet.png", name),
+            format!("texture/{}_spritesheet.png", name),
             PngFormat,
             TextureMetadata::srgb_scale(),
             (),
@@ -173,7 +173,7 @@ fn load_texture(world: &mut World, name: &str) -> SpriteSheetHandle {
     let loader = world.read_resource::<Loader>();
     let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     loader.load(
-        format!("resources/texture/{}_spritesheet.ron", name), // Here we load the associated ron file
+        format!("texture/{}_spritesheet.ron", name), // Here we load the associated ron file
         SpriteSheetFormat,
         texture_handle, // We pass it the ID of the texture we want it to use
         (),
@@ -184,7 +184,7 @@ fn load_texture(world: &mut World, name: &str) -> SpriteSheetHandle {
 fn load_audio(world: &mut World) {
     debug!("Loading audio");
     let mut audio_map = HashMap::new();
-    let dir = fs::read_dir("resources/speech/").expect("Could not read speech dir");
+    let dir = fs::read_dir("assets/speech/").expect("Could not read speech dir");
     for file in dir {
         debug!("Found DirEntry {:?}", &file);
         let file = file.expect("Could not read file");

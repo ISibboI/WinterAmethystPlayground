@@ -28,6 +28,7 @@ use amethyst::{
         ALPHA, ColorMask, DepthMode, DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stage,
     },
     ui::{DrawUi, UiBundle},
+    utils::application_root_dir,
 };
 
 use events::Event;
@@ -52,8 +53,9 @@ fn main() -> amethyst::Result<()> {
     logger_config.log_file = Some(log_file.to_path_buf());
     amethyst::start_logger(logger_config);
 
-    let path = "./resources/display_config.ron";
-    let config = DisplayConfig::load(&path);
+    let assets_dir = application_root_dir();
+    let assets_dir = assets_dir + "/assets/";
+    let config = DisplayConfig::load(&(assets_dir.clone() + "display_config.ron"));
 
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
@@ -66,9 +68,9 @@ fn main() -> amethyst::Result<()> {
             .with_pass(DrawUi::new()),
     );
 
-    let binding_path = "./resources/bindings_config.ron";
+    let binding_dir = assets_dir.clone() + "bindings_config.ron";
     let input_bundle =
-        InputBundle::<String, String>::new().with_bindings_from_file(binding_path)?;
+        InputBundle::<String, String>::new().with_bindings_from_file(&binding_dir)?;
 
     let game_data = GameDataBuilder::default()
         .with(
@@ -131,7 +133,7 @@ fn main() -> amethyst::Result<()> {
                     "camera_system",
                 ]),
         )?;
-    let mut game = Application::new("./", GameState::default(), game_data)?;
+    let mut game = Application::new(assets_dir, GameState::default(), game_data)?;
     game.run();
 
     Ok(())
