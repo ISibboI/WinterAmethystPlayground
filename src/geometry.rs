@@ -20,6 +20,14 @@ impl Rectangle {
         debug_assert!(self.is_valid());
     }
 
+    /// Decreases the size of the rectangle along the x and y axis by moving the lower right corner.
+    /// Clamps the sizes to be at least zero.
+    pub fn decrease_size_clamped(&mut self, x: f32, y: f32) {
+        self.x2 = self.x1.max(self.x2 - x);
+        self.y2 = self.y1.max(self.y2 - y);
+        debug_assert!(self.is_valid());
+    }
+
     pub fn is_valid(&self) -> bool {
         self.x1 <= self.x2 && self.y1 <= self.y2
     }

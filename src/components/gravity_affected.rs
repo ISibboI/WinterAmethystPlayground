@@ -1,5 +1,6 @@
 use amethyst::ecs::{Component, DenseVecStorage};
 
+#[derive(Clone, Serialize, Deserialize)]
 pub struct GravityAffected {
     pub terminal_velocity: f32,
 }

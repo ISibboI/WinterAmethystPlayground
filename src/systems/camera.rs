@@ -30,13 +30,13 @@ impl<'s> System<'s> for CameraSystem {
             let camera_translation = transform.translation_mut();
             let mut difference = player_translation - *camera_translation;
             difference.z = 0.0;
-            difference -= Vector3::new(50.0, 50.0, 0.0);
+            difference -= Vector3::new(VIEWPORT_WIDTH / 2.0, VIEWPORT_HEIGHT / 2.0, 0.0);
             dead_zone(&mut difference.x);
             dead_zone(&mut difference.y);
             *camera_translation += 0.1 * difference;
 
             let mut camera_rect = level.bounding_box().clone();
-            camera_rect.decrease_size(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+            camera_rect.decrease_size_clamped(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
             clamp(
                 &mut camera_translation.x,
                 camera_rect.min_x(),

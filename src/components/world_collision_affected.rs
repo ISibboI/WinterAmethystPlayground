@@ -1,5 +1,6 @@
 use amethyst::ecs::{Component, VecStorage};
 
+#[derive(Clone, Serialize, Deserialize)]
 pub struct WorldCollisionAffected {
     pub on_ground: bool,
     pub collides_left: bool,

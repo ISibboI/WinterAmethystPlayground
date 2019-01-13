@@ -6,7 +6,7 @@ use amethyst::{
 use components::{Velocity, WorldCollisionAffected};
 use resources::level::Level;
 
-const GROUND_HEIGHT: f32 = 4.0;
+const GROUND_HEIGHT: f32 = 8.0;
 
 pub struct WorldCollisionSystem;
 

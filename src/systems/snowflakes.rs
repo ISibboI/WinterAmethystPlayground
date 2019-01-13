@@ -96,14 +96,13 @@ impl<'s> SnowflakeSystem {
         transform.translation_mut().x = translation_distribution.sample(rng);
         transform.translation_mut().y = level.bounding_box().max_y() + 10.0;
         transform.translation_mut().z = 0.25 - sprite_number as f32 * 0.1;
-        *transform.scale_mut() *= 0.5;
         updater.insert(snowflake, transform);
 
         let sprite_render = SpriteRender {
             sprite_sheet: sprite_sheets.snowflake(),
             sprite_number,
         };
-        let terminal_velocity_distribution = Uniform::new_inclusive(8.0, 12.0);
+        let terminal_velocity_distribution = Uniform::new_inclusive(16.0, 24.0);
         let terminal_velocity = terminal_velocity_distribution.sample(rng);
         updater.insert(snowflake, sprite_render);
         updater.insert(snowflake, GravityAffected::new(terminal_velocity));

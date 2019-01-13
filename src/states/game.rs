@@ -1,4 +1,5 @@
 use std::{collections::HashMap, fs};
+use std::path::Path;
 
 use amethyst::{
     assets::{AssetStorage, Completion, Loader, Prefab, PrefabLoader, ProgressCounter, RonFormat},
@@ -23,8 +24,8 @@ use geometry::Rectangle;
 use resources::{dialogue::Dialogue, GameSpriteSheets, level::Level, Ui};
 use resources::level::LevelStore;
 
-pub const VIEWPORT_WIDTH: f32 = 100.0;
-pub const VIEWPORT_HEIGHT: f32 = 100.0;
+pub const VIEWPORT_WIDTH: f32 = 200.0;
+pub const VIEWPORT_HEIGHT: f32 = 200.0;
 
 #[derive(Default)]
 pub struct GameState;
@@ -74,7 +75,7 @@ impl SimpleState for GameState {
             }
         }*/
 
-        world.add_resource(Level::new(String::from("outside"), Rectangle::new(0.0, 0.0, 200.0, 100.0)));
+        world.add_resource(Level::new(String::from("outside"), Rectangle::new(0.0, 0.0, 400.0, 200.0)));
 
         initialize_background(world);
         initialize_player(world);
@@ -84,11 +85,9 @@ impl SimpleState for GameState {
 
 fn initialize_background(world: &mut World) {
     let mut transform = Transform::default();
-    transform.translation_mut().x = VIEWPORT_WIDTH / 2.0 + 50.0;
+    transform.translation_mut().x = VIEWPORT_WIDTH / 2.0 + 100.0;
     transform.translation_mut().y = VIEWPORT_HEIGHT / 2.0;
-    ;
     transform.translation_mut().z = -1.0;
-    *transform.scale_mut() *= 0.5;
 
     let sprite_render = SpriteRender {
         sprite_sheet: world.read_resource::<GameSpriteSheets>().background(),
@@ -106,7 +105,6 @@ fn initialize_player(world: &mut World) {
     let mut transform = Transform::default();
     transform.translation_mut().x = VIEWPORT_WIDTH / 2.0;
     transform.translation_mut().y = VIEWPORT_HEIGHT / 2.0;
-    *transform.scale_mut() *= 0.5;
 
     let sprite_sheet = world.read_resource::<GameSpriteSheets>().santa();
     let sprite_render = SpriteRender {
@@ -121,8 +119,8 @@ fn initialize_player(world: &mut World) {
         .with(Velocity::default())
         .with(sprite_render)
         .with(WorldCollisionAffected::new(
-            36.0 * transform.scale().x,
-            51.0 * transform.scale().y,
+            36.0,
+            51.0,
         ))
         .with(transform)
         .with(Transparent)
@@ -188,7 +186,7 @@ fn load_audio(world: &mut World) {
     for file in dir {
         debug!("Found DirEntry {:?}", &file);
         let file = file.expect("Could not read file");
-        let path = file.path();
+        let path = Path::new("speech").join(file.file_name());
         let path_str = path.to_str().expect("Could not convert path to string");
         if path.is_file() && path_str.ends_with(".ogg") {
             debug!("Loading sound {:?}", &path);
