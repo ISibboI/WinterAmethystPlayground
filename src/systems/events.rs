@@ -1,7 +1,7 @@
 use amethyst::{
     core::{Time, Transform},
-    ecs::{Component, Entities, Join, Read, ReadStorage, Resources, System, Write, WriteStorage},
-    input::InputHandler,
+    ecs::{Component, Entities, Join, Read, ReadStorage, System, Write, WriteStorage},
+    input::{InputHandler, StringBindings},
     shrev::EventChannel,
 };
 use entities::Player;
@@ -21,7 +21,7 @@ impl<'s> System<'s> for EventSystem {
         Read<'s, Time>,
         ReadStorage<'s, Player>,
         ReadStorage<'s, Transform>,
-        Read<'s, InputHandler<String, String>>,
+        Read<'s, InputHandler<StringBindings>>,
         Write<'s, EventChannel<Dialogue>>,
     );
 
@@ -55,6 +55,7 @@ impl<'s> System<'s> for EventSystem {
             }
 
             if is_triggered {
+                debug!("Event triggered: {:?}", event);
                 entities.delete(entity).unwrap();
                 self.actions.extend(event.actions.iter().cloned());
             }
@@ -65,7 +66,10 @@ impl<'s> System<'s> for EventSystem {
         } else {
             for action in &self.actions {
                 match action.clone() {
-                    EventAction::Dialogue(dialogue) => dialogue_actions.single_write(dialogue),
+                    EventAction::Dialogue(dialogue) => {
+                        debug!("Queueing dialogue action: {:?}", dialogue);
+                        dialogue_actions.single_write(dialogue);
+                    },
                 }
             }
             self.actions.clear();

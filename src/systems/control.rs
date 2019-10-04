@@ -1,6 +1,6 @@
 use amethyst::{
     ecs::{Join, Read, ReadStorage, System, WriteStorage},
-    input::InputHandler,
+    input::{InputHandler, StringBindings},
 };
 
 use components::{Velocity, WorldCollisionAffected};
@@ -22,7 +22,7 @@ impl<'s> System<'s> for ControlSystem {
         ReadStorage<'s, WorldCollisionAffected>,
         WriteStorage<'s, Velocity>,
         Read<'s, InDialogue>,
-        Read<'s, InputHandler<String, String>>,
+        Read<'s, InputHandler<StringBindings>>,
     );
 
     fn run(

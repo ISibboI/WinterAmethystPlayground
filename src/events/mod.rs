@@ -1,15 +1,11 @@
-use amethyst::{
-    assets::{Handle, Prefab, PrefabData, PrefabError, ProgressCounter},
-    core::specs::error::Error,
-    ecs::{Component, DenseVecStorage, Entity, WriteStorage},
-};
+use amethyst::{assets::{Handle, Prefab, PrefabData, ProgressCounter}, ecs::{Component, DenseVecStorage, Entity, WriteStorage}, Error};
 
 use events::{actions::EventAction, triggers::EventTrigger};
 
 pub mod actions;
 pub mod triggers;
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, Default)]
 pub struct Event {
     pub triggers: Vec<EventTrigger>,
     pub actions: Vec<EventAction>,
@@ -28,6 +24,7 @@ impl<'a> PrefabData<'a> for Event {
         entity: Entity,
         events: &mut <Self as PrefabData<'a>>::SystemData,
         _entities: &[Entity],
+        _childred: &[Entity],
     ) -> Result<<Self as PrefabData<'a>>::Result, Error> {
         events
             .insert(entity, self.clone())

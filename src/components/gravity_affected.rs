@@ -1,7 +1,8 @@
-use amethyst::assets::{PrefabData, PrefabError, ProgressCounter};
+use amethyst::assets::{PrefabData, Prefab, ProgressCounter};
+use amethyst::Error;
 use amethyst::ecs::{Component, DenseVecStorage, Entity, WriteStorage};
 
-#[derive(Clone, Serialize, Deserialize, PrefabData)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, PrefabData)]
 #[prefab(Component)]
 pub struct GravityAffected {
     pub terminal_velocity: f32,

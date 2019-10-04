@@ -1,5 +1,6 @@
-use amethyst::assets::{PrefabData, PrefabError, ProgressCounter};
+use amethyst::assets::{PrefabData, ProgressCounter};
 use amethyst::core::transform::Transform;
+use amethyst::Error;
 use amethyst::ecs::{Component, Entity, VecStorage, WriteStorage};
 use amethyst::renderer::{SpriteRender, Transparent};
 
@@ -31,25 +32,25 @@ impl Component for Player {
     type Storage = VecStorage<Self>;
 }
 
-#[derive(Serialize, Deserialize, PrefabData)]
+/*#[derive(Serialize, Deserialize, PrefabData)]
 pub struct PlayerPrefab {
-    #[prefab(Component)]
+    //#[prefab(Component)]
     player: Player,
-    #[prefab(Component)]
+    //#[prefab(Component)]
     transform: Transform,
-    #[prefab(Component)]
+    //#[prefab(Component)]
     sprite_render: SpriteRender,
-    #[prefab(Component)]
+    //#[prefab(Component)]
     gravity_affected: GravityAffected,
-    #[prefab(Component)]
+    //#[prefab(Component)]
     world_collision_affected: WorldCollisionAffected,
-    #[prefab(Component)]
+    //#[prefab(Component)]
     #[serde(default)]
     velocity: Velocity,
-    #[prefab(Component)]
+    //#[prefab(Component)]
     #[serde(default)]
     animated: Animated,
-    #[prefab(Component)]
+    //#[prefab(Component)]
     #[serde(default)]
     transparent: Transparent,
-}
+}*/

@@ -3,9 +3,9 @@ use std::collections::{HashMap, VecDeque};
 use amethyst::{
     assets::AssetStorage,
     audio::{output::Output, Source, SourceHandle},
-    core::{specs::SystemData, Time},
-    ecs::{Entities, Entity, Join, Read, ReadStorage, Resources, System, Write, WriteStorage},
-    input::InputHandler,
+    core::{Time},
+    ecs::{Entities, Entity, Join, Read, ReadStorage, System, Write, WriteStorage, World},
+    input::{InputHandler, StringBindings},
     renderer::SpriteRender,
     shrev::{EventChannel, ReaderId},
     ui::{FontHandle, UiFinder, UiText},
@@ -25,7 +25,7 @@ pub struct DialogueSystem {
 
 impl<'s> System<'s> for DialogueSystem {
     type SystemData = (
-        Read<'s, InputHandler<String, String>>,
+        Read<'s, InputHandler<StringBindings>>,
         Read<'s, EventChannel<Dialogue>>,
         Read<'s, HashMap<String, SourceHandle>>,
         Read<'s, AssetStorage<Source>>,
@@ -90,9 +90,10 @@ impl<'s> System<'s> for DialogueSystem {
         }
     }
 
-    fn setup(&mut self, res: &mut Resources) {
-        self.reader = Some(Write::<EventChannel<Dialogue>>::fetch(res).register_reader());
-        res.insert::<InDialogue>(InDialogue { in_dialogue: false });
+    fn setup(&mut self, world: &mut World) {
+        self.reader = Some(world.get_mut::<EventChannel<Dialogue>>().unwrap().register_reader());
+        //self.reader = Some(Write::<EventChannel<Dialogue>>::fetch(world).register_reader());
+        world.insert::<InDialogue>(InDialogue { in_dialogue: false });
     }
 }
 

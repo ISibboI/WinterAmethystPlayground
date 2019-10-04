@@ -2,7 +2,7 @@ use amethyst::{
     core::Time,
     core::transform::Transform,
     ecs::{Join, Read, ReadStorage, System, Write, WriteStorage},
-    input::InputHandler,
+    input::{InputHandler, StringBindings},
     renderer::SpriteRender,
 };
 
@@ -24,7 +24,7 @@ impl<'s> System<'s> for AnimationSystem {
         WriteStorage<'s, SpriteRender>,
         Read<'s, InDialogue>,
         Read<'s, Time>,
-        Read<'s, InputHandler<String, String>>,
+        Read<'s, InputHandler<StringBindings>>,
         WriteStorage<'s, Transform>,
     );
 

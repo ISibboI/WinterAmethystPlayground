@@ -1,5 +1,5 @@
 use amethyst::{
-    core::{nalgebra::Vector3, Transform},
+    core::{Transform, math::base::Vector3},
     ecs::{Join, Read, ReadStorage, System, WriteStorage},
     renderer::Camera,
 };
@@ -30,7 +30,7 @@ impl<'s> System<'s> for CameraSystem {
             let camera_translation = transform.translation_mut();
             let mut difference = player_translation - *camera_translation;
             difference.z = 0.0;
-            difference -= Vector3::new(VIEWPORT_WIDTH / 2.0, VIEWPORT_HEIGHT / 2.0, 0.0);
+            difference -= Vector3::new(0.0, 0.0, 0.0);
             dead_zone(&mut difference.x);
             dead_zone(&mut difference.y);
             *camera_translation += 0.1 * difference;
@@ -39,13 +39,13 @@ impl<'s> System<'s> for CameraSystem {
             camera_rect.decrease_size_clamped(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
             clamp(
                 &mut camera_translation.x,
-                camera_rect.min_x(),
-                camera_rect.max_x(),
+                camera_rect.min_x() + VIEWPORT_WIDTH / 2.0,
+                camera_rect.max_x() + VIEWPORT_WIDTH / 2.0,
             );
             clamp(
                 &mut camera_translation.y,
-                camera_rect.min_y(),
-                camera_rect.max_y(),
+                camera_rect.min_y() + VIEWPORT_HEIGHT / 2.0,
+                camera_rect.max_y() + VIEWPORT_HEIGHT / 2.0,
             );
         }
     }

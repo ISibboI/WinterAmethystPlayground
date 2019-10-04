@@ -1,6 +1,6 @@
 use amethyst::{
-    core::nalgebra::Vector2,
     ecs::{Component, DenseVecStorage},
+    core::math::base::Vector2,
 };
 
 pub struct Velocity {

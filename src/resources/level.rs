@@ -1,6 +1,7 @@
 use std::collections::HashMap;
-use amethyst::assets::{PrefabData, PrefabError, ProgressCounter};
+use amethyst::assets::{PrefabData, ProgressCounter};
 use amethyst::ecs::{Entity, Component, DenseVecStorage, WriteStorage};
+use amethyst::Error;
 
 use geometry::Rectangle;
 

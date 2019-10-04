@@ -1,4 +1,3 @@
-#![feature(nll)]
 // Disable some warnings
 #![allow(unused_imports)]
 
@@ -18,16 +17,14 @@ use std::{
 };
 
 use amethyst::{
-    assets::PrefabLoaderSystem,
+    assets::PrefabLoaderSystemDesc,
     audio::{AudioBundle, SourceHandle},
     core::transform::TransformBundle,
-    input::InputBundle,
+    input::{InputBundle, StringBindings},
     LoggerConfig,
     prelude::*,
-    renderer::{
-        ALPHA, ColorMask, DepthMode, DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stage,
-    },
-    ui::{DrawUi, UiBundle},
+    renderer::{RenderingBundle, RenderToWindow, RenderFlat2D, types::DefaultBackend},
+    ui::{UiBundle, RenderUi},
     utils::application_root_dir,
 };
 
@@ -54,9 +51,9 @@ fn main() -> amethyst::Result<()> {
     amethyst::start_logger(logger_config);
 
     let assets_dir = application_root_dir()?.join("assets");
-    let config = DisplayConfig::load(&assets_dir.join("display_config.ron"));
+    let display_config_path = assets_dir.join("display_config.ron");
 
-    let pipe = Pipeline::build().with_stage(
+    /*let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
             .clear_target([0.1, 0.01, 0.01, 1.0], 1.0)
             .with_pass(DrawFlat2D::new().with_transparency(
@@ -65,22 +62,22 @@ fn main() -> amethyst::Result<()> {
                 Some(DepthMode::LessEqualWrite),
             ))
             .with_pass(DrawUi::new()),
-    );
+    );*/
 
     let binding_dir = assets_dir.join("bindings_config.ron");
     let input_bundle =
-        InputBundle::<String, String>::new().with_bindings_from_file(&binding_dir)?;
+        InputBundle::<StringBindings>::new().with_bindings_from_file(&binding_dir)?;
 
     let game_data = GameDataBuilder::default()
-        .with(
-            PrefabLoaderSystem::<Event>::default(),
+        .with_system_desc(
+            PrefabLoaderSystemDesc::<Event>::default(),
             "event_loader",
             &[],
         )
         .with_bundle(TransformBundle::new())?
         .with(systems::SnowflakeSystem::new(), "snowflake_system", &[])
         .with_bundle(input_bundle)?
-        .with_bundle(UiBundle::<String, String>::new())?
+        .with_bundle(UiBundle::<StringBindings>::new())?
         .with(
             systems::DialogueSystem::default(),
             "dialogue_system",
@@ -122,15 +119,18 @@ fn main() -> amethyst::Result<()> {
             "camera_system",
             &["control_system"],
         )
-        .with_bundle(AudioBundle::new().with_dj_system(|_: &mut Music| None))?
+        .with_bundle(AudioBundle::default())?
         .with_bundle(
-            RenderBundle::new(pipe, Some(config))
+            RenderingBundle::<DefaultBackend>::new()
+                .with_plugin(RenderToWindow::from_config_path(display_config_path)
+                    .with_clear([0.1, 0.01, 0.01, 0.1])).with_plugin(RenderFlat2D::default()).with_plugin(RenderUi::default()),
+            /*RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
                 .with_sprite_visibility_sorting(&[
                     "world_collision_system",
                     "ui_transform",
                     "camera_system",
-                ]),
+                ]),*/
         )?;
     let mut game = Application::new(assets_dir, GameState::default(), game_data)?;
     game.run();

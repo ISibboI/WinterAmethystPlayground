@@ -3,14 +3,14 @@ use std::path::Path;
 
 use amethyst::{
     assets::{AssetStorage, Completion, Loader, Prefab, PrefabLoader, ProgressCounter, RonFormat},
-    audio::{AudioFormat, SourceHandle},
+    audio::{SourceHandle, OggFormat},
     core::transform::Transform,
     ecs::Write,
     GameData,
     prelude::*,
     renderer::{
-        Camera, PngFormat, Projection, SpriteRender, SpriteSheet,
-        SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
+        Camera, SpriteRender, SpriteSheet, ImageFormat,
+        SpriteSheetFormat, Texture, Transparent, sprite::SpriteSheetHandle
     },
     shrev::EventChannel,
     SimpleState, StateData, ui::{UiCreator, UiFinder},
@@ -55,7 +55,6 @@ impl SimpleState for GameState {
                     "events.ron",
                     RonFormat,
                     (),
-                    (),
                 )
             },
         );
@@ -75,7 +74,7 @@ impl SimpleState for GameState {
             }
         }*/
 
-        world.add_resource(Level::new(String::from("outside"), Rectangle::new(0.0, 0.0, 400.0, 200.0)));
+        world.insert(Level::new(String::from("outside"), Rectangle::new(0.0, 0.0, 400.0, 200.0)));
 
         initialize_background(world);
         initialize_player(world);
@@ -134,12 +133,7 @@ fn initialize_camera(world: &mut World) {
     transform.translation_mut().z = 1.0;
     world
         .create_entity()
-        .with(Camera::from(Projection::orthographic(
-            0.0,
-            VIEWPORT_WIDTH,
-            0.0,
-            VIEWPORT_HEIGHT,
-        )))
+        .with(Camera::standard_2d(VIEWPORT_WIDTH, VIEWPORT_HEIGHT))
         .with(transform)
         .build();
 }
@@ -150,7 +144,7 @@ fn load_sprite_sheets(world: &mut World) {
     sprite_sheets.set_snowflake(load_texture(world, "snowflake"));
     sprite_sheets.set_ground(load_texture(world, "ground"));
     sprite_sheets.set_background(load_texture(world, "background"));
-    world.add_resource(sprite_sheets);
+    world.insert(sprite_sheets);
 }
 
 fn load_texture(world: &mut World, name: &str) -> SpriteSheetHandle {
@@ -161,8 +155,7 @@ fn load_texture(world: &mut World, name: &str) -> SpriteSheetHandle {
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
         loader.load(
             format!("texture/{}_spritesheet.png", name),
-            PngFormat,
-            TextureMetadata::srgb_scale(),
+            ImageFormat::default(),
             (),
             &texture_storage,
         )
@@ -172,8 +165,7 @@ fn load_texture(world: &mut World, name: &str) -> SpriteSheetHandle {
     let sprite_sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     loader.load(
         format!("texture/{}_spritesheet.ron", name), // Here we load the associated ron file
-        SpriteSheetFormat,
-        texture_handle, // We pass it the ID of the texture we want it to use
+        SpriteSheetFormat(texture_handle), // We pass it the ID of the texture we want it to use
         (),
         &sprite_sheet_store,
     )
@@ -201,14 +193,14 @@ fn load_audio(world: &mut World) {
             audio_map.insert(file_stem, source_handle);
         }
     }
-    world.add_resource(audio_map);
-    world.add_resource(Music);
+    world.insert(audio_map);
+    world.insert(Music);
 }
 
 /// Loads an ogg audio track.
 fn load_audio_track<N: Into<String>>(world: &World, name: N) -> SourceHandle {
     let loader = world.read_resource::<Loader>();
-    loader.load(name, AudioFormat::Ogg, (), (), &world.read_resource())
+    loader.load(name, OggFormat, (), &world.read_resource())
 }
 
 pub struct Music;

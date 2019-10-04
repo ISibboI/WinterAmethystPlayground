@@ -4,8 +4,8 @@ use amethyst::{
     GameData,
     prelude::*,
     renderer::{
-        Camera, PngFormat, Projection, SpriteRender, SpriteSheet,
-        SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata, Transparent,
+        Camera, SpriteRender, SpriteSheet,
+        SpriteSheetFormat, Texture, Transparent,
     }, SimpleState, StateData,
 };
 

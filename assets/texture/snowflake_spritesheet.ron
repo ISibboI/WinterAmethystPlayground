@@ -1,6 +1,6 @@
 (
-    spritesheet_width: 27,
-    spritesheet_height: 13,
+    texture_width: 27,
+    texture_height: 13,
     sprites: [
         (
             x: 0,

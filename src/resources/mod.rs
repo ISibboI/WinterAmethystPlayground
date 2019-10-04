@@ -1,4 +1,4 @@
-use amethyst::{ecs::Entity, renderer::SpriteSheetHandle};
+use amethyst::{ecs::Entity, renderer::sprite::SpriteSheetHandle};
 
 pub mod dialogue;
 pub mod level;
