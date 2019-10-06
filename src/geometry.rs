@@ -1,5 +1,3 @@
-
-
 #[derive(Default, Clone, Serialize, Deserialize, Debug)]
 pub struct Rectangle {
     x1: f32,

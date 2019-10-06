@@ -10,6 +10,7 @@ extern crate noise;
 extern crate rand;
 #[macro_use]
 extern crate serde_derive;
+extern crate ron;
 
 use std::{
     fs,
@@ -21,24 +22,25 @@ use amethyst::{
     audio::{AudioBundle, SourceHandle},
     core::transform::TransformBundle,
     input::{InputBundle, StringBindings},
-    LoggerConfig,
     prelude::*,
-    renderer::{RenderingBundle, RenderToWindow, RenderFlat2D, types::DefaultBackend},
-    ui::{UiBundle, RenderUi},
+    renderer::{types::DefaultBackend, RenderFlat2D, RenderToWindow, RenderingBundle},
+    ui::{RenderUi, UiBundle},
     utils::application_root_dir,
+    LoggerConfig,
 };
 
 use events::Event;
+use levels::LevelConfig;
 use states::game::{GameState, Music};
 
 mod components;
 mod entities;
 mod events;
+mod geometry;
+mod levels;
 mod resources;
 mod states;
 mod systems;
-mod geometry;
-mod levels;
 
 fn main() -> amethyst::Result<()> {
     let log_file = Path::new("debug.log");
@@ -73,6 +75,11 @@ fn main() -> amethyst::Result<()> {
         .with_system_desc(
             PrefabLoaderSystemDesc::<Event>::default(),
             "event_loader",
+            &[],
+        )
+        .with_system_desc(
+            PrefabLoaderSystemDesc::<LevelConfig>::default(),
+            "level_store_loader",
             &[],
         )
         .with_bundle(TransformBundle::new())?
@@ -123,15 +130,19 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(AudioBundle::default())?
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()
-                .with_plugin(RenderToWindow::from_config_path(display_config_path)
-                    .with_clear([0.1, 0.01, 0.01, 0.1])).with_plugin(RenderFlat2D::default()).with_plugin(RenderUi::default()),
+                .with_plugin(
+                    RenderToWindow::from_config_path(display_config_path)
+                        .with_clear([0.1, 0.01, 0.01, 0.1]),
+                )
+                .with_plugin(RenderFlat2D::default())
+                .with_plugin(RenderUi::default()),
             /*RenderBundle::new(pipe, Some(config))
-                .with_sprite_sheet_processor()
-                .with_sprite_visibility_sorting(&[
-                    "world_collision_system",
-                    "ui_transform",
-                    "camera_system",
-                ]),*/
+            .with_sprite_sheet_processor()
+            .with_sprite_visibility_sorting(&[
+                "world_collision_system",
+                "ui_transform",
+                "camera_system",
+            ]),*/
         )?;
     let mut game = Application::new(assets_dir, GameState::default(), game_data)?;
     game.run();

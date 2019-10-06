@@ -1,6 +1,8 @@
-use amethyst::assets::{PrefabData, Prefab, ProgressCounter};
-use amethyst::Error;
-use amethyst::ecs::{Component, DenseVecStorage, Entity, WriteStorage};
+use amethyst::{
+    assets::{Prefab, PrefabData, ProgressCounter},
+    ecs::{Component, DenseVecStorage, Entity, WriteStorage},
+    Error,
+};
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, PrefabData)]
 #[prefab(Component)]

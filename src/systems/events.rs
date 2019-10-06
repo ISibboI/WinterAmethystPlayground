@@ -6,8 +6,8 @@ use amethyst::{
 };
 use entities::Player;
 use events::{actions::EventAction, triggers::EventTrigger, Event};
-use resources::dialogue::Dialogue;
 use levels::LevelChange;
+use resources::dialogue::Dialogue;
 
 #[derive(Default)]
 pub struct EventSystem {
@@ -29,7 +29,16 @@ impl<'s> System<'s> for EventSystem {
 
     fn run(
         &mut self,
-        (entities, events, time, players, transforms, input_handler, mut dialogue_actions, mut level_change_actions): <Self as System<'s>>::SystemData,
+        (
+            entities,
+            events,
+            time,
+            players,
+            transforms,
+            input_handler,
+            mut dialogue_actions,
+            mut level_change_actions,
+        ): <Self as System<'s>>::SystemData,
     ) {
         let current_time = time.frame_number() as f32 * time.fixed_seconds();
         let (player, _) = (&entities, &players).join().next().unwrap();
@@ -71,11 +80,11 @@ impl<'s> System<'s> for EventSystem {
                     EventAction::Dialogue(dialogue) => {
                         debug!("Queueing dialogue action: {:?}", dialogue);
                         dialogue_actions.single_write(dialogue);
-                    },
+                    }
                     EventAction::ChangeLevel(level_change) => {
                         debug!("Queueing level change action: {:?}", level_change);
                         level_change_actions.single_write(level_change);
-                    },
+                    }
                 }
             }
             self.actions.clear();

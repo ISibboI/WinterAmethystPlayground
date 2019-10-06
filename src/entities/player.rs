@@ -1,11 +1,12 @@
-use amethyst::assets::{PrefabData, ProgressCounter};
-use amethyst::core::transform::Transform;
-use amethyst::Error;
-use amethyst::ecs::{Component, Entity, VecStorage, WriteStorage};
-use amethyst::renderer::{SpriteRender, Transparent};
+use amethyst::{
+    assets::{PrefabData, ProgressCounter},
+    core::transform::Transform,
+    ecs::{Component, Entity, VecStorage, WriteStorage},
+    renderer::{SpriteRender, Transparent},
+    Error,
+};
 
-use components::{Animated, Velocity, WorldCollisionAffected};
-use components::GravityAffected;
+use components::{Animated, GravityAffected, Velocity, WorldCollisionAffected};
 
 #[derive(Default, Clone, Serialize, Deserialize, PrefabData)]
 #[prefab(Component)]

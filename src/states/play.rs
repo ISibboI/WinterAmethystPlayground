@@ -1,12 +1,9 @@
 use amethyst::{
     assets::{AssetStorage, Loader},
     core::transform::Transform,
-    GameData,
     prelude::*,
-    renderer::{
-        Camera, SpriteRender, SpriteSheet,
-        SpriteSheetFormat, Texture, Transparent,
-    }, SimpleState, StateData,
+    renderer::{Camera, SpriteRender, SpriteSheet, SpriteSheetFormat, Texture, Transparent},
+    GameData, SimpleState, StateData,
 };
 
 use components::*;

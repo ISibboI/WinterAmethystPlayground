@@ -4,7 +4,7 @@ use amethyst::{
 };
 
 use components::{Velocity, WorldCollisionAffected};
-use levels::Level;
+use levels::{Level, LevelStore};
 
 const GROUND_HEIGHT: f32 = 8.0;
 
@@ -15,7 +15,7 @@ impl<'s> System<'s> for WorldCollisionSystem {
         WriteStorage<'s, WorldCollisionAffected>,
         WriteStorage<'s, Transform>,
         WriteStorage<'s, Velocity>,
-        Read<'s, Level>,
+        Read<'s, LevelStore>,
     );
 
     fn run(
@@ -24,6 +24,7 @@ impl<'s> System<'s> for WorldCollisionSystem {
             's,
         >>::SystemData,
     ) {
+        let level = level.get_current_level();
         for (mut world_collision_affected, transform, velocity) in (
             &mut world_collision_affecteds,
             &mut transforms,
@@ -32,7 +33,9 @@ impl<'s> System<'s> for WorldCollisionSystem {
             .join()
         {
             if transform.translation().y
-                < level.bounding_box().min_y() + world_collision_affected.height / 2.0 + GROUND_HEIGHT
+                < level.bounding_box().min_y()
+                    + world_collision_affected.height / 2.0
+                    + GROUND_HEIGHT
             {
                 world_collision_affected.on_ground = true;
                 transform.translation_mut().y = level.bounding_box().min_y()

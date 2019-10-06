@@ -3,8 +3,8 @@ use std::collections::{HashMap, VecDeque};
 use amethyst::{
     assets::AssetStorage,
     audio::{output::Output, Source, SourceHandle},
-    core::{Time},
-    ecs::{Entities, Entity, Join, Read, ReadStorage, System, Write, WriteStorage, World},
+    core::Time,
+    ecs::{Entities, Entity, Join, Read, ReadStorage, System, World, Write, WriteStorage},
     input::{InputHandler, StringBindings},
     renderer::SpriteRender,
     shrev::{EventChannel, ReaderId},
@@ -93,7 +93,12 @@ impl<'s> System<'s> for DialogueSystem {
     }
 
     fn setup(&mut self, world: &mut World) {
-        self.reader = Some(world.get_mut::<EventChannel<Dialogue>>().unwrap().register_reader());
+        self.reader = Some(
+            world
+                .get_mut::<EventChannel<Dialogue>>()
+                .unwrap()
+                .register_reader(),
+        );
         //self.reader = Some(Write::<EventChannel<Dialogue>>::fetch(world).register_reader());
         world.insert::<InDialogue>(InDialogue { in_dialogue: false });
     }

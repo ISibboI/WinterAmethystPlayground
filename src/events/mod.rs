@@ -1,4 +1,8 @@
-use amethyst::{assets::{Handle, Prefab, PrefabData, ProgressCounter}, ecs::{Component, DenseVecStorage, Entity, WriteStorage}, Error};
+use amethyst::{
+    assets::{Handle, Prefab, PrefabData, ProgressCounter},
+    ecs::{Component, DenseVecStorage, Entity, WriteStorage},
+    Error,
+};
 
 use events::{actions::EventAction, triggers::EventTrigger};
 

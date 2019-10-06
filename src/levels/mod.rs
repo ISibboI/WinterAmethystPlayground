@@ -1,8 +1,10 @@
+use amethyst::{
+    assets::{PrefabData, ProgressCounter},
+    core::math::base::Vector2,
+    ecs::{Component, DenseVecStorage, Entity, WriteStorage},
+    Error,
+};
 use std::collections::HashMap;
-use amethyst::assets::{PrefabData, ProgressCounter};
-use amethyst::ecs::{Entity, Component, DenseVecStorage, WriteStorage};
-use amethyst::Error;
-use amethyst::core::math::base::Vector2;
 
 use geometry::Rectangle;
 
@@ -20,8 +22,19 @@ impl Component for Level {
 
 #[derive(Default, Clone, Debug, Serialize, Deserialize, PrefabData)]
 #[prefab(Component)]
+pub struct LevelConfig {
+    levels: Vec<Level>,
+}
+
+impl Component for LevelConfig {
+    type Storage = DenseVecStorage<Self>;
+}
+
+#[derive(Default, Clone, Debug)]
 pub struct LevelStore {
-    levels: HashMap<String, Level>
+    pub name_level_map: HashMap<String, usize>,
+    pub current_level: usize,
+    pub levels: Vec<Level>,
 }
 
 impl Level {
@@ -44,7 +57,12 @@ impl Level {
     }
 
     pub fn entry_point(&self, name: &str) -> &Vector2<f32> {
-        self.entry_points.get(name).unwrap_or_else(|| panic!("Entry point '{}' into level '{}' not found", name, self.name))
+        self.entry_points.get(name).unwrap_or_else(|| {
+            panic!(
+                "Entry point '{}' into level '{}' not found",
+                name, self.name
+            )
+        })
     }
 
     /*pub fn bounding_box_mut(&mut self) -> &mut Rectangle {
@@ -56,4 +74,25 @@ impl Level {
 pub struct LevelChange {
     pub name: String,
     pub entry_point: String,
+}
+
+impl From<LevelConfig> for LevelStore {
+    fn from(level_config: LevelConfig) -> Self {
+        let mut level_store = LevelStore {
+            name_level_map: HashMap::default(),
+            current_level: 0,
+            levels: Vec::default(),
+        };
+        for level in level_config.levels {
+            level_store.name_level_map.insert(level.name.clone(), level_store.levels.len());
+            level_store.levels.push(level);
+        }
+        level_store
+    }
+}
+
+impl LevelStore {
+    pub fn get_current_level(&self) -> &Level {
+        &self.levels[self.current_level]
+    }
 }

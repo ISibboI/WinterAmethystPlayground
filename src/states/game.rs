@@ -1,29 +1,27 @@
-use std::{collections::HashMap, fs};
-use std::path::Path;
+use std::{collections::HashMap, fs, path::Path};
 
 use amethyst::{
     assets::{AssetStorage, Completion, Loader, Prefab, PrefabLoader, ProgressCounter, RonFormat},
-    audio::{SourceHandle, OggFormat},
-    core::transform::Transform,
-    core::math::base::Vector2,
+    audio::{OggFormat, SourceHandle},
+    core::{math::base::Vector2, transform::Transform},
     ecs::Write,
-    GameData,
     prelude::*,
     renderer::{
-        Camera, SpriteRender, SpriteSheet, ImageFormat,
-        SpriteSheetFormat, Texture, Transparent, sprite::SpriteSheetHandle
+        sprite::SpriteSheetHandle, Camera, ImageFormat, SpriteRender, SpriteSheet,
+        SpriteSheetFormat, Texture, Transparent,
     },
-    SimpleState, StateData, ui::{UiCreator, UiFinder},
+    ui::{UiCreator, UiFinder},
+    GameData, SimpleState, StateData,
 };
 use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
 
 use components::*;
 use entities::{Player, Snowflake};
-use events::{actions::EventAction, Event, triggers::EventTrigger};
+use events::{actions::EventAction, triggers::EventTrigger, Event};
 use geometry::Rectangle;
+use levels::{Level, LevelConfig, LevelStore};
 use resources::{dialogue::Dialogue, GameSpriteSheets, Ui};
-use levels::LevelStore;
-use levels::Level;
+use std::fs::File;
 
 pub const VIEWPORT_WIDTH: f32 = 200.0;
 pub const VIEWPORT_HEIGHT: f32 = 200.0;
@@ -50,32 +48,16 @@ impl SimpleState for GameState {
         world.register::<Event>();
 
         world.exec(|mut creator: UiCreator| creator.create("ui/dialogue.ron", ()));
-        let event_prefab_handle = world.exec(
-            |loader: PrefabLoader<Event>| {
-                loader.load(
-                    "events.ron",
-                    RonFormat,
-                    (),
-                )
-            },
-        );
-        world.create_entity().with(event_prefab_handle.clone()).build();
+        let event_prefab_handle =
+            world.exec(|loader: PrefabLoader<Event>| loader.load("events.ron", RonFormat, ()));
+        world
+            .create_entity()
+            .with(event_prefab_handle.clone())
+            .build();
 
-        /*{
-            let level_prefab_handle = world.exec(|loader: PrefabLoader<Level>| {
-                loader.load("levels.ron", RonFormat, (), ())
-            });
-            let level_storage = world.read_resource::<AssetStorage<Prefab<Level>>>();
-            let level_prefab = level_storage.get(&level_prefab_handle).unwrap();
-
-            let mut level_store = LevelStore::new();
-            for entity in level_prefab.entities() {
-                let level = entity.data().unwrap();
-                level_store.insert(level.name().to_owned(), level.clone());
-            }
-        }*/
-
-        world.insert(Level::new(String::from("outside"), Rectangle::new(0.0, 0.0, 400.0, 200.0), Vector2::new(100.0, 8.0)));
+        let levels_file = File::open("assets/levels.ron").unwrap();
+        let level_config: LevelConfig = ron::de::from_reader(levels_file).unwrap();
+        world.insert::<LevelStore>(level_config.into());
 
         initialize_background(world);
         initialize_player(world);
@@ -102,12 +84,13 @@ fn initialize_background(world: &mut World) {
 }
 
 fn initialize_player(world: &mut World) {
-    let current_level = world.fetch::<Level>();
+    let level_store = world.fetch::<LevelStore>();
+    let current_level = level_store.get_current_level();
     let entry_point = current_level.entry_point("default");
     let mut transform = Transform::default();
     transform.translation_mut().x = entry_point.x;
     transform.translation_mut().y = entry_point.y;
-    drop(current_level);
+    drop(level_store);
 
     let sprite_sheet = world.read_resource::<GameSpriteSheets>().santa();
     let sprite_render = SpriteRender {
@@ -121,10 +104,7 @@ fn initialize_player(world: &mut World) {
         .with(GravityAffected::new(110.0))
         .with(Velocity::default())
         .with(sprite_render)
-        .with(WorldCollisionAffected::new(
-            36.0,
-            51.0,
-        ))
+        .with(WorldCollisionAffected::new(36.0, 51.0))
         .with(transform)
         .with(Transparent)
         .with(Animated::default())

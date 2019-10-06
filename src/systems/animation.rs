@@ -1,6 +1,5 @@
 use amethyst::{
-    core::Time,
-    core::transform::Transform,
+    core::{transform::Transform, Time},
     ecs::{Join, Read, ReadStorage, System, Write, WriteStorage},
     input::{InputHandler, StringBindings},
     renderer::SpriteRender,

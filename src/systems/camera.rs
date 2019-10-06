@@ -1,12 +1,12 @@
 use amethyst::{
-    core::{Transform, math::base::Vector3},
+    core::{math::base::Vector3, Transform},
     ecs::{Join, Read, ReadStorage, System, WriteStorage},
     renderer::Camera,
 };
 use euclid::TypedSize2D;
 
 use entities::Player;
-use levels::Level;
+use levels::{Level, LevelStore};
 use states::game::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 
 const DEAD_ZONE: f32 = 10.0;
@@ -19,10 +19,11 @@ impl<'s> System<'s> for CameraSystem {
         ReadStorage<'s, Player>,
         WriteStorage<'s, Transform>,
         ReadStorage<'s, Camera>,
-        Read<'s, Level>,
+        Read<'s, LevelStore>,
     );
 
     fn run(&mut self, (players, mut transforms, cameras, level): <Self as System<'s>>::SystemData) {
+        let level = level.get_current_level();
         let (_, transform) = (&players, &transforms).join().next().unwrap();
         let player_translation = transform.translation().clone();
 

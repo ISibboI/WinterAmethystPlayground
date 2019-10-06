@@ -7,8 +7,8 @@ use rand::distributions::{Distribution, Uniform};
 
 use components::{GravityAffected, Velocity, WindAffected};
 use entities::Snowflake;
-use resources::{GameSpriteSheets};
-use levels::Level;
+use levels::{Level, LevelStore};
+use resources::GameSpriteSheets;
 use states::game::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 
 const MAX_SNOWFLAKE_COUNT: usize = 200;
@@ -35,7 +35,7 @@ impl<'s> System<'s> for SnowflakeSystem {
         Read<'s, GameSpriteSheets>,
         ReadStorage<'s, Snowflake>,
         ReadStorage<'s, Transform>,
-        Read<'s, Level>,
+        Read<'s, LevelStore>,
         Read<'s, Time>,
     );
 
@@ -45,6 +45,7 @@ impl<'s> System<'s> for SnowflakeSystem {
             's,
         >>::SystemData,
     ) {
+        let level = level.get_current_level();
         let rng = &mut rand::thread_rng();
         let deletion_distribution = Uniform::new(0, 15);
 
@@ -62,8 +63,8 @@ impl<'s> System<'s> for SnowflakeSystem {
         while self.partial_snowflake >= 1.0 {
             if self.snowflake_count as f32
                 >= MAX_SNOWFLAKE_COUNT as f32 / 10_000.0
-                * level.bounding_box().width()
-                * level.bounding_box().height()
+                    * level.bounding_box().width()
+                    * level.bounding_box().height()
             {
                 self.partial_snowflake = 0.0;
                 break;
@@ -81,7 +82,7 @@ impl<'s> SnowflakeSystem {
         entities: &Entities<'s>,
         updater: &Read<'s, LazyUpdate>,
         sprite_sheets: &Read<'s, GameSpriteSheets>,
-        level: &Read<'s, Level>,
+        level: &Level,
     ) {
         let snowflake = entities.create();
         updater.insert(snowflake, Snowflake::new());
