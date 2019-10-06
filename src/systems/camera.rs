@@ -6,7 +6,7 @@ use amethyst::{
 use euclid::TypedSize2D;
 
 use entities::Player;
-use resources::level::Level;
+use levels::Level;
 use states::game::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 
 const DEAD_ZONE: f32 = 10.0;

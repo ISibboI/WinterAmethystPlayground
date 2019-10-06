@@ -7,7 +7,8 @@ use rand::distributions::{Distribution, Uniform};
 
 use components::{GravityAffected, Velocity, WindAffected};
 use entities::Snowflake;
-use resources::{GameSpriteSheets, level::Level};
+use resources::{GameSpriteSheets};
+use levels::Level;
 use states::game::{VIEWPORT_HEIGHT, VIEWPORT_WIDTH};
 
 const MAX_SNOWFLAKE_COUNT: usize = 200;

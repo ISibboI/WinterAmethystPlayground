@@ -62,6 +62,7 @@ impl<'s> System<'s> for DialogueSystem {
                 if let Some(dialogue) = self.dialogue_queue.first() {
                     dialogue_text.text = format!("{}\nPress <F>", dialogue.text);
                     in_dialogue.in_dialogue = true;
+                    // ui_finder.find("dialogue_box").unwrap(); // TODO unhide box
                     debug!("Showing dialogue: {}", dialogue.text);
                     if let (Some(sound_name), Some(output)) =
                         (dialogue.sound.as_ref(), audio_output)
@@ -78,6 +79,7 @@ impl<'s> System<'s> for DialogueSystem {
                         }
                     }
                 } else {
+                    // TODO hide box
                     dialogue_text.text = "".to_owned();
                     in_dialogue.in_dialogue = false;
                 }

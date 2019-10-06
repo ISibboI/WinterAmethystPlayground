@@ -38,6 +38,7 @@ mod resources;
 mod states;
 mod systems;
 mod geometry;
+mod levels;
 
 fn main() -> amethyst::Result<()> {
     let log_file = Path::new("debug.log");

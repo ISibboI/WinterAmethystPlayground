@@ -5,6 +5,7 @@ use amethyst::{
     assets::{AssetStorage, Completion, Loader, Prefab, PrefabLoader, ProgressCounter, RonFormat},
     audio::{SourceHandle, OggFormat},
     core::transform::Transform,
+    core::math::base::Vector2,
     ecs::Write,
     GameData,
     prelude::*,
@@ -12,7 +13,6 @@ use amethyst::{
         Camera, SpriteRender, SpriteSheet, ImageFormat,
         SpriteSheetFormat, Texture, Transparent, sprite::SpriteSheetHandle
     },
-    shrev::EventChannel,
     SimpleState, StateData, ui::{UiCreator, UiFinder},
 };
 use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
@@ -21,8 +21,9 @@ use components::*;
 use entities::{Player, Snowflake};
 use events::{actions::EventAction, Event, triggers::EventTrigger};
 use geometry::Rectangle;
-use resources::{dialogue::Dialogue, GameSpriteSheets, level::Level, Ui};
-use resources::level::LevelStore;
+use resources::{dialogue::Dialogue, GameSpriteSheets, Ui};
+use levels::LevelStore;
+use levels::Level;
 
 pub const VIEWPORT_WIDTH: f32 = 200.0;
 pub const VIEWPORT_HEIGHT: f32 = 200.0;
@@ -74,7 +75,7 @@ impl SimpleState for GameState {
             }
         }*/
 
-        world.insert(Level::new(String::from("outside"), Rectangle::new(0.0, 0.0, 400.0, 200.0)));
+        world.insert(Level::new(String::from("outside"), Rectangle::new(0.0, 0.0, 400.0, 200.0), Vector2::new(100.0, 8.0)));
 
         initialize_background(world);
         initialize_player(world);
@@ -101,9 +102,12 @@ fn initialize_background(world: &mut World) {
 }
 
 fn initialize_player(world: &mut World) {
+    let current_level = world.fetch::<Level>();
+    let entry_point = current_level.entry_point("default");
     let mut transform = Transform::default();
-    transform.translation_mut().x = VIEWPORT_WIDTH / 2.0;
-    transform.translation_mut().y = VIEWPORT_HEIGHT / 2.0;
+    transform.translation_mut().x = entry_point.x;
+    transform.translation_mut().y = entry_point.y;
+    drop(current_level);
 
     let sprite_sheet = world.read_resource::<GameSpriteSheets>().santa();
     let sprite_render = SpriteRender {

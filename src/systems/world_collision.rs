@@ -4,7 +4,7 @@ use amethyst::{
 };
 
 use components::{Velocity, WorldCollisionAffected};
-use resources::level::Level;
+use levels::Level;
 
 const GROUND_HEIGHT: f32 = 8.0;
 

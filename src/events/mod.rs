@@ -24,7 +24,7 @@ impl<'a> PrefabData<'a> for Event {
         entity: Entity,
         events: &mut <Self as PrefabData<'a>>::SystemData,
         _entities: &[Entity],
-        _childred: &[Entity],
+        _children: &[Entity],
     ) -> Result<<Self as PrefabData<'a>>::Result, Error> {
         events
             .insert(entity, self.clone())
