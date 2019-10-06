@@ -82,8 +82,13 @@ fn main() -> amethyst::Result<()> {
             "level_store_loader",
             &[],
         )
+        .with(
+            systems::LevelChangeSystem::default(),
+            "level_change_system",
+            &[],
+        )
         .with_bundle(TransformBundle::new())?
-        .with(systems::SnowflakeSystem::new(), "snowflake_system", &[])
+        .with(systems::SnowflakeSystem::new(), "snowflake_system", &["level_change_system"])
         .with_bundle(input_bundle)?
         .with_bundle(UiBundle::<StringBindings>::new())?
         .with(
@@ -91,7 +96,7 @@ fn main() -> amethyst::Result<()> {
             "dialogue_system",
             &["ui_transform"],
         )
-        .with(systems::EventSystem::default(), "event_system", &[])
+        .with(systems::EventSystem::default(), "event_system", &["level_change_system"])
         .with(
             systems::WindSystem::default(),
             "wind_system",
@@ -115,7 +120,7 @@ fn main() -> amethyst::Result<()> {
         .with(
             systems::WorldCollisionSystem,
             "world_collision_system",
-            &["movement_system"],
+            &["movement_system", "level_change_system"],
         )
         .with(
             systems::AnimationSystem::default(),
@@ -125,7 +130,7 @@ fn main() -> amethyst::Result<()> {
         .with(
             systems::CameraSystem::default(),
             "camera_system",
-            &["control_system"],
+            &["control_system", "level_change_system"],
         )
         .with_bundle(AudioBundle::default())?
         .with_bundle(

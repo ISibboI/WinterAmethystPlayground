@@ -12,6 +12,7 @@ use amethyst::{
     },
     ui::{UiCreator, UiFinder},
     GameData, SimpleState, StateData,
+    shrev::EventChannel,
 };
 use euclid::{TypedPoint2D, TypedRect, TypedSize2D};
 
@@ -19,7 +20,7 @@ use components::*;
 use entities::{Player, Snowflake};
 use events::{actions::EventAction, triggers::EventTrigger, Event};
 use geometry::Rectangle;
-use levels::{Level, LevelConfig, LevelStore};
+use levels::{Level, LevelConfig, LevelStore, LevelChange};
 use resources::{dialogue::Dialogue, GameSpriteSheets, Ui};
 use std::fs::File;
 
@@ -72,7 +73,7 @@ fn initialize_background(world: &mut World) {
     transform.translation_mut().z = -1.0;
 
     let sprite_render = SpriteRender {
-        sprite_sheet: world.read_resource::<GameSpriteSheets>().background(),
+        sprite_sheet: world.read_resource::<GameSpriteSheets>().background_outside(),
         sprite_number: 0,
     };
 
@@ -80,6 +81,7 @@ fn initialize_background(world: &mut World) {
         .create_entity()
         .with(transform)
         .with(sprite_render)
+        .with(WorldBackground)
         .build();
 }
 
@@ -127,7 +129,7 @@ fn load_sprite_sheets(world: &mut World) {
     sprite_sheets.set_santa(load_texture(world, "santa"));
     sprite_sheets.set_snowflake(load_texture(world, "snowflake"));
     sprite_sheets.set_ground(load_texture(world, "ground"));
-    sprite_sheets.set_background(load_texture(world, "background"));
+    sprite_sheets.set_background_outside(load_texture(world, "background_outside"));
     world.insert(sprite_sheets);
 }
 

@@ -95,4 +95,8 @@ impl LevelStore {
     pub fn get_current_level(&self) -> &Level {
         &self.levels[self.current_level]
     }
+
+    pub fn change_level(&mut self, level_change: &LevelChange) {
+        self.current_level = self.name_level_map.get(&level_change.name).unwrap_or_else(|| panic!("Unknown level name: {}", level_change.name)).clone();
+    }
 }
