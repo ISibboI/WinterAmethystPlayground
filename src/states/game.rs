@@ -47,6 +47,7 @@ impl SimpleState for GameState {
         world.register::<Animated>();
         world.register::<WindGenerator>();
         world.register::<Event>();
+        world.register::<WorldBackground>();
 
         world.exec(|mut creator: UiCreator| creator.create("ui/dialogue.ron", ()));
         let event_prefab_handle =
